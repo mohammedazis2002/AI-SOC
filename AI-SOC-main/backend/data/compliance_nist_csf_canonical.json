@@ -1,0 +1,363 @@
+[
+    {
+        "rule_id": "NISTCSF-DE.AE-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "DE.AE-1",
+        "control_name": "Baseline network operations and expected data flows established",
+        "category": "detection",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 DE.AE-1: Network baseline must be compared against incident traffic patterns.",
+        "recommendation": "Collect network logs and compare against established baseline."
+    },
+    {
+        "rule_id": "NISTCSF-DE.AE-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "DE.AE-2",
+        "control_name": "Detected events are analyzed to understand attack targets and methods",
+        "category": "detection",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "analyze_malware_sample",
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 DE.AE-2: Detected security events must be analyzed to understand attack methods.",
+        "recommendation": "Add analyze_malware_sample or extract_iocs to understand the attack."
+    },
+    {
+        "rule_id": "NISTCSF-DE.AE-3",
+        "framework": "nist_csf_2_0",
+        "control_id": "DE.AE-3",
+        "control_name": "Event data are aggregated and correlated from multiple sources",
+        "category": "detection",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 DE.AE-3: Event data from multiple sources must be aggregated and correlated.",
+        "recommendation": "Add collect_logs from all relevant sources and correlate_events."
+    },
+    {
+        "rule_id": "NISTCSF-DE.CM-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "DE.CM-1",
+        "control_name": "Networks are monitored to detect potential cybersecurity events",
+        "category": "monitoring",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_ids",
+            "disable_logging",
+            "stop_network_monitoring"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 DE.CM-1: Network monitoring cannot be disabled.",
+        "recommendation": "Network monitoring must remain active. Do not disable IDS or logging."
+    },
+    {
+        "rule_id": "NISTCSF-DE.CM-7",
+        "framework": "nist_csf_2_0",
+        "control_id": "DE.CM-7",
+        "control_name": "Monitoring for unauthorized personnel, connections, devices, and software",
+        "category": "monitoring",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "enable_netflow",
+        "applies_when": {
+            "incident_type": [
+                "unauthorized_access",
+                "rogue_device"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 DE.CM-7: Monitoring for unauthorized connections and devices must be active.",
+        "recommendation": "Add enable_netflow to monitor for unauthorized connections."
+    },
+    {
+        "rule_id": "NISTCSF-RS.RP-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.RP-1",
+        "control_name": "Response plan is executed during or after an incident",
+        "category": "incident_response",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "universal": true,
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.RP-1: Response plan must be executed and documented.",
+        "recommendation": "Add document_incident to confirm response plan execution."
+    },
+    {
+        "rule_id": "NISTCSF-RS.CO-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.CO-2",
+        "control_name": "Incidents are reported consistent with established criteria",
+        "category": "incident_reporting",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "universal": true,
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.CO-2: Incidents must be reported per established reporting criteria.",
+        "recommendation": "Add notify_security_team to fulfil reporting requirements."
+    },
+    {
+        "rule_id": "NISTCSF-RS.CO-3",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.CO-3",
+        "control_name": "Information is shared consistent with response plans",
+        "category": "communication",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "incident_severity": [
+                "critical"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 RS.CO-3: Information about the incident must be shared with affected parties.",
+        "recommendation": "Add notify_affected_users for data breach incidents."
+    },
+    {
+        "rule_id": "NISTCSF-RS.AN-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.AN-1",
+        "control_name": "Notifications from detection systems are investigated",
+        "category": "analysis",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 RS.AN-1: All detection system notifications must be investigated.",
+        "recommendation": "Systematically collect and analyze logs for each detection alert."
+    },
+    {
+        "rule_id": "NISTCSF-RS.AN-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.AN-2",
+        "control_name": "Impact of incident is understood",
+        "category": "analysis",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "preserve_evidence",
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.AN-2: Incident impact must be understood before remediation.",
+        "recommendation": "Add preserve_evidence and create_forensic_snapshot for impact assessment."
+    },
+    {
+        "rule_id": "NISTCSF-RS.AN-3",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.AN-3",
+        "control_name": "Forensics are performed during incident investigation",
+        "category": "forensics",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "capture_memory_dump",
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ],
+            "incident_type": [
+                "malware",
+                "data_breach",
+                "apt"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.AN-3: Forensic analysis must be performed for significant incidents.",
+        "recommendation": "Add capture_memory_dump and collect_volatile_data for forensic investigation."
+    },
+    {
+        "rule_id": "NISTCSF-RS.MI-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.MI-1",
+        "control_name": "Incidents are contained",
+        "category": "containment",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "isolate_host",
+        "applies_when": {
+            "universal": true,
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 RS.MI-1: Incidents must be contained to prevent spread.",
+        "recommendation": "Add isolate_host or block_ip for immediate containment."
+    },
+    {
+        "rule_id": "NISTCSF-RS.MI-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.MI-2",
+        "control_name": "Incidents are mitigated",
+        "category": "eradication",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "trigger_edr_scan",
+        "applies_when": {
+            "universal": true,
+            "incident_type": [
+                "malware",
+                "ransomware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.MI-2: Incident must be mitigated to remove the threat.",
+        "recommendation": "Add trigger_edr_scan and trigger_edr_remediate for threat mitigation."
+    },
+    {
+        "rule_id": "NISTCSF-RS.IM-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.IM-1",
+        "control_name": "Response plans incorporate lessons learned",
+        "category": "continuous_improvement",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "NIST CSF 2.0 RS.IM-1: Lessons learned must be incorporated into the response plan.",
+        "recommendation": "Add create_compliance_report with lessons learned section."
+    },
+    {
+        "rule_id": "NISTCSF-RC.RP-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RC.RP-1",
+        "control_name": "Recovery plan is executed during or after an incident",
+        "category": "recovery",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 RC.RP-1: Recovery plan must be activated to restore services.",
+        "recommendation": "Add restore_from_backup following recovery plan procedures."
+    },
+    {
+        "rule_id": "NISTCSF-RC.IM-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RC.IM-1",
+        "control_name": "Recovery planning and processes incorporate lessons learned",
+        "category": "continuous_improvement",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "NIST CSF 2.0 RC.IM-1: Recovery plans must be updated with lessons from this incident.",
+        "recommendation": "Add create_compliance_report with recovery improvements."
+    },
+    {
+        "rule_id": "NISTCSF-RC.CO-3",
+        "framework": "nist_csf_2_0",
+        "control_id": "RC.CO-3",
+        "control_name": "Recovery activities are communicated to stakeholders",
+        "category": "communication",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 RC.CO-3: Recovery progress must be communicated to affected stakeholders.",
+        "recommendation": "Add notify_affected_users with recovery status updates."
+    },
+    {
+        "rule_id": "NISTCSF-ID.SC-4",
+        "framework": "nist_csf_2_0",
+        "control_id": "ID.SC-4",
+        "control_name": "Suppliers and partners respond to security incidents per agreements",
+        "category": "supply_chain",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "incident_type": [
+                "supply_chain",
+                "third_party_compromise"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 ID.SC-4: Supply chain security incidents require engagement with affected suppliers.",
+        "recommendation": "Notify security team to engage affected suppliers per SC incident agreements."
+    }
+]

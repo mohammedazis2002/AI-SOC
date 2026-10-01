@@ -1,0 +1,287 @@
+[
+    {
+        "action_type": "revoke_all_sessions",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Active sessions are terminated permanently",
+            "Users must re-authenticate to create new sessions"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Session revocation forces all active tokens to expire immediately. Re-authentication creates brand new sessions. This is intentional isolation behavior per NIST SP 800-61r2 containment guidance.",
+        "source_reference": "NIST SP 800-61r2 §3.3.1 Containment — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf | OWASP: Session revocation — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+        "risk_if_not_reversed": "All legitimate users temporarily logged out — resolved on re-auth within minutes",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "revoke_api_key",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": "generate_new_api_key",
+        "reversal_steps": [
+            "Generate a replacement API key via the respective service",
+            "Update all dependent integrations with the new key"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "API keys are single-use secrets — once revoked they cannot be restored. Best practice per NIST SP 800-63B is immediate revocation of compromised credentials, followed by issuing a new key.",
+        "source_reference": "NIST SP 800-63B §5.2 — https://pages.nist.gov/800-63-3/sp800-63b.html | OWASP: API Security — https://owasp.org/www-project-api-security/",
+        "risk_if_not_reversed": "All services using the revoked API key receive 401/403 errors until updated",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "revoke_certificate",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": "reissue_certificate",
+        "reversal_steps": [
+            "Generate a new certificate signing request (CSR)",
+            "Submit to CA for signing",
+            "Deploy new certificate to affected services"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Digital certificate revocation is permanent (CRL/OCSP). Per RFC 5280, revoked certificates remain in the CRL indefinitely. A new certificate with a new serial number must be issued.",
+        "source_reference": "RFC 5280 §3.3 — https://tools.ietf.org/html/rfc5280 | NIST SP 800-57 Key Management — https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final",
+        "risk_if_not_reversed": "TLS/mTLS connections using the revoked certificate are rejected",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "revoke_mfa_device",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "re_enroll_mfa_device",
+        "reversal_steps": [
+            "User must re-enroll TOTP/FIDO2 device through account security portal",
+            "Admin may need to initiate MFA reset"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "MFA device (TOTP, FIDO2) deregistration is reversible by re-enrollment. Per NIST SP 800-63B, re-enrollment must use identity proofing. A new device is enrolled, not the old one restored.",
+        "source_reference": "NIST SP 800-63B §6.2 — https://pages.nist.gov/800-63-3/sp800-63b.html",
+        "risk_if_not_reversed": "User cannot complete MFA challenge and is locked out until re-enrolled",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "require_password_change",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "remove_password_change_requirement",
+        "reversal_steps": [
+            "Remove the 'must change password at next logon' flag via IAM/AD admin portal"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Password change requirements are flags on user accounts (e.g., AD pwdLastSet=0 or IAM 'PasswordResetRequired'). These flags can be cleared by an admin if the requirement was set in error. Reversing needs security team approval.",
+        "source_reference": "Microsoft AD: pwdLastSet attribute — https://docs.microsoft.com/en-us/windows/win32/adschema/a-pwdlastset | AWS IAM: update-login-profile — https://docs.aws.amazon.com/cli/latest/reference/iam/update-login-profile.html",
+        "risk_if_not_reversed": "User must change password on next login (minor operational friction)",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "require_mfa_reauthentication",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "remove_mfa_reauthentication_requirement",
+        "reversal_steps": [
+            "Remove step-up authentication policy or session extension grant"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Step-up MFA requirements are policy configurations on the IdP/application session. Removing the policy reverts to standard session lifetime. Short-lived security measure by design.",
+        "source_reference": "NIST SP 800-63B §7.2 — https://pages.nist.gov/800-63-3/sp800-63b.html | OWASP: Step-up authentication — https://cheatsheetseries.owasp.org/cheatsheets/Transaction_Authorization_Cheat_Sheet.html",
+        "risk_if_not_reversed": "Users repeatedly prompted for MFA (operational friction)",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "require_just_in_time_access",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "disable_jit_access_requirement",
+        "reversal_steps": [
+            "Revert to standing access by disabling JIT policy in PAM tool (CyberArk, BeyondTrust, AWS IAM Identity Center)"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "JIT access is implemented via PAM tools that require approval workflows for sensitive access. Reverting to standing access requires disabling the JIT policy and approving restoration. Per CIS Controls 6.5 principle of least privilege.",
+        "source_reference": "CIS Controls v8 Control 6 — https://www.cisecurity.org/controls/v8/ | CyberArk JIT — https://docs.cyberark.com/Product-Doc/OnlineHelp/PAS/Latest/en/Content/PASIMP/jit-access.htm",
+        "risk_if_not_reversed": "Administrative access requires per-request approval (operational slowdown)",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "suspend_account",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "unsuspend_account",
+        "reversal_steps": [
+            "Re-enable account via IAM/AD console",
+            "AWS: aws iam update-login-profile / update-access-key --status Active",
+            "AD: Enable-ADAccount -Identity <user>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Account suspension preserves all account attributes while blocking access. Re-enabling is a single administrative action. Per NIST SP 800-61r2, account suspension is a standard containment action during incident investigation.",
+        "source_reference": "NIST SP 800-61r2 §3.3.1 — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf",
+        "risk_if_not_reversed": "User cannot access any systems",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "revoke_service_account",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "restore_service_account",
+        "reversal_steps": [
+            "Re-enable service account credentials in the relevant platform",
+            "Azure: Enable Service Principal. GCP: enable SA. K8s: restore ServiceAccount"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Service account revocation disables the service identity. All services running under it fail authentication. Re-enabling the account and distributing new credentials restores operation.",
+        "source_reference": "GCP Service Accounts — https://cloud.google.com/iam/docs/service-accounts | K8s ServiceAccounts — https://kubernetes.io/docs/concepts/security/service-accounts/",
+        "risk_if_not_reversed": "All services running as this SA lose authentication access",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "revoke_role",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "re_assign_role",
+        "reversal_steps": [
+            "Re-assign the role to the user/group via IAM, AD, or application RBAC console"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Role assignment in RBAC systems is additive/removable. Revoking a role removes permissions granted by that role. Re-assigning it restores them. Per AC-6 (Least Privilege), a re-assignment should be re-justified.",
+        "source_reference": "NIST 800-53 AC-2 Account Management — https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final",
+        "risk_if_not_reversed": "User loses all permissions granted by the revoked role",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "revoke_data_access",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "restore_data_access",
+        "reversal_steps": [
+            "Re-grant data access through DBAC/DAC policy",
+            "Update SaaS platform sharing settings or IAM data policies"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Data access controls (SharePoint permissions, Google Drive ACLs, database role grants) are configurable. Revoking removes access entries. Re-granting restores them. Business justification required for reversal.",
+        "source_reference": "ISO 27001:2022 A.5.10 — https://www.iso.org/standard/27001 | NIST 800-53 AC-3",
+        "risk_if_not_reversed": "Users/services cannot access required data resources",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "revoke_database_privileges",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "regrant_database_privileges",
+        "reversal_steps": [
+            "MySQL/Postgres: GRANT <privs> ON <db>.* TO '<user>'@'<host>';",
+            "MSSQL: GRANT <permission> ON <object> TO <principal>;"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "SQL GRANT/REVOKE are standard DML commands. REVOKE removes a privilege; GRANT restores it. Original grant details must be known (what was revoked).",
+        "source_reference": "MySQL: GRANT statement — https://dev.mysql.com/doc/refman/8.0/en/grant.html | PostgreSQL: GRANT — https://www.postgresql.org/docs/current/sql-grant.html",
+        "risk_if_not_reversed": "Application/user cannot perform previously authorized database operations",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "revoke_integration_token",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": "generate_new_integration_token",
+        "reversal_steps": [
+            "Generate replacement token in the third-party integration settings",
+            "Update integration configuration with new token"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Integration tokens (Slack, GitHub, Jira, etc.) are single-use secrets. Once revoked, they cannot be restored. New tokens must be generated and distributed to dependent systems.",
+        "source_reference": "GitHub: Revoking tokens — https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/reviewing-your-authorized-oauth-apps | OWASP API Security Top 10",
+        "risk_if_not_reversed": "Third-party integration broken until new token is configured",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "revoke_jwt_token",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "JWTs are self-contained and cannot be un-revoked",
+            "User must log in again to receive a new JWT"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "JWTs are stateless by design (RFC 7519). Revocation requires server-side token blocklisting. The specific token cannot be 'un-revoked'; the user obtains a new token on re-authentication.",
+        "source_reference": "RFC 7519 JWT — https://tools.ietf.org/html/rfc7519 | OWASP: JWT Security — https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html",
+        "risk_if_not_reversed": "User is logged out from all sessions — resolved on re-authentication",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "revoke_saml_assertion",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "SAML assertions are one-time use (NotOnOrAfter constraint)",
+            "User must re-authenticate through IdP to receive a new assertion"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "SAML 2.0 assertions are short-lived (typically 5 minutes) per the spec. Revoking forces early expiry. New assertions are generated on IdP re-authentication.",
+        "source_reference": "SAML 2.0 Spec §2.5 — https://docs.oasis-open.org/security/saml/v2.0/saml-core-2.0-os.pdf",
+        "risk_if_not_reversed": "User is logged out from SP — resolved on next IdP authentication",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "revoke_application_token",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": "reissue_application_token",
+        "reversal_steps": [
+            "Application must re-authenticate via OAuth2 client credentials flow to get a new token"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "OAuth2 application tokens (client credentials flow) cannot be un-revoked. The application re-authenticates with client_id/client_secret to get a new access token.",
+        "source_reference": "RFC 6749 OAuth2 §4.4 — https://tools.ietf.org/html/rfc6749 | RFC 7009 Token Revocation — https://tools.ietf.org/html/rfc7009",
+        "risk_if_not_reversed": "Application API calls fail — resolved when application re-authenticates",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "revoke_share_link",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "regenerate_share_link",
+        "reversal_steps": [
+            "Generate a new share link in the sharing application (Google Drive, SharePoint, OneDrive)"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Share link revocation invalidates the specific URL token. A new share link can be generated with the same permissions. The new link gets a different URL token.",
+        "source_reference": "Google Drive: Sharing files — https://support.google.com/drive/answer/2494822 | Microsoft SharePoint: Sharing links — https://support.microsoft.com/en-us/office/share-sharepoint-files-or-folders",
+        "risk_if_not_reversed": "External recipients with the revoked link lose access",
+        "estimated_reversal_time_minutes": 5
+    }
+]

@@ -1,0 +1,192 @@
+[
+    {
+        "rule_id": "CIS-v8-8.2",
+        "framework": "cis_controls_v8",
+        "control_id": "8.2",
+        "control_name": "Collect Audit Logs",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 8.2: Audit logs must be collected before any remediation changes.",
+        "recommendation": "Add collect_logs at the start of the remediation plan."
+    },
+    {
+        "rule_id": "CIS-v8-8.3",
+        "framework": "cis_controls_v8",
+        "control_id": "8.3",
+        "control_name": "Ensure Adequate Audit Log Storage",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "truncate_logs",
+            "disable_logging"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 8.3: Audit logs must be retained. Deletion is prohibited.",
+        "recommendation": "Archive logs to secure storage; do not delete."
+    },
+    {
+        "rule_id": "CIS-v8-4.7",
+        "framework": "cis_controls_v8",
+        "control_id": "4.7",
+        "control_name": "Manage Default Accounts",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "enable_generic_account",
+            "create_shared_account",
+            "enable_default_account"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 4.7: Default and shared accounts must not be enabled.",
+        "recommendation": "Use individual named accounts only."
+    },
+    {
+        "rule_id": "CIS-v8-7.1",
+        "framework": "cis_controls_v8",
+        "control_id": "7.1",
+        "control_name": "Establish and Maintain Vulnerability Management Process",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "patch_system",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation",
+                "zero_day"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 7.1: Exploited vulnerabilities must be remediated via patching.",
+        "recommendation": "Add patch_system or workaround for the exploited CVE."
+    },
+    {
+        "rule_id": "CIS-v8-6.2",
+        "framework": "cis_controls_v8",
+        "control_id": "6.2",
+        "control_name": "Establish Access Granting Process",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "grant_admin_access",
+            "add_to_privileged_group",
+            "revoke_permissions"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "CIS Controls v8 6.2: Privilege changes require documented access management approval.",
+        "recommendation": "Set requires_approval=True for any privilege modification."
+    },
+    {
+        "rule_id": "CIS-v8-10.3",
+        "framework": "cis_controls_v8",
+        "control_id": "10.3",
+        "control_name": "Disable Autorun and Autoplay for Removable Media",
+        "category": "endpoint_security",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "enable_autorun",
+            "enable_usb_boot"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 10.3: Autorun and USB boot must remain disabled.",
+        "recommendation": "Remove any action that enables autorun or USB boot."
+    },
+    {
+        "rule_id": "CIS-v8-13.7",
+        "framework": "cis_controls_v8",
+        "control_id": "13.7",
+        "control_name": "Deploy Network-Based Intrusion Detection Systems",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_ids",
+            "disable_ips",
+            "disable_nids"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 13.7: Network intrusion detection cannot be disabled.",
+        "recommendation": "Do not disable IDS/IPS. Tune signatures rather than deactivating."
+    },
+    {
+        "rule_id": "CIS-v8-11.4",
+        "framework": "cis_controls_v8",
+        "control_id": "11.4",
+        "control_name": "Perform Automated Application Patch Management",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "patch_system",
+            "update_software"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "CIS Controls v8 11.4: Application patches in production require change management approval.",
+        "recommendation": "Document patch approval before deploying."
+    }
+]

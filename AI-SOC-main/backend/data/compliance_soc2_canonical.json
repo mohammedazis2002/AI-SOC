@@ -1,0 +1,420 @@
+[
+    {
+        "rule_id": "SOC2-CC6.1",
+        "framework": "soc2_type2",
+        "control_id": "CC6.1",
+        "control_name": "Logical and physical access controls implemented",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_mfa",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "unauthorized_access",
+                "credential_compromise"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC6.1: Logical and physical access controls must be reinforced after unauthorized access.",
+        "recommendation": "Add enable_mfa and revoke_permissions to reinforce access controls."
+    },
+    {
+        "rule_id": "SOC2-CC6.2",
+        "framework": "soc2_type2",
+        "control_id": "CC6.2",
+        "control_name": "System access authorized based on business need",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "grant_access",
+            "create_account"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "SOC 2 CC6.2: System access grants must be approved based on business necessity.",
+        "recommendation": "Obtain approval for any access grants during incident response."
+    },
+    {
+        "rule_id": "SOC2-CC6.3",
+        "framework": "soc2_type2",
+        "control_id": "CC6.3",
+        "control_name": "Remove access when no longer needed",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "revoke_permissions",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "offboarding_missed"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC6.3: Unused access must be revoked immediately.",
+        "recommendation": "Add revoke_permissions and disable_account for departed or inappropriate access."
+    },
+    {
+        "rule_id": "SOC2-CC6.6",
+        "framework": "soc2_type2",
+        "control_id": "CC6.6",
+        "control_name": "Logical access security measures — MFA required",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_mfa",
+            "bypass_mfa",
+            "allow_weak_passwords"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SOC 2 CC6.6: MFA and strong password controls cannot be bypassed.",
+        "recommendation": "Remove MFA-disabling or password-weakening actions."
+    },
+    {
+        "rule_id": "SOC2-CC6.7",
+        "framework": "soc2_type2",
+        "control_id": "CC6.7",
+        "control_name": "Credential management and rotation",
+        "category": "credential_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "rotate_api_secret",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "credential_compromise"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC6.7: Credentials must be rotated after a compromise.",
+        "recommendation": "Add rotate_api_secret and reset_password for all affected credentials."
+    },
+    {
+        "rule_id": "SOC2-CC7.1",
+        "framework": "soc2_type2",
+        "control_id": "CC7.1",
+        "control_name": "Detect threats via monitoring procedures",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC7.1: Threat detection requires log collection and analysis.",
+        "recommendation": "Add collect_logs to support threat detection monitoring."
+    },
+    {
+        "rule_id": "SOC2-CC7.2",
+        "framework": "soc2_type2",
+        "control_id": "CC7.2",
+        "control_name": "Monitor security events across environments",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "disable_edr",
+            "stop_audit"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SOC 2 CC7.2: Security event monitoring cannot be disabled.",
+        "recommendation": "Keep all monitoring tools active. Tune thresholds instead."
+    },
+    {
+        "rule_id": "SOC2-CC7.3",
+        "framework": "soc2_type2",
+        "control_id": "CC7.3",
+        "control_name": "Incident detection and response procedures",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "isolate_host",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SOC 2 CC7.3: Incidents must be detected and responded to via established procedures.",
+        "recommendation": "Follow the SOC 2 incident detection and response sequence."
+    },
+    {
+        "rule_id": "SOC2-CC7.4",
+        "framework": "soc2_type2",
+        "control_id": "CC7.4",
+        "control_name": "Recovery procedures to restore operations",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SOC 2 CC7.4: Recovery procedures must restore operations from known-good state.",
+        "recommendation": "Add restore_from_backup following recovery procedures."
+    },
+    {
+        "rule_id": "SOC2-CC7.5",
+        "framework": "soc2_type2",
+        "control_id": "CC7.5",
+        "control_name": "Communication plan for incidents and recovery",
+        "category": "communication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC7.5: Affected parties must be notified per the communication plan.",
+        "recommendation": "Add notify_affected_users and notify_security_team for incident communication."
+    },
+    {
+        "rule_id": "SOC2-CC8.1",
+        "framework": "soc2_type2",
+        "control_id": "CC8.1",
+        "control_name": "Change management process implemented",
+        "category": "change_management",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_config",
+            "patch_system",
+            "deploy_code"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "SOC 2 CC8.1: System changes must follow the change management process.",
+        "recommendation": "Obtain change management approval before modifying production systems."
+    },
+    {
+        "rule_id": "SOC2-CC9.1",
+        "framework": "soc2_type2",
+        "control_id": "CC9.1",
+        "control_name": "Risk mitigation strategies implemented",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC9.1: Risk mitigation measures must be documented post-incident.",
+        "recommendation": "Add create_compliance_report with risk mitigation analysis."
+    },
+    {
+        "rule_id": "SOC2-A1.1",
+        "framework": "soc2_type2",
+        "control_id": "A1.1",
+        "control_name": "Availability commitments to customers maintained",
+        "category": "availability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "ddos",
+                "system_failure"
+            ],
+            "asset_tags": [
+                "customer_facing"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 A1.1: Customer availability commitments must be maintained or customers notified.",
+        "recommendation": "Notify affected customers when availability SLAs are impacted."
+    },
+    {
+        "rule_id": "SOC2-A1.2",
+        "framework": "soc2_type2",
+        "control_id": "A1.2",
+        "control_name": "System recovery to restore operations",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SOC 2 A1.2: System recovery must restore services per availability commitments.",
+        "recommendation": "Add restore_from_backup to recover customer-facing services."
+    },
+    {
+        "rule_id": "SOC2-A1.3",
+        "framework": "soc2_type2",
+        "control_id": "A1.3",
+        "control_name": "Backup recovery tested regularly",
+        "category": "backup",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 A1.3: Backup recovery capability must be verified during incidents.",
+        "recommendation": "Verify backups exist and are current before beginning recovery."
+    },
+    {
+        "rule_id": "SOC2-C1.1",
+        "framework": "soc2_type2",
+        "control_id": "C1.1",
+        "control_name": "Confidentiality commitments maintained for designated information",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "expose_confidential_data",
+            "export_unencrypted_data",
+            "disable_encryption"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "data_classification": [
+                "confidential"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SOC 2 C1.1: Confidential information cannot be exposed or exported unencrypted.",
+        "recommendation": "Remove actions that expose confidential data without encryption."
+    },
+    {
+        "rule_id": "SOC2-C1.2",
+        "framework": "soc2_type2",
+        "control_id": "C1.2",
+        "control_name": "Deletion of confidential information when no longer needed",
+        "category": "data_disposal",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "secure_data_deletion",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "data_classification": [
+                "confidential"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 C1.2: Confidential data must be securely deleted when no longer needed.",
+        "recommendation": "Add secure_data_deletion for confidential data past its retention."
+    },
+    {
+        "rule_id": "SOC2-PI1.4",
+        "framework": "soc2_type2",
+        "control_id": "PI1.4",
+        "control_name": "Personal information disposed of securely",
+        "category": "data_disposal",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "secure_data_deletion",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 PI1.4: Personal information must be securely deleted when no longer needed.",
+        "recommendation": "Add secure_data_deletion for personal data past retention period."
+    }
+]

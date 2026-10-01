@@ -1,0 +1,94 @@
+# Offline ML Training Pipeline Scalability Configuration
+# Controls memory parameters for 16GB laptops vs Datacenter A100s
+
+environment: "local_dev" # Change to 'datacenter' when scaling
+
+paths:
+  # Base directory for Wazuh alerts
+  wazuh_raw: "backend/data/wazuh_logs/01_raw"
+  wazuh_interim: "backend/data/wazuh_logs/02_interim"
+  wazuh_processed: "backend/data/wazuh_logs/03_processed"
+  
+  # ML Models export directory
+  models_out: "backend/models"
+  
+  # Feedback paths from SOAR
+  fp_feedback: "backend/data/feedback/fp_feedback.json"
+  rca_feedback: "backend/data/feedback/rca_feedback.json"
+
+pipeline:
+  # Stage 1: Ingestion
+  ingestion:
+    chunk_size: 2000000       # JSON rows to read before flushing to parquet file
+    target_columns:
+      - "timestamp"
+      - "agent.id"
+      - "agent.ip"
+      - "agent.name"
+      - "rule.id"
+      - "rule.level"
+      - "rule.mitre.tactic"
+      - "rule.mitre.technique"
+      - "rule.mitre.id"
+      - "rule.groups"
+      - "rule.description"
+      - "srcip"
+      - "dstip"
+      - "username"
+      - "data.srcip"
+      - "data.dstip"
+      - "data.srcport"
+      - "data.dstport"
+      - "data.protocol"
+      - "data.dstuser"
+      - "data.bytes_sent"
+      - "data.bytes_received"
+      - "data.duration"
+      - "vulnerability"
+      - "enrichment.asset_crit"
+      - "enrichment.risk_score"
+      - "enrichment.time_since_last"
+      - "enrichment.freq_last_hour"
+      - "enrichment.sim_1h"
+      - "enrichment.sim_1d"
+      - "enrichment.first_seen"
+      - "enrichment.hist_fp_rate"
+      - "enrichment.has_sensitive"
+      - "enrichment.user_dev"
+      - "enrichment.asset_dev"
+      - "enrichment.unusual_time"
+      - "enrichment.unusual_loc"
+      - "enrichment.unusual_action"
+      - "enrichment.unusual_tgt"
+      - "enrichment.unusual_vol"
+
+  # Stage 2: Feature Engineering (Polars)
+  feature_engineering:
+    memory_limit_gb: 64       # Leave 4GB for OS/Background services on 16GB laptop
+    threads: 32
+
+training:
+  # Global constraints
+  sample_fraction: 1.0      # 5% dataset locally to prevent excessive time
+  # Anomaly Detector (IsolationForest)
+  anomaly_detector:
+    n_estimators: 100
+    contamination: 0.01
+    max_samples: 100000
+
+  # Tabular Forecasters (XGBoost/RandomForest)
+  tree_models:
+    n_estimators: 100
+    max_depth: 6
+    n_jobs: 4
+  
+  # Sequence Predictor (LSTM)
+  lstm_attack_stage:
+    batch_size: 1024            # Small batch size for 6GB RTX 3060
+    sequence_length: 50       # Number of prior alerts to retain per sequence
+    hidden_size: 256
+    num_layers: 4
+    dropout: 0.3
+    learning_rate: 0.001
+    epochs: 30
+    use_amp: true             # Automatic Mixed Precision to halve VRAM

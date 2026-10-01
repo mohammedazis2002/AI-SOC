@@ -1,0 +1,679 @@
+[
+    {
+        "rule_id": "NIST800-AC-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AC-3",
+        "control_name": "Access Enforcement — enforce access control policies",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_access",
+            "bypass_access_control",
+            "disable_rbac"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 AC-3: Access control enforcement mechanisms cannot be bypassed or disabled.",
+        "recommendation": "All access must go through authorised RBAC mechanisms."
+    },
+    {
+        "rule_id": "NIST800-AC-6",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AC-6",
+        "control_name": "Least Privilege",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_admin_access",
+            "add_to_privileged_group"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "NIST 800-53 AC-6: Least privilege must be enforced. Broad admin access requires documented exception.",
+        "recommendation": "Grant only minimum required permissions. Obtain ISSO approval for privilege escalation."
+    },
+    {
+        "rule_id": "NIST800-AC-7",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AC-7",
+        "control_name": "Unsuccessful Logon Attempts — account lockout",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "lock_account",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "brute_force",
+                "credential_stuffing"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 AC-7: Brute force attacks must trigger account lockout enforcement.",
+        "recommendation": "Add lock_account for targeted accounts in brute force incidents."
+    },
+    {
+        "rule_id": "NIST800-AC-12",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AC-12",
+        "control_name": "Session Termination after defined conditions",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "force_logout",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "credential_compromise",
+                "session_hijacking"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 AC-12: Compromised sessions must be terminated immediately.",
+        "recommendation": "Add force_logout_all_sessions for session compromise incidents."
+    },
+    {
+        "rule_id": "NIST800-AU-2",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AU-2",
+        "control_name": "Event Logging — identify auditable events",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 AU-2: Security events must be collected and reviewed as part of incident response.",
+        "recommendation": "Add collect_logs to capture all auditable events."
+    },
+    {
+        "rule_id": "NIST800-AU-6",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AU-6",
+        "control_name": "Audit Record Review and Analysis",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "generate_forensic_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 AU-6: Audit records must be reviewed and findings documented.",
+        "recommendation": "Add generate_forensic_report to document audit review findings."
+    },
+    {
+        "rule_id": "NIST800-CA-7",
+        "framework": "nist_800_53_rev5",
+        "control_id": "CA-7",
+        "control_name": "Continuous Monitoring",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "stop_audit",
+            "disable_edr",
+            "disable_ids"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 CA-7: Continuous monitoring controls must not be disabled.",
+        "recommendation": "Monitoring cannot be disabled. Tune detection rules instead."
+    },
+    {
+        "rule_id": "NIST800-CM-7",
+        "framework": "nist_800_53_rev5",
+        "control_id": "CM-7",
+        "control_name": "Least Functionality — prohibit unused services/ports",
+        "category": "hardening",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "block_port",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "network_intrusion",
+                "lateral_movement"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 CM-7: Unused ports and services exploited in the incident must be blocked.",
+        "recommendation": "Add block_port for any unexploited service ports identified in the attack."
+    },
+    {
+        "rule_id": "NIST800-IA-2",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IA-2",
+        "control_name": "Identification and Authentication — MFA required",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_mfa",
+            "bypass_mfa",
+            "remove_mfa_requirement"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 IA-2: MFA cannot be disabled for federal/high-assurance systems.",
+        "recommendation": "MFA must remain active. Do not bypass authentication controls."
+    },
+    {
+        "rule_id": "NIST800-IA-5",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IA-5",
+        "control_name": "Authenticator Management — revoke compromised credentials",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "reset_password",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "phishing"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 IA-5: Compromised authenticators must be revoked and replaced immediately.",
+        "recommendation": "Add reset_password and revoke_api_token for all compromised credentials."
+    },
+    {
+        "rule_id": "NIST800-RA-5",
+        "framework": "nist_800_53_rev5",
+        "control_id": "RA-5",
+        "control_name": "Vulnerability Monitoring and Scanning",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "trigger_edr_scan",
+            "patch_system",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation",
+                "zero_day"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 RA-5: Vulnerability incidents must follow scan → patch → document sequence.",
+        "recommendation": "Run full vulnerability scan after patching to verify remediation."
+    },
+    {
+        "rule_id": "NIST800-SA-11",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SA-11",
+        "control_name": "Developer Testing and Evaluation",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "quarantine_malicious_package",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "supply_chain",
+                "malicious_package"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 SA-11: Malicious developer packages must be quarantined immediately.",
+        "recommendation": "Add quarantine_malicious_package and update_threat_signatures."
+    },
+    {
+        "rule_id": "NIST800-SC-5",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SC-5",
+        "control_name": "Denial of Service Protection",
+        "category": "network_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "rate_limit_ip",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "ddos",
+                "volumetric_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 SC-5: DoS attacks must trigger rate limiting and traffic filtering.",
+        "recommendation": "Add rate_limit_ip and null_route_ip for DDoS source addresses."
+    },
+    {
+        "rule_id": "NIST800-SC-7",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SC-7",
+        "control_name": "Boundary Protection — manage communications at boundaries",
+        "category": "network_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "modify_firewall_rules",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "network_intrusion",
+                "lateral_movement"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 SC-7: Network boundary violations require firewall rule updates.",
+        "recommendation": "Add modify_firewall_rules to enforce boundary protection after intrusion."
+    },
+    {
+        "rule_id": "NIST800-SI-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SI-3",
+        "control_name": "Malicious Code Protection",
+        "category": "endpoint_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_av",
+            "disable_edr",
+            "uninstall_agent"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 SI-3: Malicious code protection tools cannot be disabled.",
+        "recommendation": "Anti-malware must remain active. Remove disable actions from plan."
+    },
+    {
+        "rule_id": "NIST800-SI-7",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SI-7",
+        "control_name": "Software, Firmware, and Information Integrity",
+        "category": "integrity",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "capture_disk_image",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "rootkit",
+                "firmware_attack",
+                "bootkit"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 SI-7: Integrity attacks must capture disk image for forensic analysis.",
+        "recommendation": "Add capture_disk_image before any system changes in firmware/rootkit incidents."
+    },
+    {
+        "rule_id": "NIST800-IR-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IR-3",
+        "control_name": "Incident Response Training",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 IR-3: Security incidents must engage trained incident response personnel.",
+        "recommendation": "Add notify_security_team to ensure trained response personnel are engaged."
+    },
+    {
+        "rule_id": "NIST800-PM-16",
+        "framework": "nist_800_53_rev5",
+        "control_id": "PM-16",
+        "control_name": "Threat Awareness Program",
+        "category": "threat_intelligence",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "update_threat_signatures",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "apt",
+                "zero_day",
+                "malware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 PM-16: New threat IOCs must be disseminated via the threat awareness program.",
+        "recommendation": "Add update_threat_signatures and share_ioc_with_isac."
+    },
+    {
+        "rule_id": "NIST800-SR-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SR-3",
+        "control_name": "Supply Chain Controls — verified software components",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "notify_security_team",
+            "quarantine_malicious_package",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "supply_chain",
+                "compromised_dependency"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 SR-3: Supply chain attacks require systematic response: collect → notify → quarantine → document.",
+        "recommendation": "Follow the supply chain incident response sequence."
+    },
+    {
+        "rule_id": "NIST800-AT-2",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AT-2",
+        "control_name": "Literacy Training and Awareness after incidents",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": "post_incident",
+        "blocked_actions": [
+            "clear_incident_from_ticketing"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "phishing",
+                "social_engineering"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "NIST 800-53 AT-2: Closing phishing/social engineering tickets without awareness training review is discouraged.",
+        "recommendation": "Include security awareness training recommendation in final incident report."
+    },
+    {
+        "rule_id": "NIST800-PL-8",
+        "framework": "nist_800_53_rev5",
+        "control_id": "PL-8",
+        "control_name": "Security and Privacy Architecture",
+        "category": "architecture",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_firewall_rules",
+            "modify_config"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "asset_tags": [
+                "mission_critical"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "NIST 800-53 PL-8: Security architecture changes on mission-critical systems require ISSO/ISSM approval.",
+        "recommendation": "Set requires_approval=True for all architectural changes."
+    },
+    {
+        "rule_id": "NIST800-SA-16",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SA-16",
+        "control_name": "Developer-Provided Training",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "supply_chain"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 SA-16: Supply chain security events require security team notification for systemic response.",
+        "recommendation": "Add notify_security_team for all supply chain incidents."
+    },
+    {
+        "rule_id": "NIST800-SI-10",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SI-10",
+        "control_name": "Information Input Validation",
+        "category": "application_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_waf_rule",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "sql_injection",
+                "xss",
+                "web_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 SI-10: Input validation attacks require WAF rule deployment to block injection vectors.",
+        "recommendation": "Add enable_waf_rule to enforce input validation at the web layer."
+    },
+    {
+        "rule_id": "NIST800-CP-10",
+        "framework": "nist_800_53_rev5",
+        "control_id": "CP-10",
+        "control_name": "System Recovery and Reconstitution",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "quarantine_malicious_package",
+            "restore_from_backup",
+            "verify_system_integrity"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "ransomware",
+                "data_destruction"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 CP-10: Recovery from destructive attacks must follow backup → clean → restore → verify sequence.",
+        "recommendation": "Do not restore before quarantining malicious components."
+    },
+    {
+        "rule_id": "NIST800-SA-12",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SA-12",
+        "control_name": "Supply Chain Risk Management",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "install_unverified_script",
+            "run_unsigned_binary"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "NIST 800-53 SA-12: Unverified or unsigned software must not be installed during incident response.",
+        "recommendation": "Only install verified, signed software components during incident remediation."
+    },
+    {
+        "rule_id": "NIST800-SC-13",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SC-13",
+        "control_name": "Cryptographic Protection — FIPS-approved mechanisms",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "downgrade_encryption",
+            "enable_weak_cipher"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 SC-13: FIPS-approved cryptography must not be downgraded or replaced with weak ciphers.",
+        "recommendation": "Maintain FIPS-compliant encryption. Remove cipher downgrade actions."
+    },
+    {
+        "rule_id": "NIST800-PS-4",
+        "framework": "nist_800_53_rev5",
+        "control_id": "PS-4",
+        "control_name": "Personnel Termination — revoke access immediately",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "disable_account",
+            "revoke_permissions",
+            "revoke_api_token",
+            "revoke_ssh_key"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "rogue_employee"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 PS-4: Rogue employee incidents must trigger immediate revocation of all access.",
+        "recommendation": "Follow full access revocation sequence: disable_account → revoke_permissions → revoke_api_token → revoke_ssh_key."
+    },
+    {
+        "rule_id": "NIST800-RA-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "RA-3",
+        "control_name": "Risk Assessment — document residual risk",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 RA-3: Residual risk after incident response must be formally assessed and documented.",
+        "recommendation": "Add create_compliance_report with residual risk assessment post-remediation."
+    }
+]

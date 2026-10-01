@@ -1,0 +1,627 @@
+[
+    {
+        "rule_id": "HIPAA-164.312a1",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(1)",
+        "control_name": "Access control — unique user identification",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "create_shared_account",
+            "share_credentials",
+            "enable_generic_account"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(a)(1): Shared user accounts are prohibited for PHI systems. Unique user identification required.",
+        "recommendation": "Remove shared account creation. All PHI access must use unique, individually assigned credentials."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2i",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(i)",
+        "control_name": "Unique user identification — emergency access procedure",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "system_failure",
+                "ransomware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.312(a)(2)(i): Emergency access to PHI must follow the documented emergency access procedure.",
+        "recommendation": "Document emergency access usage and justification in the incident record."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2ii",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(ii)",
+        "control_name": "Automatic logoff of inactive sessions",
+        "category": "session_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "force_logout",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "session_hijacking"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.312(a)(2)(ii): Inactive PHI system sessions must be terminated.",
+        "recommendation": "Add force_logout to terminate inactive or suspicious PHI sessions."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2iii",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(iii)",
+        "control_name": "Encryption and decryption of ePHI",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(a)(2)(iii): Encryption protecting ePHI cannot be disabled.",
+        "recommendation": "ePHI must remain encrypted at all times."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2iv",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(iv)",
+        "control_name": "Encryption key management",
+        "category": "key_management",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "expose_encryption_keys",
+            "share_encryption_keys"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(a)(2)(iv): ePHI encryption keys must not be exposed or shared.",
+        "recommendation": "Use a HIPAA-compliant key management system. Never expose raw encryption keys."
+    },
+    {
+        "rule_id": "HIPAA-164.312b",
+        "framework": "hipaa",
+        "control_id": "§164.312(b)",
+        "control_name": "Audit controls on PHI systems",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "stop_audit",
+            "clear_logs"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(b): Audit controls on PHI systems must not be disabled.",
+        "recommendation": "Audit logging on PHI systems must remain active at all times."
+    },
+    {
+        "rule_id": "HIPAA-164.312c1",
+        "framework": "hipaa",
+        "control_id": "§164.312(c)(1)",
+        "control_name": "Integrity controls — protect ePHI from improper alteration",
+        "category": "data_integrity",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_file_integrity_monitoring",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.312(c)(1): Integrity controls must be in place to protect ePHI from alteration.",
+        "recommendation": "Enable file integrity monitoring for PHI data stores."
+    },
+    {
+        "rule_id": "HIPAA-164.312c2",
+        "framework": "hipaa",
+        "control_id": "§164.312(c)(2)",
+        "control_name": "Authentication mechanism for ePHI",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_authentication",
+            "bypass_authentication"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(c)(2): Authentication cannot be disabled on PHI systems.",
+        "recommendation": "Authentication must remain active and enforced on all PHI systems."
+    },
+    {
+        "rule_id": "HIPAA-164.312d",
+        "framework": "hipaa",
+        "control_id": "§164.312(d)",
+        "control_name": "Person or entity authentication — verify identity",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_mfa",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.312(d): PHI system access must verify the identity of the person seeking access.",
+        "recommendation": "Add enable_mfa to reinforce identity verification on PHI systems after credential incidents."
+    },
+    {
+        "rule_id": "HIPAA-164.312e1",
+        "framework": "hipaa",
+        "control_id": "§164.312(e)(1)",
+        "control_name": "Transmission security — protect ePHI during transmission",
+        "category": "transmission_security",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption_in_transit",
+            "transmit_phi_unencrypted"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(e)(1): ePHI must be protected during transmission with encryption.",
+        "recommendation": "Do not disable encryption-in-transit for PHI systems."
+    },
+    {
+        "rule_id": "HIPAA-164.312e2i",
+        "framework": "hipaa",
+        "control_id": "§164.312(e)(2)(i)",
+        "control_name": "Integrity controls for transmission",
+        "category": "data_integrity",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_ssl_inspection",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "mitm",
+                "data_exfiltration"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.312(e)(2)(i): Transmission integrity controls must be active for PHI.",
+        "recommendation": "Enable SSL inspection to verify transmission integrity for PHI systems."
+    },
+    {
+        "rule_id": "HIPAA-164.312e2ii",
+        "framework": "hipaa",
+        "control_id": "§164.312(e)(2)(ii)",
+        "control_name": "Encryption of ePHI in transmission",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "transmit_phi_unencrypted",
+            "disable_tls"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(e)(2)(ii): ePHI transmission must use encryption.",
+        "recommendation": "All ePHI must be encrypted during transmission. TLS cannot be disabled."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1i",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(i)",
+        "control_name": "Security management process — implement policies",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(1)(i): Security management requires documented policies and incident documentation.",
+        "recommendation": "Add document_incident to demonstrate security management process compliance."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1iiA",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(ii)(A)",
+        "control_name": "Risk analysis",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(1)(ii)(A): Risk analysis must be conducted and documented for PHI incidents.",
+        "recommendation": "Add create_compliance_report with PHI risk analysis findings."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1iiB",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(ii)(B)",
+        "control_name": "Risk management",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.308(a)(1)(ii)(B): Risk management plan must be implemented.",
+        "recommendation": "Document risk mitigation measures applied as part of incident remediation."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1iiC",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(ii)(C)",
+        "control_name": "Sanction policy — workforce members who violate policies",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "policy_violation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.308(a)(1)(ii)(C): Workforce violations of PHI security policies must be documented.",
+        "recommendation": "Document policy violations and sanction details in incident record."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1iiD",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(ii)(D)",
+        "control_name": "Information system activity review",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.308(a)(1)(ii)(D): PHI system activity logs must be regularly reviewed.",
+        "recommendation": "Add collect_logs for systematic review of PHI system activity."
+    },
+    {
+        "rule_id": "HIPAA-164.308a6i",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(6)(i)",
+        "control_name": "Security incident procedures — identify and respond",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "isolate_host",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(6)(i): PHI incidents must follow: collect → contain → notify → document sequence.",
+        "recommendation": "Follow the HIPAA security incident response sequence."
+    },
+    {
+        "rule_id": "HIPAA-164.308a6ii",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(6)(ii)",
+        "control_name": "Response and reporting — document security incidents",
+        "category": "incident_reporting",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(6)(ii): All PHI security incidents must be formally reported and documented.",
+        "recommendation": "Add document_incident and notify_security_team for all PHI security events."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7i",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(i)",
+        "control_name": "Contingency plan — create and maintain plan for emergencies",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "notify_incident_commander",
+            "restore_from_backup"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(7)(i): PHI contingency plan must be activated during system emergencies.",
+        "recommendation": "Follow PHI contingency plan sequence: backup → notify → restore."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7iiA",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(ii)(A)",
+        "control_name": "Data backup plan",
+        "category": "backup",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(7)(ii)(A): ePHI data backup procedures must be implemented and followed.",
+        "recommendation": "Add create_backup to ensure ePHI data backup compliance."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7iiB",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(ii)(B)",
+        "control_name": "Disaster recovery plan",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(7)(ii)(B): PHI disaster recovery plan must be activated.",
+        "recommendation": "Add restore_from_backup following the PHI disaster recovery plan."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7iiC",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(ii)(C)",
+        "control_name": "Emergency mode operation plan",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(7)(ii)(C): PHI systems must continue to protect ePHI in emergency mode.",
+        "recommendation": "Notify incident commander to activate emergency mode operation plan."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7iiD",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(ii)(D)",
+        "control_name": "Testing and revision procedures for contingency plan",
+        "category": "testing",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "HIPAA §164.308(a)(7)(ii)(D): Post-incident should trigger contingency plan test review.",
+        "recommendation": "Add create_compliance_report with contingency plan test review recommendation."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7iiE",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(ii)(E)",
+        "control_name": "Applications and data criticality analysis",
+        "category": "asset_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "HIPAA §164.308(a)(7)(ii)(E): Critical PHI applications must be prioritised in incident recovery.",
+        "recommendation": "Document which PHI applications/data are critical and require priority recovery."
+    },
+    {
+        "rule_id": "HIPAA-164.310a1",
+        "framework": "hipaa",
+        "control_id": "§164.310(a)(1)",
+        "control_name": "Facility access controls — limit physical access to ePHI",
+        "category": "physical_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "physical_breach",
+                "hardware_theft"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.310(a)(1): Physical access violations to PHI facilities must be reported.",
+        "recommendation": "Add notify_security_team for all physical PHI access violations."
+    },
+    {
+        "rule_id": "HIPAA-164.310d1",
+        "framework": "hipaa",
+        "control_id": "§164.310(d)(1)",
+        "control_name": "Device and media controls — track movements of hardware",
+        "category": "asset_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "hardware_theft",
+                "hardware_tampering"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.310(d)(1): Hardware movements in PHI environments must be tracked and logged.",
+        "recommendation": "Document hardware movements and update device inventory in incident record."
+    },
+    {
+        "rule_id": "HIPAA-164.316b2i",
+        "framework": "hipaa",
+        "control_id": "§164.316(b)(2)(i)",
+        "control_name": "Documentation — protect ePHI from unauthorized access",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_phi_access",
+            "create_undocumented_phi_access"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.316(b)(2)(i): Access to ePHI must be authorised and documented. No undocumented access grants.",
+        "recommendation": "Remove all unauthorized PHI access grants from the remediation plan."
+    }
+]

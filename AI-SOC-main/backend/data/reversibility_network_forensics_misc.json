@@ -1,0 +1,673 @@
+[
+    {
+        "action_type": "enable_netflow",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "disable_netflow",
+        "reversal_steps": [
+            "Disable NetFlow/IPFIX export on the network device interface"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "NetFlow is a passive traffic metadata export feature. Enabling it adds monitoring traffic without affecting network connectivity. Disabling stops metadata export.",
+        "source_reference": "Cisco NetFlow: https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-netflow/ | CIS Controls v8 8.2",
+        "risk_if_not_reversed": "N/A — enabling NetFlow is a monitoring hardening measure",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "enable_network_tap",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "disable_network_tap",
+        "reversal_steps": [
+            "Remove the port mirror/SPAN configuration from the switch or virtual switch"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Network taps (physical) and SPAN sessions (virtual) are additive monitoring configurations. Removing the SPAN session removes traffic duplication without affecting original traffic.",
+        "source_reference": "NIST 800-53 AU-12 Audit Record Generation | CIS Controls v8 8.2",
+        "risk_if_not_reversed": "N/A — enabling a network tap is a monitoring hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "deploy_network_sensor",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "remove_network_sensor",
+        "reversal_steps": [
+            "Remove the sensor appliance or virtual sensor from the network segment"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Network sensors (IDS/IPS probes, NDR sensors) are passive or inline monitoring devices. Removing a passive sensor has no impact on traffic. Removing an inline sensor requires reverting the network path change.",
+        "source_reference": "NIST 800-53 SI-4 System Monitoring | CIS Controls v8 8.9",
+        "risk_if_not_reversed": "N/A — deploying a sensor is a monitoring hardening measure",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "mirror_traffic",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "remove_traffic_mirror",
+        "reversal_steps": [
+            "Delete the SPAN session or traffic mirror session",
+            "AWS: aws ec2 delete-traffic-mirror-session"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Traffic mirroring creates duplicate copies of packets and sends them to a monitoring destination. The original traffic is unaffected. Removing the mirror session stops the duplication.",
+        "source_reference": "AWS VPC Traffic Mirroring — https://docs.aws.amazon.com/vpc/latest/mirroring/ | NIST 800-53 SI-4",
+        "risk_if_not_reversed": "N/A — enabling traffic mirroring is a forensic monitoring measure",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "poison_dns_cache",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "flush_dns_cache",
+        "reversal_steps": [
+            "Flush DNS cache: Windows: ipconfig /flushdns | Linux: systemd-resolve --flush-caches | AWS Route53: Wait for TTL expiry"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "DNS cache poisoning as a defensive measure (redirecting malicious domain to sinkhole) can be reversed by flushing the DNS cache. TTL-based expiry is automatic. Defensive DNS poisoning is a valid threat response per CISA guidance.",
+        "source_reference": "CISA: DNS Sinkholing — https://www.cisa.gov/news-events/cybersecurity-advisories | NIST 800-53 SC-20 Secure Name/Address Resolution",
+        "risk_if_not_reversed": "Redirected domain continues to go to sinkhole until DNS cache is flushed",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "unblock_ip",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "re_block_ip_if_needed",
+        "reversal_steps": [
+            "Unblocking an IP is itself the reversal of block_ip",
+            "If re-blocking needed: reinstate the firewall rule"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "IP unblocking removes a deny rule from the firewall or security group. It is a low-complexity configuration change that can be immediately reverted if re-blocking is needed.",
+        "source_reference": "NIST 800-53 SC-7 Boundary Protection",
+        "risk_if_not_reversed": "Previously blocked IP regains network access",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "update_firewall_rules",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "restore_previous_firewall_rules",
+        "reversal_steps": [
+            "Restore prior rule set from backup: iptables-restore < iptables-backup.txt",
+            "Or revert to prior Security Group version in cloud console"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Firewall rules are configuration entries that can be added/removed. iptables, AWS Security Groups, and Azure NSG all support rule management. Prior rule sets should be exported before modification.",
+        "source_reference": "NIST 800-53 SC-7 Boundary Protection | CIS Controls v8 12.1",
+        "risk_if_not_reversed": "Network access may be different from the intended baseline security posture",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "block_email_domain",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "remove_email_domain_block",
+        "reversal_steps": [
+            "Remove the domain from the blocked senders list in the email gateway (Proofpoint, Mimecast, M365 Defender)"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Email domain blocking is a mail gateway policy setting. Adding/removing domains from block lists is a standard administrative operation.",
+        "source_reference": "Microsoft 365 Defender: Block senders — https://docs.microsoft.com/en-us/microsoft-365/security/office-365-security/ | CIS Controls v8 9.2",
+        "risk_if_not_reversed": "Legitimate emails from the blocked domain are quarantined",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "block_data_exfiltration",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "remove_exfiltration_block",
+        "reversal_steps": [
+            "Remove DLP or firewall rule blocking the identified exfiltration path"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Data exfiltration blocking is done via DLP policies and firewall rules targeting specific destinations or data patterns. These are configurable policies that can be removed after the threat is remediated.",
+        "source_reference": "NIST 800-53 SI-12 / AC-4 Information Flow Enforcement | ISO 27001 A.8.12",
+        "risk_if_not_reversed": "Legitimate data transfers on the blocked path continue to be blocked",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "enable_ssl_inspection",
+        "category": "network",
+        "reversible": true,
+        "reversal_method": "disable_ssl_inspection",
+        "reversal_steps": [
+            "Disable SSL inspection policy on the proxy or next-gen firewall"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "SSL/TLS inspection is a proxy feature that terminates and re-establishes TLS sessions to inspect encrypted traffic. Disabling stops inspection. Requires security team approval as disabling removes HTTPS visibility.",
+        "source_reference": "NIST 800-53 SC-8 Transmission Confidentiality | HIPAA §164.312(e)(2)(i)",
+        "risk_if_not_reversed": "N/A — enabling SSL inspection is a monitoring hardening measure",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "analyze_malware_sample",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Malware analysis is read-only — no system state change"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Static and dynamic malware analysis is performed in an isolated sandbox. No production system state is modified. Analysis produces reports but does not alter the environment.",
+        "source_reference": "NIST SP 800-61r2 §3.2 Detection and Analysis — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf | CAPA / YARA analysis tools",
+        "risk_if_not_reversed": "N/A — analysis is read-only",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "collect_edr_forensics",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "EDR forensics collection is a read-only operation"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "EDR forensics (CrowdStrike RTR, SentinelOne Remote Script, Defender for Endpoint) collects process trees, network connections, and file metadata. Read-only by design — no system state modification.",
+        "source_reference": "NIST SP 800-86 Guide to Integrating Forensics — https://csrc.nist.gov/publications/detail/sp/800-86/final | CrowdStrike RTR",
+        "risk_if_not_reversed": "N/A — forensic collection is read-only",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "collect_network_pcap",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Stopping packet capture terminates the collection — no reversal needed"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Network packet capture (tcpdump, Wireshark, AWS VPC Traffic Mirroring) is passive. It copies packets without affecting the original traffic flow. PCAP collection is standard digital forensics per RFC 3227.",
+        "source_reference": "RFC 3227: Guidelines for Evidence Collection — https://tools.ietf.org/html/rfc3227 | NIST SP 800-86",
+        "risk_if_not_reversed": "N/A — packet capture is read-only",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "collect_process_dump",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "delete_dump_file",
+        "reversal_steps": [
+            "Delete the process dump file after analysis is complete",
+            "Dump file may contain sensitive data — handle per data retention policy"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Process memory dumps are created by reading process memory space (Task Manager, ProcDump, WinPmem). The process continues running unless explicitly killed. The dump file is an artifact that can be deleted after analysis.",
+        "source_reference": "NIST SP 800-86 §5.3 Memory Forensics | ProcDump — https://docs.microsoft.com/en-us/sysinternals/downloads/procdump",
+        "risk_if_not_reversed": "Dump file occupies disk space — delete after analysis",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "collect_volatile_data",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Volatile data collection is read-only — no system modification"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Volatile data collection (running processes, network connections, memory contents, login sessions) is read-only per the Order of Volatility (RFC 3227). Collection must happen before any system changes.",
+        "source_reference": "RFC 3227 Order of Volatility — https://tools.ietf.org/html/rfc3227 | NIST SP 800-86",
+        "risk_if_not_reversed": "N/A — read-only collection",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "correlate_events",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Event correlation is an analysis operation — no system state change"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Event correlation (SIEM correlation rules, AI-based correlation) processes log data to identify related events. It is a pure analysis operation with no effect on source systems or logs.",
+        "source_reference": "NIST SP 800-61r2 §3.2 | CIS Controls v8 8.11",
+        "risk_if_not_reversed": "N/A — read-only analysis",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "calculate_file_hash",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Hash calculation is read-only — no file modification"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "File hashing (MD5, SHA-256, SHA-512) reads file contents without modifying them. It is a standard integrity verification technique per NIST SP 800-101 and forensic best practice (RFC 3227).",
+        "source_reference": "RFC 3227 | NIST SP 800-101 Rev1 — Guidelines on Mobile Device Forensics | NIST FIPS 202 SHA standard",
+        "risk_if_not_reversed": "N/A — read-only operation",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "extract_iocs",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "IOC extraction is read-only analysis"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "IOC extraction (IPs, domains, hashes, URLs from malware/logs) is a pure analysis and data transformation operation. No system state is modified. STIX/TAXII are data format standards for IOC exchange.",
+        "source_reference": "NIST SP 800-61r2 §3.2 | OASIS STIX 2.1 — https://oasis-open.github.io/cti-documentation/stix/intro",
+        "risk_if_not_reversed": "N/A — read-only analysis",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "perform_timeline_analysis",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Timeline analysis is read-only — no system modification"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Timeline analysis reconstructs event sequences from logs and filesystem metadata (MAC timestamps). Tools like Plaso/log2timeline process data read-only.",
+        "source_reference": "NIST SP 800-86 §5.5 Timeline Analysis | Plaso — https://plaso.readthedocs.io/",
+        "risk_if_not_reversed": "N/A — read-only analysis",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "create_forensic_snapshot",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "delete_forensic_snapshot",
+        "reversal_steps": [
+            "Delete the forensic snapshot after analysis: aws ec2 delete-snapshot / gcloud compute snapshots delete"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Forensic snapshots (disk images, VM snapshots) preserve system state at a point in time. The original system is unaffected. Snapshots can be deleted after the investigation.",
+        "source_reference": "NIST SP 800-86 §5.2 Disk Forensics | AWS EC2: CreateSnapshot",
+        "risk_if_not_reversed": "Snapshot consumes storage (minor cost impact)",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "create_snapshot",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "delete_snapshot",
+        "reversal_steps": [
+            "Delete the snapshot when no longer needed: aws ec2 delete-snapshot, gcloud compute snapshots delete, az snapshot delete"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "System/volume snapshots are point-in-time copies. Creating a snapshot is always safe (non-destructive). The original resource is unaffected.",
+        "source_reference": "AWS EC2: CreateSnapshot — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html",
+        "risk_if_not_reversed": "Snapshot stored indefinitely (minor cost impact)",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "restore_snapshot",
+        "category": "forensics",
+        "reversible": true,
+        "reversal_method": "restore_from_different_snapshot",
+        "reversal_steps": [
+            "Restore from an alternative (newer) snapshot if the wrong point-in-time was restored"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Snapshot restoration replaces current system state with a prior state. Data created after the snapshot timestamp is lost. Reversal requires a newer snapshot or backup. Per NIST 800-61r2 §3.3.4, always verify snapshot integrity before restore.",
+        "source_reference": "NIST SP 800-61r2 §3.3.4 Recovery — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf",
+        "risk_if_not_reversed": "System remains at prior state — data changes after the snapshot are lost",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "create_ticket",
+        "category": "incident_management",
+        "reversible": true,
+        "reversal_method": "close_or_delete_ticket",
+        "reversal_steps": [
+            "Close or delete the ticket in the ITSM system if created in error"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Incident tickets in ITSM systems (ServiceNow, Jira, PagerDuty) can be closed or deleted by authorized administrators. Creating a ticket has no impact on system state.",
+        "source_reference": "CIS Controls v8 17.3 — Establish enterprise process for incident management",
+        "risk_if_not_reversed": "Unnecessary open ticket in ITSM system",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "recall_email",
+        "category": "email",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Email recall is the recall itself — no further reversal needed"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Email recall (Microsoft Outlook, Google Workspace) attempts to remove an already-sent email from the recipient's mailbox. Success depends on whether the recipient has already read the email. Only works in same-organization exchanges.",
+        "source_reference": "Microsoft: Recall a message — https://support.microsoft.com/en-us/office/recall-or-replace-a-sent-message | CIS Controls v8 9.2",
+        "risk_if_not_reversed": "N/A — recall is a remediation action itself",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "delete_email",
+        "category": "email",
+        "reversible": true,
+        "reversal_method": "restore_email_from_trash",
+        "reversal_steps": [
+            "Restore from Deleted Items / Trash (typically 30-day retention)",
+            "Exchange: Get-RecoverableItems / Restore-RecoverableItems",
+            "M365 Defender: eDiscovery Content Search to recover deleted items"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Email deletion in corporate mail systems (Exchange, M365, Google Workspace) has a recoverable deleted items retention period (typically 14–30 days). Items can be recovered via admin tools during retention window.",
+        "source_reference": "Microsoft 365: Recover deleted email — https://docs.microsoft.com/en-us/exchange/recipients/user-mailboxes/deleted-item-recovery | NIST SP 800-61r2 §3.3.4",
+        "risk_if_not_reversed": "Email permanently lost after retention window — relevant for evidence preservation",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "grant_access",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "revoke_access",
+        "reversal_steps": [
+            "Remove the access grant via IAM, RBAC, or file permission settings"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Access grants are additive permission entries. Revoking removes the entry. Per NIST AC-2, access should be granted on a least-privilege basis and promptly revoked when no longer needed.",
+        "source_reference": "NIST 800-53 AC-2 Account Management / AC-6 Least Privilege",
+        "risk_if_not_reversed": "Granted access remains active — verify it was legitimately required",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "remove_from_group",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "add_back_to_group",
+        "reversal_steps": [
+            "Add the user/device back to the group via IAM, AD, or application console"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Group membership is a simple add/remove operation in all IAM systems. Restoring membership re-grants all group-derived permissions.",
+        "source_reference": "NIST 800-53 AC-2 Account Management",
+        "risk_if_not_reversed": "User loses group-derived permissions",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "disable_database_login",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "enable_database_login",
+        "reversal_steps": [
+            "MySQL: ALTER USER '<user>'@'<host>' ACCOUNT UNLOCK;",
+            "MSSQL: ALTER LOGIN <login> ENABLE;",
+            "Postgres: ALTER ROLE <role> LOGIN;"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Database login accounts can be locked/unlocked without deleting them. The account and all its permissions survive the lock. Unlocking is a SQL statement.",
+        "source_reference": "MySQL: ALTER USER — https://dev.mysql.com/doc/refman/8.0/en/alter-user.html | MSSQL: ALTER LOGIN — https://docs.microsoft.com/en-us/sql/t-sql/statements/alter-login-transact-sql",
+        "risk_if_not_reversed": "Application database connections fail authentication",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "disable_ldap_bind",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "re_enable_ldap_bind",
+        "reversal_steps": [
+            "Re-enable LDAP bind account in Active Directory or LDAP directory",
+            "Or restore the bind password and update application configs"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "LDAP bind accounts are used by applications for directory queries. Disabling (or rotating the password) breaks application authentication. Re-enabling or updating the password restores LDAP connectivity.",
+        "source_reference": "Microsoft AD: LDAP bind accounts — https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/",
+        "risk_if_not_reversed": "Applications using this LDAP bind account cannot authenticate users",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "rotate_api_secret",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": "update_secret_consumers",
+        "reversal_steps": [
+            "Old secret cannot be restored after rotation",
+            "Update all consumers of the secret with the new value"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "API secret rotation generates a new cryptographic secret. The old secret is deactivated. New secret must be distributed to all consumers. Rotation is a standard security hygiene procedure per NIST SP 800-63B.",
+        "source_reference": "NIST SP 800-63B §5.2.7 — https://pages.nist.gov/800-63-3/sp800-63b.html | SOC 2 CC6.7 Credential Management",
+        "risk_if_not_reversed": "Services using the old secret receive authentication failures",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "escalate_to_manager",
+        "category": "incident_management",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Escalation is a communication action — no system state change"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Escalation notifies management about the incident. It is a communication action that creates no system state change. Per NIST SP 800-61r2, escalation is a standard part of incident coordination.",
+        "source_reference": "NIST SP 800-61r2 §3.2.7 Incident Notification — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf",
+        "risk_if_not_reversed": "N/A — communication action",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "notify_incident_commander",
+        "category": "incident_management",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Notification is a communication action — no system state change"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Notifying the incident commander is a paging/alerting action. It creates a notification event but does not modify any system state. Standard practice per NIST SP 800-61r2 and ICS (Incident Command System).",
+        "source_reference": "NIST SP 800-61r2 §3.2.7 | ICS (Incident Command System) — FEMA IS-100.C",
+        "risk_if_not_reversed": "N/A — communication action",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "rollback_system_update",
+        "category": "endpoint",
+        "reversible": true,
+        "reversal_method": "reapply_system_update",
+        "reversal_steps": [
+            "Re-apply the update/patch: Windows: Run Windows Update again | Linux: apt install <package>=<version> | WSUS: re-push update"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_steps_note": "Reapplying a security patch requires security team confirmation that the patch is safe",
+        "reversal_basis": "System update rollback reverts OS or application patches to prior versions. Windows Restore Points, WSUS rollback, and package downgrade (apt/yum) support this. Re-applying the update required if the rollback was done in error.",
+        "source_reference": "NIST 800-53 CM-3 Configuration Change Control | CIS Controls v8 7.3",
+        "risk_if_not_reversed": "System remains on older, potentially vulnerable version",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "restore_file_from_backup",
+        "category": "endpoint",
+        "reversible": true,
+        "reversal_method": "delete_restored_file",
+        "reversal_steps": [
+            "If file was restored in error, delete the restored copy or overwrite with correct version"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "File restoration from backup overwrites the current file with a backup version. The restoration itself can be reversed by deleting the restored file or overwriting it with the correct version.",
+        "source_reference": "NIST SP 800-61r2 §3.3.4 Recovery | CIS Controls v8 11.1",
+        "risk_if_not_reversed": "Restored file may be an older version that overwrote newer legitimate changes",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "restore_registry_backup",
+        "category": "endpoint",
+        "reversible": true,
+        "reversal_method": "restore_alternate_registry_backup",
+        "reversal_steps": [
+            "Restore a different registry backup if wrong version was applied",
+            "regedit: File → Import → [correct backup .reg file]"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Windows Registry restoration from backup overwrites current registry keys. Applying a different backup or manually reverting specific keys can undo an incorrect restoration. Multiple backup points should exist.",
+        "source_reference": "Microsoft: Back up and restore the registry — https://support.microsoft.com/en-us/topic/how-to-back-up-and-restore-the-registry-in-windows | NIST 800-53 CP-10",
+        "risk_if_not_reversed": "Incorrect registry state may cause application or OS instability",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "disable_autorun",
+        "category": "endpoint",
+        "reversible": true,
+        "reversal_method": "enable_autorun",
+        "reversal_steps": [
+            "Re-enable Autorun via GPO: Computer Configuration → Administrative Templates → Windows Components → AutoPlay Policies"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Windows Autorun is controlled by GPO and Registry settings. Disabling it prevents automatic execution of media content (a recommended security hardening per CIS). Re-enabling via GPO is straightforward.",
+        "source_reference": "CIS Benchmarks: Windows Autorun disable — Control 10.2 | Microsoft: Autorun Disable — https://support.microsoft.com/en-us/topic/how-to-disable-the-autorun-functionality-in-windows",
+        "risk_if_not_reversed": "N/A — disabling Autorun is a security hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "trigger_edr_contain",
+        "category": "endpoint",
+        "reversible": true,
+        "reversal_method": "lift_edr_containment",
+        "reversal_steps": [
+            "Release host from containment via EDR console (CrowdStrike: Lift Containment | SentinelOne: Network Control → Off | Defender: Remove isolation)"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "EDR host containment (network isolation) is a feature that can be enabled/disabled from the EDR management console. Lifting containment restores full network connectivity to the host.",
+        "source_reference": "CrowdStrike: Host Containment — https://www.crowdstrike.com/blog/endpoint-containment-with-the-crowdstrike-platform/ | NIST SP 800-61r2 §3.3.1",
+        "risk_if_not_reversed": "Host remains network-isolated — cannot communicate with other systems",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "trigger_edr_remediate",
+        "category": "endpoint",
+        "reversible": false,
+        "reversal_method": "restore_from_backup",
+        "reversal_steps": [
+            "EDR remediation (quarantine + kill process) is permanent for the specific threat artifact",
+            "If incorrect: restore affected files from backup or quarantine store"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "EDR remediation kills malicious processes and quarantines threat artifacts. Quarantined files can be restored from the EDR quarantine store if mis-classified. Killed processes must be re-started manually.",
+        "source_reference": "NIST SP 800-61r2 §3.3.3 Eradication | CrowdStrike: Quarantine — https://www.crowdstrike.com/",
+        "risk_if_not_reversed": "If false positive: legitimate process killed, legitimate file quarantined",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "clear_session_store",
+        "category": "application_api",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Cleared session data cannot be restored",
+            "All users must re-authenticate to create new sessions"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Server-side session stores (Redis, Memcached, database) hold ephemeral session tokens. Clearing forces all users to re-authenticate. Sessions are by definition short-lived and not backed up.",
+        "source_reference": "OWASP: Session Management Cheat Sheet — https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+        "risk_if_not_reversed": "All active user sessions terminated — self-resolving on re-authentication",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "rotate_all_service_credentials",
+        "category": "identity_access",
+        "reversible": false,
+        "reversal_method": "update_credential_consumers",
+        "reversal_steps": [
+            "Old credentials are permanently deactivated after rotation",
+            "Update all dependent services with new credential values from secrets manager"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Service credential rotation generates new secrets and deactivates old ones. Per NIST SP 800-63B and SOC 2 CC6.7, this is a planned security action. All consumers must be updated from the secrets manager.",
+        "source_reference": "NIST SP 800-63B §5.2.7 | AWS Secrets Manager: Rotation — https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotating-secrets.html",
+        "risk_if_not_reversed": "Services with old credentials receive authentication failures until updated",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "enable_session_recording",
+        "category": "identity_access",
+        "reversible": true,
+        "reversal_method": "disable_session_recording",
+        "reversal_steps": [
+            "Disable session recording policy in PAM/monitoring tool"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Session recording is a PAM feature configuration. Disabling stops new recordings while preserving existing ones. Requires security team approval.",
+        "source_reference": "CIS Controls v8 8.5 | NIST 800-53 AU-12",
+        "risk_if_not_reversed": "N/A — enabling session recording is a hardening measure",
+        "estimated_reversal_time_minutes": 5
+    }
+]

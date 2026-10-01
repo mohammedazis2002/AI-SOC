@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Sequence Generation Schema",
+    "description": "Validation schema for sliding window arrays fed into the LSTM attack stage predictor.",
+    "type": "object",
+    "required": [
+        "host_id",
+        "sequence_features",
+        "sequence_length",
+        "target_stage"
+    ],
+    "properties": {
+        "host_id": {
+            "type": "string",
+            "description": "Entities like agent.ip grouping the sequence"
+        },
+        "sequence_features": {
+            "type": "array",
+            "description": "The normalized multidimensional array",
+            "items": {
+                "type": [
+                    "number",
+                    "array",
+                    "object"
+                ]
+            }
+        },
+        "sequence_length": {
+            "type": "integer"
+        },
+        "target_stage": {
+            "type": "integer",
+            "description": "Mapped numeric multi-class prediction target"
+        }
+    }
+}

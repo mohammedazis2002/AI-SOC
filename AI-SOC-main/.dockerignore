@@ -1,0 +1,64 @@
+# Python artifacts
+
+venv/
+**/venv/
+.venv
+**/.venv
+__pycache__
+**/__pycache__
+*.pyc
+*.pyo
+
+# Large ML model files (recursive — catches models in any subdirectory)
+models/
+**/models/
+*.pkl
+**/*.pkl
+*.gguf
+**/*.gguf
+*.bin
+**/*.bin
+*.pt
+**/*.pt
+*.ckpt
+**/*.ckpt
+*.safetensors
+**/*.safetensors
+*.h5
+**/*.h5
+
+# Large data files - but NOT backend/data/ (contains runtime JSON config files)
+Attack_Data_Syn/
+backups/
+*.gz
+*.zip
+*.tar
+
+# Documentation & non-runtime content
+docs/
+documents/
+Playbooks/
+infra/
+
+# Frontend (served separately)
+frontend/
+node_modules/
+**/.next/
+**/dist/
+**/build/
+
+# Dev & testing
+tests/
+.git/
+.github/
+*.md
+*.csv
+scripts/
+logs/
+**/logs/
+
+# IDE
+.vscode/
+.idea/
+*.env.local
+*.env.*.local

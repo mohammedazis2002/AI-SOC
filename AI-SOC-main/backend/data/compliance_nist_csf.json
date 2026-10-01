@@ -1,0 +1,152 @@
+[
+    {
+        "rule_id": "NISTCSF-RS.CO-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.CO-2",
+        "control_name": "Incidents are reported consistent with established criteria",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.CO-2: Incidents must be reported and documented consistent with organizational criteria.",
+        "recommendation": "Add document_incident and notify_security_team to the plan."
+    },
+    {
+        "rule_id": "NISTCSF-RS.AN-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.AN-1",
+        "control_name": "Notifications from detection systems are investigated",
+        "category": "investigation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.AN-1: Detection notifications must be investigated with supporting log data.",
+        "recommendation": "Add collect_logs to support the investigation."
+    },
+    {
+        "rule_id": "NISTCSF-RC.RP-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RC.RP-1",
+        "control_name": "Recovery plan executed during or after cybersecurity incident",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "ransomware",
+                "data_destruction",
+                "system_corruption"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RC.RP-1: Recovery plan must include restoration procedures for impacted systems.",
+        "recommendation": "Add restore_from_backup or restore_system_snapshot to the plan."
+    },
+    {
+        "rule_id": "NISTCSF-PR.DS-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "PR.DS-1",
+        "control_name": "Data-at-rest is protected",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "downgrade_encryption",
+            "remove_encryption"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "data_classification": [
+                "confidential",
+                "secret"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 PR.DS-1: Data-at-rest protection (encryption) must not be disabled.",
+        "recommendation": "Encryption must remain active. Do not disable data-at-rest protections."
+    },
+    {
+        "rule_id": "NISTCSF-ID.SC-4",
+        "framework": "nist_csf_2_0",
+        "control_id": "ID.SC-4",
+        "control_name": "Suppliers and third-party partners assessed for security",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "supply_chain",
+                "third_party_breach",
+                "compromised_dependency"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 ID.SC-4: Supply chain incidents require security team assessment of vendor posture.",
+        "recommendation": "Add notify_security_team and quarantine_malicious_package for supply chain incidents."
+    },
+    {
+        "rule_id": "NISTCSF-RS.MI-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.MI-2",
+        "control_name": "Incidents are mitigated",
+        "category": "mitigation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "isolate_host",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "malware",
+                "ransomware",
+                "network_intrusion"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.MI-2: High-severity incidents must include containment/mitigation actions.",
+        "recommendation": "Add isolate_host or block_ip to actively mitigate the incident."
+    }
+]

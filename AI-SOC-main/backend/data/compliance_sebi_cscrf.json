@@ -1,0 +1,172 @@
+[
+    {
+        "rule_id": "SEBI-4.1.3",
+        "framework": "sebi_cscrf",
+        "control_id": "4.1.3",
+        "control_name": "Report cyber incidents to SEBI within 6 hours",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_data_protection_authority",
+        "sla_hours": 6,
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.1.3: Critical cyber incidents must be reported to SEBI within 6 hours.",
+        "recommendation": "Add notify_data_protection_authority with SEBI as target and 6-hour SLA."
+    },
+    {
+        "rule_id": "SEBI-4.1.4",
+        "framework": "sebi_cscrf",
+        "control_id": "4.1.4",
+        "control_name": "Maintain comprehensive audit logs for 5 years",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "modify_logs",
+            "disable_logging",
+            "truncate_logs"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.1.4: Audit logs must be maintained for 5 years. Deletion is prohibited.",
+        "recommendation": "Archive logs to SEBI-compliant storage. Do not delete."
+    },
+    {
+        "rule_id": "SEBI-3.2.1",
+        "framework": "sebi_cscrf",
+        "control_id": "3.2.1",
+        "control_name": "Cyber resilience posture must be maintained",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 3.2.1: Security incidents affecting market resilience must be reported internally.",
+        "recommendation": "Add notify_security_team and escalate to CISO."
+    },
+    {
+        "rule_id": "SEBI-4.2.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.2.1",
+        "control_name": "RTO/RPO for critical market infrastructure",
+        "category": "availability",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "isolate_host",
+            "shutdown_system",
+            "disconnect_network"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "asset_tags": [
+                "market_infrastructure",
+                "trading_system"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "approval_message": "SEBI CSCRF 4.2.1: Actions affecting market infrastructure must be approved to preserve RTO/RPO requirements.",
+        "recommendation": "Get CISO approval before isolating trading or market systems."
+    },
+    {
+        "rule_id": "SEBI-5.1.1",
+        "framework": "sebi_cscrf",
+        "control_id": "5.1.1",
+        "control_name": "Penetration testing and vulnerability assessment",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "patch_system",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 5.1.1: Exploited vulnerabilities in SEBI-regulated infrastructure must be patched immediately.",
+        "recommendation": "Add patch_system and notify SEBI of remediation actions taken."
+    },
+    {
+        "rule_id": "SEBI-4.3.3",
+        "framework": "sebi_cscrf",
+        "control_id": "4.3.3",
+        "control_name": "Incident containment and recovery procedures",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "isolate_host",
+            "notify_security_team",
+            "notify_data_protection_authority"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.3.3: Critical incident response must follow containment sequence and include SEBI notification.",
+        "recommendation": "Follow the sequence: collect_logs → isolate_host → notify_security_team → notify SEBI."
+    },
+    {
+        "rule_id": "SEBI-6.1.1",
+        "framework": "sebi_cscrf",
+        "control_id": "6.1.1",
+        "control_name": "Third-party vendor risks managed",
+        "category": "third_party",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_type": [
+                "supply_chain",
+                "third_party_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 6.1.1: Third-party incidents affecting SEBI-regulated operations require immediate security team notification.",
+        "recommendation": "Notify security team and escalate to SEBI within timeline."
+    }
+]

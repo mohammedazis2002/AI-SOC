@@ -1,0 +1,300 @@
+[
+    {
+        "action_type": "remove_container",
+        "category": "container_k8s",
+        "reversible": false,
+        "reversal_method": "redeploy_container",
+        "reversal_steps": [
+            "Container runtime restart: docker run <image>:<tag>",
+            "For K8s: kubectl rollout restart deployment/<name>"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Containers are ephemeral by design (OCI spec). Removing a container destroys its writable layer state. Image is preserved. Kubernetes Deployments automatically recreate pods via ReplicaSet.",
+        "source_reference": "Docker: docker rm — https://docs.docker.com/engine/reference/commandline/rm/ | K8s: Deployments — https://kubernetes.io/docs/concepts/workloads/controllers/deployment/",
+        "risk_if_not_reversed": "Container workload offline until pod is recreated",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "pause_container",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "unpause_container",
+        "reversal_steps": [
+            "docker unpause <container-id>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Docker pause uses Linux cgroups freezer subsystem to suspend all processes in the container. Unpausing is immediate and atomic.",
+        "source_reference": "Docker: docker unpause — https://docs.docker.com/engine/reference/commandline/unpause/ | Linux cgroups freezer: https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v1/freezer-subsystem.html",
+        "risk_if_not_reversed": "Container processes are frozen — inbound requests queue up or timeout",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "isolate_container_network",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "restore_container_network_policy",
+        "reversal_steps": [
+            "Delete the deny-all NetworkPolicy: kubectl delete networkpolicy <policy-name> -n <ns>",
+            "Or restore original policy: kubectl apply -f original-networkpolicy.yaml"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Kubernetes NetworkPolicy is declarative. A deny-all policy added for isolation can be deleted. Original policies must be backed up before isolation or stored in version control.",
+        "source_reference": "K8s NetworkPolicy — https://kubernetes.io/docs/concepts/services-networking/network-policies/",
+        "risk_if_not_reversed": "Pod is network-isolated, cannot communicate with other services",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "limit_container_resources",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "restore_container_resource_limits",
+        "reversal_steps": [
+            "kubectl set resources deployment/<name> --limits=cpu=<original>,memory=<original>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Kubernetes resource limits (cpu/memory) in pod specs can be updated dynamically. The original resource quotas should be retrieved from GitOps repo or prior kubectl get deployment -o yaml.",
+        "source_reference": "K8s: Resource Management for Pods — https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/",
+        "risk_if_not_reversed": "Container throttled — performance degraded or OOMKilled",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "delete_container_image",
+        "category": "container_k8s",
+        "reversible": false,
+        "reversal_method": "rebuild_container_image",
+        "reversal_steps": [
+            "Must rebuild from Dockerfile using: docker build -t <image>:<tag>",
+            "Or pull from upstream registry if available"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Deleting a container image from a registry is permanent. Images stored only locally or in a registry without replication are lost. Rebuilding requires the Dockerfile and access to base layers.",
+        "source_reference": "Docker: docker rmi — https://docs.docker.com/engine/reference/commandline/rmi/",
+        "risk_if_not_reversed": "New deployments cannot pull the image",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "block_container_registry",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "restore_container_registry_access",
+        "reversal_steps": [
+            "Remove NetworkPolicy or firewall rule blocking registry access",
+            "Or restore ImagePullSecret: kubectl create secret docker-registry"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Registry blocking is typically done via NetworkPolicy or firewall rules. These are reversible configuration changes. ImagePullSecrets can be recreated.",
+        "source_reference": "K8s: Pull images from private registry — https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
+        "risk_if_not_reversed": "No new images can be pulled — existing pods unaffected, deployments/updates blocked",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "scan_container_image",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Image scanning is read-only and has no system state change"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Container image scanning (Trivy, Grype, Snyk, ECR scanning) is a passive read operation. It creates scan reports but does not modify the image or system state.",
+        "source_reference": "Trivy: Container image scanning — https://aquasecurity.github.io/trivy/ | AWS ECR: Image scanning — https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html",
+        "risk_if_not_reversed": "N/A — no system state change",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "delete_service",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "redeploy_kubernetes_service",
+        "reversal_steps": [
+            "kubectl apply -f service.yaml (from GitOps repo or backup)"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": false,
+        "reversal_basis": "Kubernetes Services are declarative resources defined in YAML. Deleting a Service removes the DNS name and load balancer endpoint. Re-applying the manifest from version control fully restores it.",
+        "source_reference": "K8s: Services — https://kubernetes.io/docs/concepts/services-networking/service/",
+        "risk_if_not_reversed": "No network routing to pods — workload inaccessible",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_secret",
+        "category": "container_k8s",
+        "reversible": false,
+        "reversal_method": "recreate_kubernetes_secret",
+        "reversal_steps": [
+            "Retrieve original secret value from secret manager (Vault, AWS Secrets Manager)",
+            "kubectl create secret generic <name> --from-literal=<key>=<value>"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Kubernetes Secrets are permanently deleted. The secret data must be retrieved from an external secrets manager or backup. Pods consuming the deleted secret will crash.",
+        "source_reference": "K8s: Secrets — https://kubernetes.io/docs/concepts/configuration/secret/",
+        "risk_if_not_reversed": "All pods mounting this secret will fail to start",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "delete_configmap",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "restore_kubernetes_configmap",
+        "reversal_steps": [
+            "kubectl apply -f configmap.yaml (from GitOps repository)",
+            "Or recreate: kubectl create configmap <name> --from-file=<config>"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": false,
+        "reversal_basis": "ConfigMaps are deletable Kubernetes resources. Pods using deleted ConfigMaps crash. Re-applying from version control recreates the ConfigMap with all original data.",
+        "source_reference": "K8s: ConfigMaps — https://kubernetes.io/docs/concepts/configuration/configmap/",
+        "risk_if_not_reversed": "Pods relying on the ConfigMap will fail to start",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_ingress",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "restore_kubernetes_ingress",
+        "reversal_steps": [
+            "kubectl apply -f ingress.yaml (from GitOps repository)"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": false,
+        "reversal_basis": "Kubernetes Ingress resources are declarative. Deleting removes external HTTP routing. Re-applying from YAML manifests in version control fully restores it.",
+        "source_reference": "K8s: Ingress — https://kubernetes.io/docs/concepts/services-networking/ingress/",
+        "risk_if_not_reversed": "External HTTP/HTTPS traffic cannot reach the service",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "revoke_rbac_binding",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "restore_kubernetes_rbac_binding",
+        "reversal_steps": [
+            "kubectl apply -f rolebinding.yaml (from backup)",
+            "Or: kubectl create rolebinding <name> --role=<role> --serviceaccount=<ns>:<sa>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Kubernetes RBAC RoleBindings and ClusterRoleBindings are declarative resources. Deleting a binding removes the permission. Re-creating with the same spec fully restores access.",
+        "source_reference": "K8s: RBAC Authorization — https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+        "risk_if_not_reversed": "ServiceAccount/user loses Kubernetes API permissions",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "delete_persistent_volume_claim",
+        "category": "container_k8s",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "PVC deletion triggers PV reclamation based on reclaimPolicy",
+            "If reclaimPolicy=Retain, PV data is preserved and can be re-bound to new PVC"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "PVC deletion behavior depends on StorageClass reclaimPolicy. 'Delete' = data gone. 'Retain' = PV data preserved but needs manual re-bind. Always check before deleting.",
+        "source_reference": "K8s: Storage reclaim policy — https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reclaiming",
+        "risk_if_not_reversed": "Stateful workload loses persistent storage permanently (if Delete policy)",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "disable_admission_webhook",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "re_enable_admission_webhook",
+        "reversal_steps": [
+            "kubectl apply -f mutatingwebhookconfiguration.yaml",
+            "Or: kubectl apply -f validatingwebhookconfiguration.yaml"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Admission webhooks are K8s resources that can be deleted and re-created. Disabling removes policy enforcement on resource creation. Re-applying the webhook manifest re-enables it.",
+        "source_reference": "K8s: Admission Controllers — https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/",
+        "risk_if_not_reversed": "Security policies (OPA Gatekeeper, Falco) not enforced on new resources",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "enable_container_runtime_protection",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "disable_container_runtime_protection",
+        "reversal_steps": [
+            "Disable Falco DaemonSet or equivalent: kubectl delete -f falco-daemonset.yaml"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Runtime protection (Falco, Aqua) is deployed as a DaemonSet that can be removed. Disabling must go through security approval as it removes active threat detection.",
+        "source_reference": "Falco: Runtime security — https://falco.org/docs/",
+        "risk_if_not_reversed": "N/A — enabling protection is a hardening measure, not a risk",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "scan_running_containers",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Scanning running containers is a read-only operation"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Runtime container scanning (Falco, Trivy, Sysdig) passively reads container namespaces and process tables. No system state is modified.",
+        "source_reference": "Trivy: Runtime scanning — https://aquasecurity.github.io/trivy/",
+        "risk_if_not_reversed": "N/A — read-only operation",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "enable_seccomp_profile",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "remove_seccomp_profile",
+        "reversal_steps": [
+            "Update pod spec to remove seccompProfile field and redeploy: kubectl rollout restart deployment/<name>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Seccomp profiles restrict syscalls available to a container. Removing the profile requires updating the pod spec and rolling restart. Approved by security team only.",
+        "source_reference": "K8s: Seccomp — https://kubernetes.io/docs/tutorials/security/seccomp/",
+        "risk_if_not_reversed": "N/A — seccomp is a hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "enable_apparmor_profile",
+        "category": "container_k8s",
+        "reversible": true,
+        "reversal_method": "remove_apparmor_profile",
+        "reversal_steps": [
+            "Remove AppArmor annotation from pod spec and restart",
+            "Or set to unconfined: container.apparmor.security.beta.kubernetes.io/<container>=unconfined"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "AppArmor profiles are enforced via pod annotations. The annotation can be changed to 'unconfined' to disable enforcement. Requires security team approval.",
+        "source_reference": "K8s: AppArmor — https://kubernetes.io/docs/tutorials/security/apparmor/",
+        "risk_if_not_reversed": "N/A — enabling AppArmor is a hardening measure",
+        "estimated_reversal_time_minutes": 5
+    }
+]

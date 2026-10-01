@@ -1,0 +1,182 @@
+[
+    {
+        "action_type": "revoke_iam_role",
+        "category": "cloud_iam",
+        "reversible": true,
+        "requires_backup": true,
+        "rollback_method": "restore_iam_role",
+        "rollback_command": "aws iam attach-role-policy --role-name {role} --policy-arn {policy_arn}",
+        "rollback_automated": true,
+        "time_window_hours": 168,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [
+            "iam_policy_backup_exists"
+        ],
+        "data_loss_risk": "configuration",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "delete_access_key",
+        "category": "cloud_iam",
+        "reversible": false,
+        "requires_backup": false,
+        "rollback_method": "create_new_access_key",
+        "rollback_command": "aws iam create-access-key --user-name {user}",
+        "rollback_automated": true,
+        "time_window_hours": 0,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "old_key_invalidated",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "revoke_sts_token",
+        "category": "cloud_iam",
+        "reversible": false,
+        "requires_backup": false,
+        "rollback_method": "user_must_re-authenticate",
+        "rollback_command": "User re-authenticates to get new STS token",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "active_session_terminated",
+        "estimated_downtime_minutes": 2
+    },
+    {
+        "action_type": "stop_ec2_instance",
+        "category": "cloud_compute",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "start_instance",
+        "rollback_command": "aws ec2 start-instances --instance-ids {instance_id}",
+        "rollback_automated": true,
+        "time_window_hours": 720,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "terminate_ec2_instance",
+        "category": "cloud_compute",
+        "reversible": false,
+        "requires_backup": true,
+        "rollback_method": "recreate_from_ami",
+        "rollback_command": "aws ec2 run-instances --image-id {ami_id}",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "critical",
+        "prerequisites_for_rollback": [
+            "ami_exists",
+            "ebs_snapshot_exists"
+        ],
+        "data_loss_risk": "complete_instance_state",
+        "estimated_downtime_minutes": 30
+    },
+    {
+        "action_type": "snapshot_ec2_volume",
+        "category": "cloud_compute",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "delete_snapshot",
+        "rollback_command": "aws ec2 delete-snapshot --snapshot-id {snapshot_id}",
+        "rollback_automated": true,
+        "time_window_hours": 8760,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "block_s3_public_access",
+        "category": "cloud_storage",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "restore_s3_public_access",
+        "rollback_command": "aws s3api put-public-access-block --bucket {bucket} --public-access-block-configuration BlockPublicAcls=false,...",
+        "rollback_automated": true,
+        "time_window_hours": 168,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "delete_s3_bucket",
+        "category": "cloud_storage",
+        "reversible": false,
+        "requires_backup": true,
+        "rollback_method": "recreate_bucket_from_backup",
+        "rollback_command": "Recreate bucket and restore from versioning/backup",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "critical",
+        "prerequisites_for_rollback": [
+            "s3_versioning_enabled",
+            "s3_backup_exists"
+        ],
+        "data_loss_risk": "bucket_and_all_objects",
+        "estimated_downtime_minutes": 60
+    },
+    {
+        "action_type": "revoke_gcp_service_account",
+        "category": "cloud_iam",
+        "reversible": true,
+        "requires_backup": true,
+        "rollback_method": "restore_gcp_service_account_bindings",
+        "rollback_command": "gcloud projects add-iam-policy-binding {project} --member=serviceAccount:{sa} --role={role}",
+        "rollback_automated": true,
+        "time_window_hours": 168,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [
+            "iam_policy_backup_exists"
+        ],
+        "data_loss_risk": "configuration",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "revoke_azure_ad_token",
+        "category": "cloud_iam",
+        "reversible": false,
+        "requires_backup": false,
+        "rollback_method": "user_re-authenticates",
+        "rollback_command": "User signs in to Azure AD again",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "active_session_terminated",
+        "estimated_downtime_minutes": 2
+    },
+    {
+        "action_type": "enable_s3_object_lock",
+        "category": "cloud_storage",
+        "reversible": false,
+        "requires_backup": false,
+        "rollback_method": "contact_aws_support",
+        "rollback_command": "Object Lock cannot be disabled once enabled on a bucket",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "high",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "modify_security_group",
+        "category": "cloud_network",
+        "reversible": true,
+        "requires_backup": true,
+        "rollback_method": "restore_security_group_rules",
+        "rollback_command": "Restore original ingress/egress rules from backup",
+        "rollback_automated": true,
+        "time_window_hours": 168,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [
+            "sg_backup_exists"
+        ],
+        "data_loss_risk": "configuration",
+        "estimated_downtime_minutes": 0
+    }
+]

@@ -1,0 +1,170 @@
+[
+    {
+        "action_type": "quarantine_file",
+        "category": "file_system",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "restore_from_quarantine",
+        "rollback_command": "mv {quarantine_path} {original_path}",
+        "rollback_automated": true,
+        "time_window_hours": 720,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [
+            "verified_clean"
+        ],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "delete_file",
+        "category": "file_system",
+        "reversible": true,
+        "requires_backup": true,
+        "rollback_method": "restore_from_backup",
+        "rollback_command": "cp {backup_path} {original_path}",
+        "rollback_automated": true,
+        "time_window_hours": 168,
+        "risk_category": "high",
+        "prerequisites_for_rollback": [
+            "backup_exists"
+        ],
+        "data_loss_risk": "file_content",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "shred_file",
+        "category": "file_system",
+        "reversible": false,
+        "requires_backup": false,
+        "rollback_method": "none",
+        "rollback_command": null,
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "critical",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "permanent_file_destruction",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "revert_file_changes",
+        "category": "file_system",
+        "reversible": false,
+        "requires_backup": true,
+        "rollback_method": "restore_from_version_control",
+        "rollback_command": "git checkout {commit} -- {file} or restore from backup",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "medium",
+        "prerequisites_for_rollback": [
+            "version_control_or_backup_exists"
+        ],
+        "data_loss_risk": "changes_after_restore_point",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "lock_file",
+        "category": "file_system",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "unlock_file",
+        "rollback_command": "Remove file lock attribute",
+        "rollback_automated": true,
+        "time_window_hours": 24,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "modify_config",
+        "category": "file_system",
+        "reversible": true,
+        "requires_backup": true,
+        "rollback_method": "restore_config_backup",
+        "rollback_command": "cp {backup_config} {config_path}",
+        "rollback_automated": true,
+        "time_window_hours": 168,
+        "risk_category": "high",
+        "prerequisites_for_rollback": [
+            "config_backup_exists"
+        ],
+        "data_loss_risk": "configuration_changes",
+        "estimated_downtime_minutes": 5
+    },
+    {
+        "action_type": "create_backup",
+        "category": "file_system",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "delete_backup",
+        "rollback_command": "rm -rf {backup_path}",
+        "rollback_automated": true,
+        "time_window_hours": 8760,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "restore_from_backup",
+        "category": "file_system",
+        "reversible": false,
+        "requires_backup": true,
+        "rollback_method": "restore_from_more_recent_backup",
+        "rollback_command": "Restore from a newer backup snapshot",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "high",
+        "prerequisites_for_rollback": [
+            "another_backup_exists"
+        ],
+        "data_loss_risk": "changes_since_backup",
+        "estimated_downtime_minutes": 60
+    },
+    {
+        "action_type": "preserve_evidence",
+        "category": "file_system",
+        "reversible": true,
+        "requires_backup": false,
+        "rollback_method": "delete_evidence_copy",
+        "rollback_command": "rm -rf {evidence_path}",
+        "rollback_automated": true,
+        "time_window_hours": 8760,
+        "risk_category": "low",
+        "prerequisites_for_rollback": [],
+        "data_loss_risk": "none",
+        "estimated_downtime_minutes": 0
+    },
+    {
+        "action_type": "wipe_disk",
+        "category": "file_system",
+        "reversible": false,
+        "requires_backup": true,
+        "rollback_method": "restore_from_full_disk_backup",
+        "rollback_command": "Restore from disk image backup",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "critical",
+        "prerequisites_for_rollback": [
+            "disk_image_backup_exists"
+        ],
+        "data_loss_risk": "complete_disk_contents",
+        "estimated_downtime_minutes": 480
+    },
+    {
+        "action_type": "factory_reset",
+        "category": "file_system",
+        "reversible": false,
+        "requires_backup": true,
+        "rollback_method": "restore_from_endpoint_backup",
+        "rollback_command": "Restore from full endpoint backup via MDM or backup agent",
+        "rollback_automated": false,
+        "time_window_hours": 0,
+        "risk_category": "critical",
+        "prerequisites_for_rollback": [
+            "full_endpoint_backup_exists"
+        ],
+        "data_loss_risk": "all_user_data_and_configuration",
+        "estimated_downtime_minutes": 240
+    }
+]

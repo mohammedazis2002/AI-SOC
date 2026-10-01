@@ -1,0 +1,340 @@
+[
+    {
+        "rule_id": "SEBI-4.1.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.1.1",
+        "control_name": "Incident detection — detect security incidents promptly",
+        "category": "detection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 4.1.1: Security incidents must be detected promptly via monitoring.",
+        "recommendation": "Add collect_logs to support incident detection."
+    },
+    {
+        "rule_id": "SEBI-4.1.2",
+        "framework": "sebi_cscrf",
+        "control_id": "4.1.2",
+        "control_name": "Incident classification — classify severity",
+        "category": "incident_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 4.1.2: Incidents must be classified by severity level.",
+        "recommendation": "Add document_incident with SEBI severity classification."
+    },
+    {
+        "rule_id": "SEBI-4.1.3",
+        "framework": "sebi_cscrf",
+        "control_id": "4.1.3",
+        "control_name": "Incident reporting — notify SEBI within 6 hours",
+        "category": "incident_reporting",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_data_protection_authority",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.1.3: SEBI must be notified of cyber incidents within 6 hours.",
+        "recommendation": "Add notify_data_protection_authority targeting SEBI within the 6-hour reporting window."
+    },
+    {
+        "rule_id": "SEBI-4.1.4",
+        "framework": "sebi_cscrf",
+        "control_id": "4.1.4",
+        "control_name": "Board notification for critical incidents",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.1.4: The Board of Directors must be notified of critical cyber incidents.",
+        "recommendation": "Add notify_incident_commander escalating to C-suite/Board for critical incidents."
+    },
+    {
+        "rule_id": "SEBI-4.2.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.2.1",
+        "control_name": "Evidence preservation during investigation",
+        "category": "forensics",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_active": true
+        },
+        "blocked_actions": [
+            "delete_logs",
+            "delete_data",
+            "wipe_disk"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.2.1: Evidence must be preserved during active SEBI-regulated incident investigation.",
+        "recommendation": "Do not delete logs or data during active investigation."
+    },
+    {
+        "rule_id": "SEBI-4.2.2",
+        "framework": "sebi_cscrf",
+        "control_id": "4.2.2",
+        "control_name": "Forensic investigation of cyber incidents",
+        "category": "forensics",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "preserve_evidence",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 4.2.2: Forensic investigation must be conducted for significant SEBI-regulated incidents.",
+        "recommendation": "Add preserve_evidence and collect_logs for forensic investigation."
+    },
+    {
+        "rule_id": "SEBI-4.2.3",
+        "framework": "sebi_cscrf",
+        "control_id": "4.2.3",
+        "control_name": "Root cause analysis",
+        "category": "analysis",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 4.2.3: Root cause analysis must be performed and documented.",
+        "recommendation": "Add document_incident with root cause analysis section."
+    },
+    {
+        "rule_id": "SEBI-4.3.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.3.1",
+        "control_name": "Containment — contain the security incident",
+        "category": "containment",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "isolate_host",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.3.1: Cyber incidents must be contained immediately.",
+        "recommendation": "Add isolate_host to contain the incident."
+    },
+    {
+        "rule_id": "SEBI-4.3.2",
+        "framework": "sebi_cscrf",
+        "control_id": "4.3.2",
+        "control_name": "Eradication — remove threat from environment",
+        "category": "eradication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "trigger_edr_scan",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_type": [
+                "malware",
+                "ransomware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 4.3.2: Threats must be fully eradicated from the environment.",
+        "recommendation": "Add trigger_edr_scan and trigger_edr_remediate for threat eradication."
+    },
+    {
+        "rule_id": "SEBI-4.3.3",
+        "framework": "sebi_cscrf",
+        "control_id": "4.3.3",
+        "control_name": "Recovery — restore normal operations",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.3.3: Normal market operations must be restored per recovery procedures.",
+        "recommendation": "Add restore_from_backup to recover SEBI-regulated systems."
+    },
+    {
+        "rule_id": "SEBI-4.4.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.4.1",
+        "control_name": "Post-incident review within 7 days",
+        "category": "continuous_improvement",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SEBI CSCRF 4.4.1: Post-incident review must be completed within 7 days for significant incidents.",
+        "recommendation": "Add create_compliance_report with 7-day post-incident review findings."
+    },
+    {
+        "rule_id": "SEBI-4.4.2",
+        "framework": "sebi_cscrf",
+        "control_id": "4.4.2",
+        "control_name": "Document lessons learned from incident",
+        "category": "continuous_improvement",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SEBI CSCRF 4.4.2: Lessons learned must be documented for all significant incidents.",
+        "recommendation": "Add document_incident with lessons-learned section."
+    },
+    {
+        "rule_id": "SEBI-4.4.3",
+        "framework": "sebi_cscrf",
+        "control_id": "4.4.3",
+        "control_name": "Implement control improvements based on lessons",
+        "category": "continuous_improvement",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "SEBI CSCRF 4.4.3: Control improvements from lessons learned must be planned and tracked.",
+        "recommendation": "Create compliance report with control improvement recommendations."
+    },
+    {
+        "rule_id": "SEBI-4.5.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.5.1",
+        "control_name": "Incident communication plan for stakeholders",
+        "category": "communication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SEBI CSCRF 4.5.1: Stakeholders must be notified per the communication plan.",
+        "recommendation": "Add notify_affected_users for stakeholder communication."
+    },
+    {
+        "rule_id": "SEBI-4.5.2",
+        "framework": "sebi_cscrf",
+        "control_id": "4.5.2",
+        "control_name": "Submit regulatory reports to SEBI",
+        "category": "regulatory_compliance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.5.2: Regulatory incident reports must be submitted to SEBI.",
+        "recommendation": "Add create_compliance_report formatted per SEBI regulatory reporting requirements."
+    }
+]

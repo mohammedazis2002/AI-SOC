@@ -1,0 +1,4 @@
+app/security/certs/*.crt
+app/security/certs/*.key
+app/security/certs/*.pem
+app/security/certs/*.csr

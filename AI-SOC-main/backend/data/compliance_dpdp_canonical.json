@@ -1,0 +1,266 @@
+[
+    {
+        "rule_id": "DPDP-Sec8.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 8(1)",
+        "control_name": "Data fiduciary must protect personal data with reasonable security safeguards",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_encryption_at_rest",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "DPDP Act Sec 8(1): Personal data must be protected with reasonable security safeguards.",
+        "recommendation": "Verify and enable encryption_at_rest for all personal data stores."
+    },
+    {
+        "rule_id": "DPDP-Sec8.2",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 8(2)",
+        "control_name": "Process personal data for specified purpose only",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "process_data_beyond_consent",
+            "repurpose_personal_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "DPDP Act Sec 8(2): Personal data must only be processed for the consented purpose.",
+        "recommendation": "Do not repurpose or process personal data beyond the stated consent."
+    },
+    {
+        "rule_id": "DPDP-Sec8.3",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 8(3)",
+        "control_name": "Delete personal data when no longer needed",
+        "category": "data_retention",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "secure_data_deletion",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "DPDP Act Sec 8(3): Personal data must be deleted when the purpose of processing is fulfilled.",
+        "recommendation": "Add secure_data_deletion for personal data past its retention period."
+    },
+    {
+        "rule_id": "DPDP-Sec8.4",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 8(4)",
+        "control_name": "Notify Data Protection Board and affected individuals in case of breach",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "notify_data_protection_authority",
+            "notify_affected_users",
+            "create_breach_notification"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "DPDP Act Sec 8(4): Data breaches must be notified to the DPB and affected users.",
+        "recommendation": "Follow notification sequence: DPB → affected users → breach documentation."
+    },
+    {
+        "rule_id": "DPDP-Sec8.5",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 8(5)",
+        "control_name": "Retain records of data processing operations",
+        "category": "records_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "DPDP Act Sec 8(5): Records of personal data processing operations must be maintained.",
+        "recommendation": "Document all processing activities related to the incident."
+    },
+    {
+        "rule_id": "DPDP-Sec8.6",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 8(6)",
+        "control_name": "Appoint a Data Protection Officer if required",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "DPDP Act Sec 8(6): The designated DPO must be involved in critical personal data breach response.",
+        "recommendation": "Add notify_incident_commander targeting the designated Data Protection Officer."
+    },
+    {
+        "rule_id": "DPDP-Sec10",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 10",
+        "control_name": "Data Processor obligations and Data Fiduciary accountability",
+        "category": "accountability",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "share_data_with_processor",
+            "transfer_data_to_third_party"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "DPDP Act Sec 10: Sharing personal data with processors requires a valid processing contract.",
+        "recommendation": "Obtain DPO approval and verify data processing agreements before sharing personal data."
+    },
+    {
+        "rule_id": "DPDP-Sec11",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 11",
+        "control_name": "Respect data principal's right to withdraw consent",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "delete_data",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "DPDP Act Sec 11: Withdrawal of consent requires cessation of processing and data deletion.",
+        "recommendation": "Support consent withdrawal and add delete_data workflow."
+    },
+    {
+        "rule_id": "DPDP-Sec12",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 12",
+        "control_name": "Data principal rights — access, correction, grievance",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "DPDP Act Sec 12: Data principal rights to access and grievance must be maintained during incident response.",
+        "recommendation": "Ensure data principal rights are not impeded during incident response."
+    },
+    {
+        "rule_id": "DPDP-Sec6",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 6",
+        "control_name": "Obtain valid consent from data principal",
+        "category": "consent",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "process_data_without_consent",
+            "collect_pii_without_consent"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "DPDP Act Sec 6: Personal data cannot be processed without valid consent.",
+        "recommendation": "Remove any unauthorized personal data processing actions."
+    },
+    {
+        "rule_id": "DPDP-Sec7",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 7",
+        "control_name": "Notice to data principal — inform about processing",
+        "category": "transparency",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "indian_resident_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "DPDP Act Sec 7: Data principals must be informed about the personal data breach.",
+        "recommendation": "Add notify_affected_users to inform data principals about the breach."
+    },
+    {
+        "rule_id": "DPDP-Sec9",
+        "framework": "dpdp_act_2023",
+        "control_id": "Sec 9",
+        "control_name": "Processing of children's data — additional safeguards",
+        "category": "special_categories",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "process_childrens_data_without_consent",
+            "expose_childrens_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "childrens_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "DPDP Act Sec 9: Children's personal data requires verifiable parental consent and additional protections.",
+        "recommendation": "Children's data requires enhanced safeguards and cannot be processed without parental consent."
+    }
+]

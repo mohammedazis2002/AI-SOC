@@ -1,0 +1,486 @@
+[
+    {
+        "rule_id": "PCI-10.2.1",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.1",
+        "control_name": "Log all individual user access to cardholder data",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "must_execute_before": [
+            "isolate_host",
+            "shutdown_service",
+            "disconnect_network",
+            "kill_process"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "cardholder_data",
+                "pci_cde"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.2.1: Must collect logs before isolating systems with cardholder data.",
+        "recommendation": "Add collect_logs before any isolation or shutdown actions."
+    },
+    {
+        "rule_id": "PCI-10.3.2",
+        "framework": "pci_dss_v4",
+        "control_id": "10.3.2",
+        "control_name": "Protect audit logs from destruction and unauthorized modification",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "modify_logs",
+            "truncate_logs",
+            "disable_logging",
+            "stop_audit",
+            "clear_audit_logs",
+            "wipe_event_log"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 10.3.2: Audit logs in PCI cardholder data environment must never be deleted or modified.",
+        "recommendation": "Remove log deletion actions. Archive logs to secure storage instead."
+    },
+    {
+        "rule_id": "PCI-10.3.3",
+        "framework": "pci_dss_v4",
+        "control_id": "10.3.3",
+        "control_name": "Audit log files backed up promptly to centralized log server",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "data_breach",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.3.3: Audit logs must be exported to centralized log server before any changes.",
+        "recommendation": "Add collect_logs targeting the centralized SIEM."
+    },
+    {
+        "rule_id": "PCI-8.2.8",
+        "framework": "pci_dss_v4",
+        "control_id": "8.2.8",
+        "control_name": "MFA required for all access into CDE",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_mfa",
+            "remove_mfa_requirement",
+            "bypass_mfa"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 8.2.8: Cannot disable MFA for access to cardholder data environment.",
+        "recommendation": "Remove disable_mfa from plan. MFA is mandatory in CDE."
+    },
+    {
+        "rule_id": "PCI-8.3.4",
+        "framework": "pci_dss_v4",
+        "control_id": "8.3.4",
+        "control_name": "Account lockout after 10 invalid attempts",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "lock_account",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "brute_force",
+                "credential_stuffing"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 8.3.4: Brute force against CDE requires account lockout.",
+        "recommendation": "Add lock_account for the targeted account."
+    },
+    {
+        "rule_id": "PCI-7.2.1",
+        "framework": "pci_dss_v4",
+        "control_id": "7.2.1",
+        "control_name": "Access control systems restrict access to least privilege",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_admin_access",
+            "add_to_privileged_group",
+            "grant_unauthorized_access"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 7.2.1: Cannot grant elevated access to CDE systems. Violates least-privilege principle.",
+        "recommendation": "Remove access grant actions from remediation plan for CDE assets."
+    },
+    {
+        "rule_id": "PCI-6.3.3",
+        "framework": "pci_dss_v4",
+        "control_id": "6.3.3",
+        "control_name": "All system components protected from known vulnerabilities",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "patch_system",
+            "update_software",
+            "rollback_system_update"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "PCI-DSS 6.3.3: Software updates and patches in PCI environment require change control approval.",
+        "recommendation": "Set requires_approval=True for all patch/update actions."
+    },
+    {
+        "rule_id": "PCI-12.10.5",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.5",
+        "control_name": "Documented approval for changes to CDE",
+        "category": "change_control",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_config",
+            "update_firewall_rules",
+            "modify_firewall_rules",
+            "change_permissions",
+            "patch_system"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "PCI-DSS 12.10.5: Changes to CDE require documented approval before execution.",
+        "recommendation": "Set requires_approval=True and attach change ticket reference."
+    },
+    {
+        "rule_id": "PCI-11.3.1",
+        "framework": "pci_dss_v4",
+        "control_id": "11.3.1",
+        "control_name": "External penetration testing performed at least annually",
+        "category": "testing",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "block_all_external_ports"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "PCI-DSS 11.3.1: Blocking all external ports may interfere with scheduled penetration testing.",
+        "recommendation": "Coordinate with security team before full port block on CDE."
+    },
+    {
+        "rule_id": "PCI-3.4.1",
+        "framework": "pci_dss_v4",
+        "control_id": "3.4.1",
+        "control_name": "SAD must be protected with strong cryptography",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption",
+            "downgrade_encryption",
+            "export_unencrypted_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "cardholder_data",
+                "pci_cde"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 3.4.1: Sensitive authentication data must remain encrypted. Cannot disable encryption.",
+        "recommendation": "Encryption must remain active. Contact PCI compliance officer for alternatives."
+    },
+    {
+        "rule_id": "PCI-9.4.5",
+        "framework": "pci_dss_v4",
+        "control_id": "9.4.5",
+        "control_name": "Inventory of electronic media with cardholder data",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "cardholder_data"
+            ],
+            "incident_type": [
+                "data_breach",
+                "physical_theft",
+                "lost_media"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 9.4.5: Media with cardholder data incidents must be documented for inventory purposes.",
+        "recommendation": "Add document_incident with media inventory details."
+    },
+    {
+        "rule_id": "PCI-12.10.1",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.1",
+        "control_name": "Incident response plan exists and is ready to be activated",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 12.10.1: Security team must be notified to activate the incident response plan.",
+        "recommendation": "Add notify_security_team action."
+    },
+    {
+        "rule_id": "PCI-8.6.1",
+        "framework": "pci_dss_v4",
+        "control_id": "8.6.1",
+        "control_name": "System and application accounts managed via policy",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "revoke_api_token",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "api_key_exposure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 8.6.1: Compromised system/application account tokens must be revoked immediately.",
+        "recommendation": "Add revoke_api_token and rotate_service_account_key to the plan."
+    },
+    {
+        "rule_id": "PCI-5.3.3",
+        "framework": "pci_dss_v4",
+        "control_id": "5.3.3",
+        "control_name": "Anti-malware mechanisms cannot be disabled by users",
+        "category": "endpoint_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_av",
+            "disable_edr",
+            "uninstall_agent"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 5.3.3: Anti-malware cannot be disabled on PCI-scoped systems.",
+        "recommendation": "Remove anti-malware disabling actions from the plan."
+    },
+    {
+        "rule_id": "PCI-12.10.4",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.4",
+        "control_name": "Personnel trained to respond to security breaches",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 12.10.4: Critical CDE breaches require incident commander notification.",
+        "recommendation": "Add notify_incident_commander action."
+    },
+    {
+        "rule_id": "PCI-10.7.1",
+        "framework": "pci_dss_v4",
+        "control_id": "10.7.1",
+        "control_name": "Failures of critical security controls detected and reported",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_ids",
+            "disable_ips",
+            "disable_waf"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 10.7.1: IDS/IPS and WAF controls cannot be disabled in PCI environment.",
+        "recommendation": "Do not disable security monitoring. Tune rules instead."
+    },
+    {
+        "rule_id": "PCI-6.4.1",
+        "framework": "pci_dss_v4",
+        "control_id": "6.4.1",
+        "control_name": "Web-facing apps protected against known attacks via WAF",
+        "category": "application_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_waf_rule",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde",
+                "web_application"
+            ],
+            "incident_type": [
+                "web_attack",
+                "sql_injection",
+                "xss"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 6.4.1: Web application attacks against CDE must include WAF rule deployment.",
+        "recommendation": "Add enable_waf_rule targeting the attack vector."
+    },
+    {
+        "rule_id": "PCI-8.2.4",
+        "framework": "pci_dss_v4",
+        "control_id": "8.2.4",
+        "control_name": "User IDs managed by policy — no shared credentials",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "create_shared_account",
+            "share_credentials",
+            "enable_generic_account"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 8.2.4: Shared accounts are prohibited in cardholder data environments.",
+        "recommendation": "Use individual named accounts only."
+    },
+    {
+        "rule_id": "PCI-8.3.6",
+        "framework": "pci_dss_v4",
+        "control_id": "8.3.6",
+        "control_name": "Passwords/passphrases for user accounts meet complexity requirements",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "reset_password",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 8.3.6: Compromised credentials in CDE require password reset.",
+        "recommendation": "Add reset_password or force_password_reset_all_users to the plan."
+    },
+    {
+        "rule_id": "PCI-1.3.2",
+        "framework": "pci_dss_v4",
+        "control_id": "1.3.2",
+        "control_name": "Inbound traffic to CDE is restricted",
+        "category": "network_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "modify_firewall_rules",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "network_intrusion",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 1.3.2: Network intrusions to CDE require firewall rule updates to restrict inbound traffic.",
+        "recommendation": "Add modify_firewall_rules to block the attack source."
+    }
+]

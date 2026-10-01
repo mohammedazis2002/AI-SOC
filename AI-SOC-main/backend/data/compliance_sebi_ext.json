@@ -1,0 +1,199 @@
+[
+    {
+        "rule_id": "SEBI-3.1.2",
+        "framework": "sebi_cscrf",
+        "control_id": "3.1.2",
+        "control_name": "Designated CISO for regulated entities",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 3.1.2: Critical incidents must be escalated to the designated CISO.",
+        "recommendation": "Add notify_incident_commander to escalate to SEBI-designated CISO."
+    },
+    {
+        "rule_id": "SEBI-4.4.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.4.1",
+        "control_name": "Data localisation requirements for market data",
+        "category": "data_sovereignty",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "backup_to_cloud_non_india",
+            "replicate_data_to_non_india"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "asset_tags": [
+                "market_data",
+                "trading_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.4.1: Market data cannot be replicated or backed up outside India.",
+        "recommendation": "Use India region cloud storage only for SEBI-regulated market data."
+    },
+    {
+        "rule_id": "SEBI-4.5.1",
+        "framework": "sebi_cscrf",
+        "control_id": "4.5.1",
+        "control_name": "Patch management for regulated systems within SLA",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "notify_security_team",
+            "patch_system",
+            "document_incident",
+            "notify_data_protection_authority"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 4.5.1: Exploited vulnerabilities in SEBI-regulated systems require notify → patch → document → report-to-SEBI sequence.",
+        "recommendation": "Follow the full SEBI incident response and reporting sequence."
+    },
+    {
+        "rule_id": "SEBI-5.2.1",
+        "framework": "sebi_cscrf",
+        "control_id": "5.2.1",
+        "control_name": "Minimum encryption standards for regulated data",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "downgrade_encryption",
+            "enable_weak_cipher"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 5.2.1: Encryption on SEBI-regulated systems cannot be disabled or downgraded.",
+        "recommendation": "Maintain required encryption standards. Do not modify cipher suites."
+    },
+    {
+        "rule_id": "SEBI-7.1.1",
+        "framework": "sebi_cscrf",
+        "control_id": "7.1.1",
+        "control_name": "BCP/DRP testing for critical market infrastructure",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "notify_incident_commander",
+            "restore_from_backup"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ],
+            "asset_tags": [
+                "market_infrastructure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 7.1.1: Market infrastructure failures must follow DRP sequence: backup → notify → restore.",
+        "recommendation": "Follow BCP/DRP sequence for market infrastructure failures."
+    },
+    {
+        "rule_id": "SEBI-8.1.1",
+        "framework": "sebi_cscrf",
+        "control_id": "8.1.1",
+        "control_name": "SOC with 24x7 monitoring for regulated entities",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "disable_edr",
+            "stop_audit",
+            "disable_ids"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 8.1.1: SOC monitoring for regulated entities must remain continuous (24x7). No monitoring tools can be disabled.",
+        "recommendation": "Do not disable monitoring. Tune alerts rather than disabling tools."
+    },
+    {
+        "rule_id": "SEBI-9.1.1",
+        "framework": "sebi_cscrf",
+        "control_id": "9.1.1",
+        "control_name": "Access control for privileged accounts in regulated systems",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "create_shared_account",
+            "grant_unauthorized_access"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SEBI CSCRF 9.1.1: Shared or unauthorised accounts are prohibited in SEBI-regulated systems.",
+        "recommendation": "Use individual named privileged accounts only."
+    },
+    {
+        "rule_id": "SEBI-11.2.1",
+        "framework": "sebi_cscrf",
+        "control_id": "11.2.1",
+        "control_name": "Cyber audit and assessment for SEBI-regulated entities",
+        "category": "audit",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "sebi_cscrf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SEBI CSCRF 11.2.1: High/critical incidents trigger cyber audit documentation requirements.",
+        "recommendation": "Add create_compliance_report for SEBI cyber audit record."
+    }
+]

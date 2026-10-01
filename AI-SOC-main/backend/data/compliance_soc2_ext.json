@@ -1,0 +1,257 @@
+[
+    {
+        "rule_id": "SOC2-CC2.3",
+        "framework": "soc2_type2",
+        "control_id": "CC2.3",
+        "control_name": "Communicate externally about significant incidents",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC2.3: Significant incidents must be communicated to affected external parties.",
+        "recommendation": "Add notify_affected_users for high/critical incidents."
+    },
+    {
+        "rule_id": "SOC2-CC4.1",
+        "framework": "soc2_type2",
+        "control_id": "CC4.1",
+        "control_name": "Perform ongoing risk assessments and monitoring",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC4.1: Critical incidents require ongoing risk monitoring updates and SOC 2 risk report.",
+        "recommendation": "Add create_compliance_report to update risk assessment."
+    },
+    {
+        "rule_id": "SOC2-CC5.1",
+        "framework": "soc2_type2",
+        "control_id": "CC5.1",
+        "control_name": "Select and develop control activities to mitigate risks",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "isolate_host",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC5.1: Risk mitigation must include containment, notification, and documentation actions.",
+        "recommendation": "Follow security control activity sequence."
+    },
+    {
+        "rule_id": "SOC2-CC6.3",
+        "framework": "soc2_type2",
+        "control_id": "CC6.3",
+        "control_name": "Remove access privileges when no longer needed",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "revoke_permissions",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "offboarding_missed"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC6.3: Unused or ex-employee access must be revoked immediately.",
+        "recommendation": "Add revoke_permissions and disable_account for departed employee access."
+    },
+    {
+        "rule_id": "SOC2-CC6.7",
+        "framework": "soc2_type2",
+        "control_id": "CC6.7",
+        "control_name": "Restrict transmission of sensitive data to authorised parties only",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "share_data_with_third_party",
+            "send_data_to_unvetted_service",
+            "export_data_unencrypted"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "data_classification": [
+                "confidential",
+                "secret"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "SOC 2 CC6.7: Restricted data transmission to unauthorised parties during incidents is prohibited.",
+        "recommendation": "Obtain approval before sharing confidential data externally."
+    },
+    {
+        "rule_id": "SOC2-CC7.1",
+        "framework": "soc2_type2",
+        "control_id": "CC7.1",
+        "control_name": "Use detection and monitoring procedures to identify anomalies",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC7.1: Security anomalies must be supported with log evidence before remediation.",
+        "recommendation": "Add collect_logs to build evidence base for the detection."
+    },
+    {
+        "rule_id": "SOC2-CC7.5",
+        "framework": "soc2_type2",
+        "control_id": "CC7.5",
+        "control_name": "Implement incident recovery and post-incident review",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC7.5: Post-incident reviews and recovery documentation are required.",
+        "recommendation": "Add document_incident to capture post-incident review findings."
+    },
+    {
+        "rule_id": "SOC2-PI1.1",
+        "framework": "soc2_type2",
+        "control_id": "PI1.1",
+        "control_name": "Processing Integrity — data processed completely and accurately",
+        "category": "data_integrity",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "data_corruption",
+                "ransomware"
+            ]
+        },
+        "blocked_actions": [
+            "resume_data_processing_without_integrity_check"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "ransomware",
+                "data_corruption"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "SOC 2 PI1.1: Data processing cannot resume after corruption/ransomware without integrity verification.",
+        "recommendation": "Run data integrity checks before resuming processing activities."
+    },
+    {
+        "rule_id": "SOC2-C1.1",
+        "framework": "soc2_type2",
+        "control_id": "C1.1",
+        "control_name": "Confidentiality — data identified and maintained per policy",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "export_unencrypted_data",
+            "disable_encryption",
+            "share_confidential_without_nda"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "data_classification": [
+                "confidential"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SOC 2 C1.1: Confidential information cannot be exported unencrypted or shared without proper agreements.",
+        "recommendation": "Remove actions that expose confidential data without encryption or agreements."
+    },
+    {
+        "rule_id": "SOC2-A1.3",
+        "framework": "soc2_type2",
+        "control_id": "A1.3",
+        "control_name": "Availability — recovery testing performed",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "restore_from_backup",
+            "verify_service_availability"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "ransomware",
+                "ddos",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 A1.3: Availability incidents must follow backup → restore → verify availability sequence.",
+        "recommendation": "Follow disaster recovery sequence and verify customer availability commitments."
+    }
+]

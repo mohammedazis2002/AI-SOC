@@ -1,0 +1,735 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: soar-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGODB_DATABASE:-soar_db}
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+      - ./scripts/setup/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - soar-network
+    healthcheck:
+      test: mongosh --username ${MONGODB_USERNAME} --password ${MONGODB_PASSWORD} --eval 'db.runCommand("ping").ok' localhost:27017/test --quiet || mongosh --eval 'db.runCommand("ping").ok' localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis for Message Queue and Cache
+  redis:
+    image: redis:7-alpine
+    container_name: soar-redis
+    restart: unless-stopped
+    command: redis-server --requirepass ${REDIS_PASSWORD:-QsBk0PnF+mUIZv9lZjUoYQ==} --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - soar-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: soar-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - soar-network
+    environment:
+      - QDRANT_TELEMETRY_DISABLED=true
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "timeout 10s bash -c ':> /dev/tcp/127.0.0.1/6333' || exit 1",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # HashiCorp Vault — PKI & Secrets Management
+  vault:
+    image: hashicorp/vault:latest
+    container_name: soar-vault
+    restart: unless-stopped
+    ports:
+      - "8200:8200"
+    environment:
+      # Dev mode with a fixed root token so vault_setup.sh always works
+      VAULT_DEV_ROOT_TOKEN_ID: ${VAULT_DEV_ROOT_TOKEN:-soar-dev-root-token}
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+      VAULT_ADDR: "http://127.0.0.1:8200"
+    cap_add:
+      - IPC_LOCK # required to prevent Vault from being swapped to disk
+    volumes:
+      - vault_data:/vault/data
+      # Mount setup script so it can be called after startup
+      - ./backend/services/mtls/app/utils/vault_setup.sh:/vault/setup/vault_setup.sh:ro
+    networks:
+      - soar-network
+    healthcheck:
+      test: ["CMD", "vault", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    command: server -dev
+
+  # One-shot: apply PKI ACL policies so AppRole tokens can issue Wazuh certs (pki_int/issue/wazuh-manager).
+  vault-init:
+    image: hashicorp/vault:latest
+    container_name: soar-vault-init
+    restart: "no"
+    depends_on:
+      vault:
+        condition: service_healthy
+    environment:
+      VAULT_ADDR: http://vault:8200
+      VAULT_TOKEN: ${VAULT_DEV_ROOT_TOKEN:-soar-dev-root-token}
+    volumes:
+      - ./infra/docker/vault/policies:/policies:ro
+      - ./infra/docker/vault/ensure-policies.sh:/ensure-policies.sh:ro
+    networks:
+      - soar-network
+    entrypoint: ["/bin/sh"]
+    command: ["/ensure-policies.sh"]
+
+  # One-shot first-time PKI (enables pki / pki_int, roles, policies, AppRoles). Safe to re-run only
+  # if pki_int is absent; run-pki-setup.sh skips when pki_int already exists.
+  vault-pki-bootstrap:
+    image: alpine:3.19
+    container_name: soar-vault-pki-bootstrap
+    restart: "no"
+    profiles: ["setup"]
+    depends_on:
+      vault:
+        condition: service_healthy
+    environment:
+      VAULT_ADDR: http://vault:8200
+      VAULT_TOKEN: ${VAULT_DEV_ROOT_TOKEN:-soar-dev-root-token}
+    volumes:
+      - .:/work
+      - ./infra/docker/vault/run-pki-setup.sh:/run-pki-setup.sh:ro
+    working_dir: /work
+    networks:
+      - soar-network
+    entrypoint: ["/bin/sh"]
+    command: ["/run-pki-setup.sh"]
+
+  nginx:
+    image: nginx:alpine
+    container_name: soar-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      # mTLS ingestion ingress (nginx terminates mTLS)
+      - "8443:8443"
+    volumes:
+      - ./infra/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./infra/docker/nginx/conf.d:/etc/nginx/conf.d:ro
+      - ./infra/docker/nginx/ssl:/etc/nginx/ssl:ro
+      # Client CA used to verify SIEM client certs
+      - ./backend/services/mtls/app/security/certs/ca.crt:/etc/nginx/mtls/ca.crt:ro
+    depends_on:
+      - agentic-api
+    networks:
+      - soar-network
+
+  # FastAPI Backend
+  # api:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   container_name: soar-api
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - MONGODB_HOST=mongodb
+  #     - REDIS_HOST=redis
+  #     - QDRANT_HOST=qdrant
+  #     - LLM_API_URL=http://ollama:11434/v1/chat/completions
+  #     # Correlation Engine
+  #     - ANOMALY_DETECTION_URL=http://anomaly-detection:5001
+  #     - ATTACK_STAGE_URL=http://attack-stage-predictor:5002
+  #     - CORRELATION_TEMPORAL_HOURS=24
+  #     - CORRELATION_ENTITY_DAYS=7
+  #     - CORRELATION_PATTERN_DAYS=30
+  #     - QUICK_CORRELATION_WINDOW_MINUTES=5
+  #     - CORRELATION_CONFIDENCE_THRESHOLD=0.7
+  #     - CORRELATION_QUICK_CACHE_MAX_LEN=50
+  #     - CORRELATION_BACKGROUND_WORKERS=5
+  #     - INCIDENT_RETENTION_DAYS=365
+  #   ports:
+  #     - "8000:8000"
+  #   volumes:
+  #     - ./backend:/app
+  #     - ./models:/models
+  #   depends_on:
+  #     mongodb:
+  #       condition: service_healthy
+  #     redis:
+  #       condition: service_healthy
+  #     ollama:
+  #       condition: service_started # Don't block on ollama health — it takes 40s+
+  #   networks:
+  #     - soar-network
+  #   healthcheck:
+  #     test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 5
+  #     start_period: 20s
+  #   command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
+
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: soar-mtls
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - MONGODB_HOST=mongodb
+      - QDRANT_HOST=qdrant
+      # In Docker, reach Vault via service DNS (overrides vault_addr in .env if it says localhost).
+      - vault_addr=http://vault:8200
+      # Explicit pass-through so AppRole creds always match root .env (compose interpolates from .env).
+      - vault_role_id=${vault_role_id:-}
+      - vault_secret_id=${vault_secret_id:-}
+      - PYTHONPATH=/app
+    # TEMP (testing): publish mTLS service directly for Swagger/docs.
+    # Host 8444 → container 8443 (nginx already uses host 8443 for SIEM ingress).
+    # WARNING: bypasses nginx; remove when done testing.
+    ports:
+      - "8444:8443"
+    volumes:
+      - .:/app
+      - ./backend/services/mtls/app/security/certs:/certs:ro
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      vault:
+        condition: service_healthy
+      vault-init:
+        condition: service_completed_successfully
+    networks:
+      - soar-network
+    command: >
+      uvicorn backend.services.mtls.app:app
+      --host 0.0.0.0
+      --port 8443
+      --ssl-keyfile /certs/server.key
+      --ssl-certfile /certs/server.crt
+      --ssl-ca-certs /certs/ca.crt
+      --ssl-cert-reqs 0
+
+  # Alert Stream Worker (Async Ingestion from Redis)
+  alert-processor-worker:
+    image: soar-backend:latest
+    container_name: soar-alert-worker
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - MONGODB_HOST=mongodb
+      - REDIS_HOST=redis
+      - QDRANT_HOST=qdrant
+      - PYTHONPATH=/app
+      # ChatOllama expects base URL (no /v1/... suffix)
+      - LLM_API_URL=http://ollama:11434
+      - APP_ENV=${APP_ENV:-development}
+      - LOG_LEVEL=INFO
+    volumes:
+      - .:/app
+      - ./models:/models
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      agentic-api:
+        condition: service_healthy
+    networks:
+      - soar-network
+    healthcheck:
+      disable: true
+    working_dir: /app
+    command: python -m backend.services.ingestion.stream_worker
+
+  # Model 5: Asset Risk Evaluation Service
+
+  asset-risk-evaluation:
+    image: soar-backend:latest
+    container_name: soar-asset-risk
+    restart: unless-stopped
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGO_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - MTLS_SERVICE_URL=${MTLS_SERVICE_URL:-}
+      - CORRELATION_ENGINE_URL=${CORRELATION_ENGINE_URL:-}
+      - ASSET_RISK_PORT=5005
+      - VULN_CACHE_DAYS=7
+      - INCIDENT_HISTORY_DAYS=90
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    ports:
+      - "5005:5005"
+    volumes:
+      - .:/app
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - soar-network
+    working_dir: /app
+    command: python -m backend.services.ml.asset_risk_evaluation.start_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Model 1: Anomaly Detection Service
+  anomaly-detection:
+    image: soar-backend:latest
+    container_name: soar-anomaly-detector
+    restart: unless-stopped
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGO_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    ports:
+      - "5001:5001"
+    volumes:
+      - .:/app
+      - ./models:/models
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - soar-network
+    working_dir: /app
+    command: python -m backend.services.ml.anomaly_detection.anomaly_detector_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # Model 2: Attack Stage Predictor Service
+  attack-stage-predictor:
+    image: soar-backend:latest
+    container_name: soar-attack-stage
+    restart: unless-stopped
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGO_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    ports:
+      - "5002:5002"
+    volumes:
+      - .:/app
+      - ./models:/models
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - soar-network
+    working_dir: /app
+    command: python -m backend.services.ml.attack_stage.attack_stage_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # Model 3: Attack Forecasting Service
+  attack-forecasting:
+    image: soar-backend:latest
+    container_name: soar-attack-forecaster
+    restart: unless-stopped
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGO_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    ports:
+      - "5003:5003"
+    volumes:
+      - .:/app
+      - ./models:/models
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - soar-network
+    working_dir: /app
+    command: python -m backend.services.ml.attack_forecasting.attack_forecaster_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+
+  # Model 4: False Positive Detection Service
+  false-positive-detector:
+    image: soar-backend:latest
+    container_name: soar-fp-detector
+    restart: unless-stopped
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGO_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    ports:
+      - "5004:5004"
+    volumes:
+      - .:/app
+      - ./models:/models
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - soar-network
+    working_dir: /app
+    command: python -m backend.services.ml.false_positive_detection.start_fp_detector
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  # Model 6: Root Cause Analysis Service
+  root-cause-analyzer:
+    image: soar-backend:latest
+    container_name: soar-root-cause
+    restart: unless-stopped
+    environment:
+      - APP_ENV=${APP_ENV:-development}
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGO_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - LLM_SERVICE_URL=http://ollama:11434
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    ports:
+      - "5006:5006"
+    volumes:
+      - .:/app
+      - ./models:/models
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+    networks:
+      - soar-network
+    working_dir: /app
+    command: python -m backend.services.ml.root_cause_analysis.root_cause_service
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5006/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # Prometheus for Metrics
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: soar-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=30d"
+    networks:
+      - soar-network
+
+  # Grafana for Visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: soar-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_INSTALL_PLUGINS=
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./infra/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infra/monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    depends_on:
+      - prometheus
+    networks:
+      - soar-network
+
+  # Loki for Logs (Optional but recommended)
+  loki:
+    image: grafana/loki:latest
+    container_name: soar-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./infra/monitoring/loki/loki-config.yml:/etc/loki/local-config.yaml:ro
+      - loki_data:/loki
+    networks:
+      - soar-network
+
+  # LLM Server - serves Meta-Llama-3.1-8B from local GGUF file
+  # The model file is already present at ./models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+  ollama:
+    image: ollama/ollama:latest
+    container_name: soar-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./models:/models:ro
+    networks:
+      - soar-network
+    restart: unless-stopped
+    environment:
+      - OLLAMA_MODELS=/root/.ollama
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list || exit 0"]
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 60s
+    # llm-server:
+    #   build:
+    #     context: ./infra/docker/llm-server
+    #     dockerfile: Dockerfile
+    #   container_name: soar-llm
+    #   restart: unless-stopped
+    #   ports:
+    #     - "8090:8090"
+    #   volumes:
+    #     - ./models:/models:ro
+    #   networks:
+    #     - soar-network
+    #   command: >
+    #     python -m llama_cpp.server
+    #     --host 0.0.0.0
+    #     --port 8090
+    #     --model /models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+    #     --n_ctx 2048
+    #     --n_threads 8
+    #   #image: ollama/ollama:latest #ghcr.io/abetlen/llama-cpp-python:latest
+    #   #container_name: soar-llm
+    #   #restart: unless-stopped
+    #   #ports:
+    #     #- "8090:8090"  # Changed
+    #   #volumes:
+    #     #- ollama_data:/root/.ollama #./models:/models:ro
+    #   #environment:
+    #     #- MODEL=/models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+    #     #- HOST=0.0.0.0
+    #     #- PORT=8081
+    #     #- N_CTX=4096
+    #     #- N_THREADS=8
+    #   #command: >
+    #     #python -m llama_cpp.server
+    #     #--model /models/Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf
+    #     #--host 0.0.0.0
+    #     #--port 8081
+    #     #--n_ctx 4096
+    #     #--n_threads 8
+    #   #networks:
+    #     #- soar-network
+    #   # Uncomment if you have a GPU
+    #   # deploy:
+    #   #   resources:
+    #   #     reservations:
+    #   #       devices:
+    #   #         - driver: nvidia
+    #   #           count: 1
+    #   #           capabilities: [gpu]
+    #   #healthcheck:
+    #     #test: ["CMD", "ollama", "list"] #["CMD", "curl", "-f", "http://localhost:8081/health"]
+    #     #interval: 30s
+    #     #timeout: 10s
+    #     #retries: 3
+    #     #start_period: 60s
+
+  agentic-api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    image: soar-backend:latest
+    container_name: soar-agent-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - MONGODB_HOST=mongodb
+      - QDRANT_HOST=qdrant
+      - PYTHONPATH=/app
+      # ChatOllama expects base URL (no /v1/... suffix)
+      - LLM_API_URL=http://ollama:11434
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - soar-network
+    command: uvicorn backend.services.agentic.api:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  agentic-dispatcher:
+    image: soar-backend:latest
+    container_name: soar-agent-dispatcher
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - AGENT_API_URL=http://agentic-api:8000
+      - REDIS_HOST=redis
+      - MONGO_URI=mongodb://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@mongodb:27017/
+      - MONGODB_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - PYTHONPATH=/app
+    volumes:
+      - .:/app
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      agentic-api:
+        condition: service_healthy
+    networks:
+      - soar-network
+    healthcheck:
+      disable: true
+    command: python -m backend.services.agentic.dispatcher
+
+  # Cybolt web UI — FastAPI auth API (see web_app/)
+  web-app-backend:
+    build:
+      context: ./web_app/backend
+      dockerfile: Dockerfile
+    container_name: soar-web-app-api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+      - MONGODB_DATABASE=${MONGODB_DATABASE:-soar_db}
+      - MONGODB_USERNAME=${MONGODB_USERNAME}
+      - MONGODB_PASSWORD=${MONGODB_PASSWORD}
+      - MONGODB_AUTH_SOURCE=${MONGODB_AUTH_SOURCE:-admin}
+      - JWT_SECRET=${JWT_SECRET}
+      # System health probes use Docker DNS; .env often has localhost which fails inside this container.
+      - VAULT_ADDR=http://vault:8200
+      - REDIS_HOST=redis
+      - QDRANT_HOST=qdrant
+      - OLLAMA_HOST=ollama
+      # System /health HTTP probes — use compose service names (not localhost from .env).
+      - AGENT_API_URL=http://agentic-api:8000
+      - ASSET_RISK_URL=http://asset-risk-evaluation:5005
+      - ANOMALY_DETECTION_URL=http://anomaly-detection:5001
+      - ATTACK_STAGE_URL=http://attack-stage-predictor:5002
+      - ATTACK_FORECASTING_URL=http://attack-forecasting:5003
+      - FALSE_POSITIVE_URL=http://false-positive-detector:5004
+      - ROOT_CAUSE_URL=http://root-cause-analyzer:5006
+      # Override .env if needed: reach mTLS cert API on the compose network (service `api`, port 8443).
+      - MTLS_CERT_API_URL=${MTLS_CERT_API_URL:-https://api:8443/api/v1/certificates}
+    ports:
+      - "8001:8000"
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    networks:
+      - soar-network
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/openapi.json')",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+networks:
+  soar-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
+  mongodb_config:
+  redis_data:
+  qdrant_data:
+  prometheus_data:
+  grafana_data:
+  loki_data:
+  ollama_data:
+    driver: local
+  vault_data:

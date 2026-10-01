@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAR Complete System Architecture - Detailed Flow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #1a202c;
+            margin-bottom: 10px;
+            font-size: 2.8em;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #4a5568;
+            margin-bottom: 30px;
+            font-size: 1.3em;
+            font-weight: 500;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            background: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .legend-box {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+        
+        .flow-section {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .box {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background: white;
+        }
+        
+        .box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+        
+        .box-title {
+            font-weight: 700;
+            font-size: 1.15em;
+            margin-bottom: 8px;
+        }
+        
+        .box-content {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .function-call {
+            background: #fffaf0;
+            border-left: 4px solid #f59e0b;
+            padding: 8px 12px;
+            margin: 8px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+        }
+        
+        .arrow {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2563eb;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+        
+        .side-arrow {
+            font-size: 2em;
+            color: #2563eb;
+            display: inline-block;
+        }
+        
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .flex-row {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Color scheme */
+        .ingestion { background: #dbeafe; border-color: #2563eb; }
+        .queue { background: #fed7aa; border-color: #ea580c; }
+        .ml-model { background: #e9d5ff; border-color: #7c3aed; }
+        .ai-agent { background: #d1fae5; border-color: #059669; }
+        .service { background: #fef3c7; border-color: #ca8a04; }
+        .storage { background: #fce7f3; border-color: #db2777; }
+        .decision { background: #ccfbf1; border-color: #0891b2; }
+        
+        .highlight {
+            background: #fef9c3;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            overflow-x: auto;
+        }
+        
+        .api-call {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            padding: 10px;
+            border-radius: 6px;
+            margin: 8px 0;
+            font-family: monospace;
+        }
+        
+        .data-flow {
+            background: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        @media (max-width: 1200px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+        }
+        
+        @media (max-width: 768px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 SOAR Platform - Complete System Architecture</h1>
+        <p class="subtitle">Detailed Flow: Every Model, Every Agent, Every Function Call</p>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-box ingestion"></div>
+                <span><strong>Ingestion/Pipeline</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box queue"></div>
+                <span><strong>Message Queue</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box ml-model"></div>
+                <span><strong>ML Models</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box ai-agent"></div>
+                <span><strong>AI Agents</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box service"></div>
+                <span><strong>Services</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box decision"></div>
+                <span><strong>Decision/Action</strong></span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-box storage"></div>
+                <span><strong>Storage</strong></span>
+            </div>
+        </div>
+
+        <!-- STEP 1: ALERT ARRIVAL -->
+        <div class="flow-section" style="border-left-color: #2563eb;">
+            <div class="section-title">
+                📥 STEP 1: Alert Arrives from Wazuh
+            </div>
+            
+            <div class="box ingestion">
+                <div class="box-title">Wazuh SIEM</div>
+                <div class="box-content">
+                    Generates security alert and sends via webhook
+                    <div class="function-call">
+                        POST /api/v1/alerts/ingest
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="box ingestion">
+                <div class="box-title">Load Balancer (NGINX)</div>
+                <div class="box-content">
+                    Routes to available ingestion service instance
+                    <div class="function-call">
+                        nginx.route() → ingestion-service-{1,2,3}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="box ingestion">
+                <div class="box-title">Alert Ingestion Service (FastAPI)</div>
+                <div class="box-content">
+                    <strong>Functions Called:</strong>
+                    <div class="function-call">validate_api_key(request)</div>
+                    <div class="function-call">verify_hmac_signature(payload)</div>
+                    <div class="function-call">validate_schema(alert_data)</div>
+                    <div class="function-call">normalize_to_ulf(alert_data)</div>
+                    <div class="function-call">assign_alert_id()</div>
+                    <div class="function-call">apply_rate_limit(source_siem)</div>
+                    
+                    <div class="data-flow">
+                        <strong>Data Output:</strong><br>
+                        {alert_id, timestamp, rule, agent, data, ...}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 2: QUEUE -->
+        <div class="flow-section" style="border-left-color: #ea580c;">
+            <div class="section-title">
+                📨 STEP 2: Push to Message Queue
+            </div>
+            
+            <div class="box queue">
+                <div class="box-title">Redis Streams</div>
+                <div class="box-content">
+                    <strong>Functions Called:</strong>
+                    <div class="function-call">redis.xadd('alerts:incoming', alert_data)</div>
+                    <div class="function-call">redis.xlen('alerts:incoming')</div>
+                    <div class="function-call">monitor_queue_depth()</div>
+                    
+                    <div class="data-flow">
+                        <strong>Queues:</strong><br>
+                        • alerts:incoming (main stream)<br>
+                        • alerts:dlq (dead letter queue)<br>
+                        • alerts:priority (high-priority)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 3: ENRICHMENT -->
+        <div class="flow-section" style="border-left-color: #ca8a04;">
+            <div class="section-title">
+                🔍 STEP 3: Context Enrichment (Parallel Services)
+            </div>
+            
+            <div class="grid-3">
+                <div class="box service">
+                    <div class="box-title">Threat Intel Service</div>
+                    <div class="box-content">
+                        <strong>Functions:</strong>
+                        <div class="function-call">get_ip_reputation(srcip)</div>
+                        <div class="function-call">query_virustotal(srcip)</div>
+                        <div class="function-call">query_otx(srcip)</div>
+                        <div class="function-call">query_abuseipdb(srcip)</div>
+                        <div class="function-call">cache_result(ip, data)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Returns:</strong><br>
+                            {reputation, vt_score, threat_category}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box service">
+                    <div class="box-title">GeoIP Service</div>
+                    <div class="box-content">
+                        <strong>Functions:</strong>
+                        <div class="function-call">lookup_geoip(srcip)</div>
+                        <div class="function-call">calculate_geo_risk(country)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Returns:</strong><br>
+                            {country, city, lat, lon, risk_score}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box service">
+                    <div class="box-title">Asset Context Service</div>
+                    <div class="box-content">
+                        <strong>Functions:</strong>
+                        <div class="function-call">get_asset_info(agent_id)</div>
+                        <div class="function-call">get_criticality_score(asset)</div>
+                        <div class="function-call">check_compliance_scope(asset)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Returns:</strong><br>
+                            {criticality, has_pii, compliance_scope}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #fff7ed; border-radius: 8px;">
+                <strong>Combined Enrichment Context:</strong>
+                <div class="code-block">
+enrichment = {
+    "threat_intel": {...},
+    "geoip": {...},
+    "asset_context": {...}
+}
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 4: ML MODELS -->
+        <div class="flow-section" style="border-left-color: #7c3aed;">
+            <div class="section-title">
+                🧠 STEP 4: ML Model Processing (Sequential)
+            </div>
+            
+            <div class="grid-2" style="margin-bottom: 20px;">
+                <div class="box ml-model">
+                    <div class="box-title">MODEL 1: Anomaly Detector (Isolation Forest)</div>
+                    <div class="box-content">
+                        <strong>API Call:</strong>
+                        <div class="api-call">
+                            POST http://anomaly-detector:5001/predict
+                        </div>
+                        
+                        <strong>Functions:</strong>
+                        <div class="function-call">extract_features(alert) → 48 features</div>
+                        <div class="function-call">scaler.transform(features)</div>
+                        <div class="function-call">model.score_samples(features)</div>
+                        <div class="function-call">convert_to_probability(score)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Returns:</strong><br>
+                            {anomaly_score: 0.87, is_anomaly: true, confidence: 0.91}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box ml-model">
+                    <div class="box-title">MODEL 4: Attack Chain Detector (Graph Clustering)</div>
+                    <div class="box-content">
+                        <strong>Background Service (runs every 5 min)</strong>
+                        
+                        <strong>Functions:</strong>
+                        <div class="function-call">get_recent_alerts(hours=1)</div>
+                        <div class="function-call">build_alert_graph(alerts)</div>
+                        <div class="function-call">calculate_similarity(a1, a2)</div>
+                        <div class="function-call">find_connected_components(graph)</div>
+                        <div class="function-call">score_chain(chain)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Stores in DB:</strong><br>
+                            correlation_group_id: "CG-789"
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="box service" style="background: #fef3c7;">
+                <div class="box-title">Check for Correlation Group</div>
+                <div class="box-content">
+                    <div class="function-call">correlation_group = get_correlation_group(alert_id)</div>
+                    <div class="data-flow">
+                        If exists: Load related alerts from group
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="grid-2">
+                <div class="box ml-model">
+                    <div class="box-title">MODEL 2: False Positive Classifier (XGBoost)</div>
+                    <div class="box-content">
+                        <strong>API Call:</strong>
+                        <div class="api-call">
+                            POST http://fp-classifier:5007/predict
+                        </div>
+                        
+                        <strong>Functions:</strong>
+                        <div class="function-call">extract_features_with_context(alert, context) → 60 features</div>
+                        <div class="function-call">check_scheduled_task(alert, context)</div>
+                        <div class="function-call">check_known_automation(user)</div>
+                        <div class="function-call">check_maintenance_window(timestamp)</div>
+                        <div class="function-call">scaler.transform(features)</div>
+                        <div class="function-call">model.predict_proba(features)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Returns:</strong><br>
+                            {fp_probability: 0.12, is_false_positive: false, confidence: 0.88}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box ml-model">
+                    <div class="box-title">MODEL 3: Root Cause Classifier (Random Forest)</div>
+                    <div class="box-content">
+                        <strong>API Call:</strong>
+                        <div class="api-call">
+                            POST http://root-cause:5008/predict
+                        </div>
+                        
+                        <strong>Functions:</strong>
+                        <div class="function-call">extract_incident_features(alert_chain) → 20 features</div>
+                        <div class="function-call">model.predict_proba(features)</div>
+                        <div class="function-call">rank_root_causes(probas)</div>
+                        
+                        <div class="data-flow">
+                            <strong>Returns:</strong><br>
+                            {primary: "brute_force", confidence: 0.92, top_3: [...]}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 15px; background: #ede9fe; border-radius: 8px;">
+                <strong>Combined ML Scores:</strong>
+                <div class="code-block">
+ml_scores = {
+    "anomaly_score": 0.87,
+    "fp_probability": 0.12,
+    "root_cause": "brute_force_attack",
+    "correlation_group_id": "CG-789"
+}
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 5: RAG RETRIEVAL -->
+        <div class="flow-section" style="border-left-color: #db2777;">
+            <div class="section-title">
+                📚 STEP 5: RAG Document Retrieval
+            </div>
+            
+            <div class="box storage">
+                <div class="box-title">Vector DB (Qdrant) Service</div>
+                <div class="box-content">
+                    <strong>API Call:</strong>
+                    <div class="api-call">
+                        POST http://vector-db:6333/search
+                    </div>
+                    
+                    <strong>Functions:</strong>
+                    <div class="function-call">generate_query_embedding(alert_description)</div>
+                    <div class="function-call">search_similar_docs(embedding, top_k=5)</div>
+                    <div class="function-call">filter_by_mitre_id(mitre_ids)</div>
+                    
+                    <strong>Document Collections:</strong>
+                    <div class="function-call">search_collection('mitre_attack')</div>
+                    <div class="function-call">search_collection('security_playbooks')</div>
+                    <div class="function-call">search_collection('past_incidents')</div>
+                    
+                    <div class="data-flow">
+                        <strong>Returns (Top 5 docs):</strong><br>
+                        • MITRE T1110: Brute Force technique<br>
+                        • Playbook: SSH-BRUTE-FORCE-RESPONSE<br>
+                        • Past incident: INC-2024-0789
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 6: AI AGENTS -->
+        <div class="flow-section" style="border-left-color: #059669;">
+            <div class="section-title">
+                🤖 STEP 6: AI Agent Analysis
+            </div>
+            
+            <div class="box ai-agent" style="border: 3px solid #059669;">
+                <div class="box-title">🧠 AGENT 1: Alert Analysis Agent</div>
+                <div class="box-content">
+                    <strong>Main Processing Agent</strong>
+                    
+                    <div style="background: #f0fdf4; padding: 15px; border-radius: 6px; margin: 10px 0;">
+                        <strong>Step 6.1: Gather All Context</strong>
+                        <div class="function-call">alert_data = get_alert_from_queue()</div>
+                        <div class="function-call">enrichment = get_enrichment_context(alert)</div>
+                        <div class="function-call">ml_scores = get_ml_scores(alert)</div>
+                        <div class="function-call">rag_docs = get_retrieved_documents(alert)</div>
+                        <div class="function-call">uba_signals = get_user_behavior_signals(user)</div>
+                    </div>
+                    
+                    <div style="background: #ecfdf5; padding: 15px; border-radius: 6px; margin: 10px 0;">
+                        <strong>Step 6.2: Call LLM (Model 8)</strong>
+                        <div class="api-call">
+                            POST http://llm-service:5006/analyze_alert
+                        </div>
+                        
+                        <strong>LLM Functions:</strong>
+                        <div class="function-call">build_comprehensive_prompt(alert, ml_scores, enrichment, rag_docs)</div>
+                        <div class="function-call">llm.generate(prompt, max_tokens=500, temperature=0.1)</div>
+                        <div class="function-call">parse_json_response(llm_output)</div>
+                        
+                        <div class="code-block">
+# Prompt Structure
+prompt = f"""
+ALERT: {alert}
+ML SCORES: {ml_scores}
+ENRICHMENT: {enrichment}
+KNOWLEDGE: {rag_docs}
+
+Analyze and return JSON:
+{{
+  "classification": "...",
+  "severity": "Critical/High/Medium/Low",
+  "is_false_positive": true/false,
+  "recommended_action": "...",
+  "justification": "..."
+}}
+"""
+                        </div>
+                        
+                        <div class="data-flow">
+                            <strong>LLM Returns:</strong><br>
+                            {classification: "SSH Brute Force", severity: "Critical", 
+                            is_false_positive: false, recommended_action: "block_source_ip",
+                            justification: "High anomaly, malicious IP, matches MITRE T1110"}
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f0fdfa; padding: 15px; border-radius: 6px; margin: 10px 0;">
+                        <strong>Step 6.3: Format Agent Output</strong>
+                        <div class="function-call">agent_output = format_analysis(llm_response, ml_scores)</div>
+                        <div class="function-call">calculate_overall_confidence(llm_conf, ml_conf)</div>
+                        <div class="function-call">add_metadata(agent_output, alert_id, timestamp)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="box ai-agent">
+                <div class="box-title">✅ AGENT 3: Verification Agent</div>
+                <div class="box-content">
+                    <strong>Quality Control - Validates Agent 1 Output</strong>
+                    
+                    <strong>Functions Called:</strong>
+                    <div class="function-call">verify_llm_vs_ml_consistency(agent1_output, ml_scores)</div>
+                    <div class="function-call">check_severity_alignment(llm_severity, anomaly_score)</div>
+                    <div class="function-call">check_fp_alignment(llm_is_fp, ml_fp_probability)</div>
+                    <div class="function-call">check_policy_compliance(recommended_action, policies)</div>
+                    <div class="function-call">detect_hallucinations(llm_output, rag_docs)</div>
+                    
+                    <div class="code-block">
+# Verification Logic
+if llm_severity == "Critical" and ml_anomaly < 0.5:
+    return REJECT("Severity mismatch")
+    
+if llm_is_fp == False and ml_fp_prob > 0.7:
+    return REJECT("FP mismatch")
+    
+if recommended_action in restricted_actions:
+    return REJECT("Policy violation")
+    
+return APPROVE()
+                    </div>
+                    
+                    <div class="data-flow">
+                        <strong>Possible Outcomes:</strong><br>
+                        • APPROVED → Proceed to decision engine<br>
+                        • REJECTED → Send to manual review<br>
+                        • MODIFIED → Adjust confidence/severity
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="box ai-agent">
+                <div class="box-title">🎯 AGENT 4: RL Response Optimizer</div>
+                <div class="box-content">
+                    <strong>API Call:</strong>
+                    <div class="api-call">
+                        POST http://rl-optimizer:5005/recommend_action
+                    </div>
+                    
+                    <strong>Functions:</strong>
+                    <div class="function-call">extract_state_vector(alert, ml_scores) → 20 features</div>
+                    <div class="function-call">agent.predict(state_vector)</div>
+                    <div class="function-call">get_action_from_index(action_index)</div>
+                    
+                    <div class="data-flow">
+                        <strong>Returns:</strong><br>
+                        {recommended_action: "block_source_ip", action_index: 3}
+                    </div>
+                    
+                    <div style="margin-top: 10px; padding: 10px; background: #fef3c7; border-radius: 4px;">
+                        <strong>Note:</strong> RL recommendation is combined with Agent 1 recommendation in Decision Engine
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 7: DECISION ENGINE -->
+        <div class="flow-section" style="border-left-color: #0891b2;">
+            <div class="section-title">
+                ⚙️ STEP 7: Decision & Action Engine
+            </div>
+            
+            <div class="box decision">
+                <div class="box-title">Decision Fusion Engine</div>
+                <div class="box-content">
+                    <strong>Functions:</strong>
+                    <div class="function-call">fuse_recommendations(agent1, agent3, agent4)</div>
+                    <div class="function-call">calculate_final_confidence(weights, scores)</div>
+                    <div class="function-call">apply_policy_gates(action, confidence, policies)</div>
+                    <div class="function-call">check_action_prerequisites(action, alert)</div>
+                    
+                    <div class="code-block">
+# Confidence Fusion
+final_confidence = (
+    0.5 * llm_confidence +
+    0.3 * ml_confidence +
+    0.2 * rl_confidence
+)
+
+# Policy Gating
+if action == "isolate_endpoint":
+    if final_confidence < 0.90:
+        return "require_manual_approval"
+    if asset.criticality == "critical":
+        return "require_manager_approval"
+        
+return action
+                    </div>
+                    
+                    <div class="data-flow">
+                        <strong>Final Decision:</strong><br>
+                        {action: "block_source_ip", confidence: 0.89, 
+                        approved: true, requires_manual: false}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">↓</div>
+            
+            <div class="box decision">
+                <div class="box-title">Response Executor Service</div>
+                <div class="box-content">
+                    <strong>Functions:</strong>
+                    <div class="function-call">execute_action(action, alert_data)</div>
+                    
+                    <strong>Action-Specific Functions:</strong>
+                    <div class="function-call">
+                        if action == "block_source_ip":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;firewall_api.add_block_rule(srcip)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;log_action("blocked", srcip)
+                    </div>
+                    <div class="function-call">
+                        if action == "isolate_endpoint":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;edr_api.isolate_host(agent_id)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;notify_soc_team(alert_id)
+                    </div>
+                    <div class="function-call">
+                        if action == "alert_analyst":<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;create_ticket(alert_data)<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;send_notification(channels)
+                    </div>
+                    
+                    <div class="data-flow">
+                        <strong>Execution Result:</strong><br>
+                        {success: true, action_taken: "block_source_ip", 
+                        timestamp: "2025-01-14T10:30:15Z"}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 8: STORAGE -->
+        <div class="flow-section" style="border-left-color: #db2777;">
+            <div class="section-title">
+                💾 STEP 8: Store Results
+            </div>
+            
+            <div class="grid-2">
+                <div class="box storage">
+                    <div class="box-title">MongoDB - Store Alert</div>
+                    <div class="box-content">
+                        <strong>Collections Updated:</strong>
+                        <div class="function-call">
+                            db.alerts_raw.insertOne(original_alert)
+                        </div>
+                        <div class="function-call">
+                            db.alerts_processed.insertOne({<br>
+                            &nbsp;&nbsp;alert_id, ml_scores, agent_analysis,<br>
+                            &nbsp;&nbsp;verification_result, decision, timestamp<br>
+                            })
+                        </div>
+                        <div class="function-call">
+                            db.actions_taken.insertOne({<br>
+                            &nbsp;&nbsp;alert_id, action, success, timestamp<br>
+                            })
+                        </div>
+                        <div class="function-call">
+                            db.model_predictions.insertOne({<br>
+                            &nbsp;&nbsp;alert_id, all_ml_model_outputs<br>
+                            })
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="box storage">
+                    <div class="box-title">Redis Cache - Update Stats</div>
+                    <div class="box-content">
+                        <strong>Cache Updates:</strong>
+                        <div class="function-call">
+                            redis.incr('alerts:count:hour')
+                        </div>
+                        <div class="function-call">
+                            redis.hincrby('alerts:by_severity', severity, 1)
+                        </div>
+                        <div class="function-call">
+                            redis.zadd('top_attackers', srcip, score)
+                        </div>
+                        <div class="function-call">
+                            redis.set('latest_alert', alert_id)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 9: FEEDBACK -->
+        <div class="flow-section" style="border-left-color: #059669;">
+            <div class="section-title">
+                🔄 STEP 9: Feedback & Learning Loop
+            </div>
+            
+            <div class="box ai-agent">
+                <div class="box-title">Feedback Collection (Async)</div>
+                <div class="box-content">
+                    <strong>Wait for Outcome:</strong>
+                    <div class="function-call">outcome = wait_for_outcome(alert_id, timeout=3600)</div>
+                    
+                    <strong>Possible Outcomes:</strong>
+                    <div class="function-call">
+                        • "attack_stopped" → Action was successful<br>
+                        • "false_alarm" → Alert was false positive<br>
+                        • "attack_succeeded" → Action failed<br>
+                        • "analyst_override" → Human corrected decision
+                    </div>
+                    
+                    <strong>Store Feedback:</strong>
+                    <div class="function-call">
+                        db.feedback_data.insertOne({<br>
+                        &nbsp;&nbsp;alert_id, original_prediction,<br>
+                        &nbsp;&nbsp;analyst_correction, outcome,<br>
+                        &nbsp;&nbsp;timestamp<br>
+                        })
+                    </div>
+                    
+                    <strong>Update RL Agent:</strong>
+                    <div class="function-call">
+                        reward = calculate_reward(action, outcome)<br>
+                        rl_agent.update_from_outcome(state, action, outcome)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="arrow">↓</div>
+
+        <!-- STEP 10: DASHBOARD -->
+        <div class="flow-section" style="border-left-color: #2563eb;">
+            <div class="section-title">
+                📊 STEP 10: Update Dashboard (Real-Time)
+            </div>
+            
+            <div class="box ingestion">
+                <div class="box-title">WebSocket Server</div>
+                <div class="box-content">
+                    <strong>Functions:</strong>
+                    <div class="function-call">
+                        websocket.broadcast('new_alert', alert_data)
+                    </div>
+                    <div class="function-call">
+                        websocket.broadcast('action_taken', action_result)
+                    </div>
+                    <div class="function-call">
+                        websocket.broadcast('stats_update', real_time_stats)
+                    </div>
+                    
+                    <div class="data-flow">
+                        <strong>Dashboard Updates Instantly:</strong><br>
+                        • Alert feed (live)<br>
+                        • Action log (live)<br>
+                        • Statistics (every 5 sec)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BACKGROUND AGENTS -->
+        <div class="flow-section" style="border-left-color: #ca8a04; margin-top: 40px;">
+            <div class="section-title">
+                🔍 BACKGROUND: Continuous Threat Hunting (Agent 2)
+            </div>
+            
+            <div class="box ai-agent">
+                <div class="box-title">🔍 AGENT 2: Threat Hunting Agent</div>
+                <div class="box-content">
+                    <strong>Runs Independently Every Hour</strong>
+                    
+                    <div class="code-block">
+# Cron Schedule: 0 * * * *
+while True:
+    # Generate hypothesis
+    hypothesis = llm.generate_hypothesis()
+    
+    # Create search queries
+    queries = llm.create_queries(hypothesis)
+    
+    # Execute searches
+    results = []
+    for query in queries:
+        results.extend(db.query(query))
+    
+    # Filter with anomaly detector
+    suspicious = []
+    for result in results:
+        score = anomaly_detector.predict(result)
+        if score.anomaly_score > 0.75:
+            suspicious.append(result)
+    
+    # LLM evaluates evidence
+    if suspicious:
+        evaluation = llm.evaluate_evidence(hypothesis, suspicious)
+        if evaluation.threat_confirmed:
+            create_hunt_report(evaluation)
+            alert_soc_team(evaluation)
+    
+    sleep(3600)  # Wait 1 hour
+                    </div>
+                    
+                    <strong>Functions Used:</strong>
+                    <div class="function-call">llm.generate_hypothesis()</div>
+                    <div class="function-call">llm.create_queries(hypothesis)</div>
+                    <div class="function-call">mongodb.aggregate(query)</div>
+                    <div class="function-call">anomaly_detector.predict(event)</div>
+                    <div class="function-call">llm.evaluate_evidence(hypothesis, events)</div>
+                    <div class="function-call">create_hunt_report(findings)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORECASTING AGENT -->
+        <div class="flow-section" style="border-left-color: #7c3aed; margin-top: 20px;">
+            <div class="section-title">
+                📊 BACKGROUND: Predictive Forecasting (Agent 5)
+            </div>
+            
+            <div class="box ai-agent">
+                <div class="box-title">📊 AGENT 5: Forecasting Agent</div>
+                <div class="box-content">
+                    <strong>Runs Every 6 Hours</strong>
+                    
+                    <div class="code-block">
+# Cron Schedule: 0 */6 * * *
+while True:
+    # Prophet: Predict next 24-48 hours
+    alert_counts = get_hourly_alert_counts(months=6)
+    forecast = prophet_model.forecast(hours_ahead=48)
+    high_risk_windows = identify_high_risk(forecast)
+    
+    # LSTM: If attack detected, predict next stage
+    active_chains = get_active_attack_chains()
+    for chain in active_chains:
+        if len(chain.alerts) >= 10:
+            next_stage = lstm_model.predict(chain.alerts[-10:])
+            if next_stage.confidence > 0.7:
+                send_preemptive_alert(next_stage)
+    
+    # Store predictions
+    db.predictions.insertMany(forecasts)
+    
+    # Notify SOC if high-risk window predicted
+    if high_risk_windows:
+        notify_soc(high_risk_windows)
+    
+    sleep(21600)  # Wait 6 hours
+                    </div>
+                    
+                    <strong>Models Used:</strong>
+                    <div class="function-call">MODEL 5: Prophet (time series forecasting)</div>
+                    <div class="function-call">MODEL 6: LSTM (sequence prediction)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLETE FLOW SUMMARY -->
+        <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 15px;">
+            <h2 style="margin-bottom: 20px;">📋 Complete Processing Flow Summary</h2>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <strong style="font-size: 1.3em;">Main Alert Processing Path (Synchronous):</strong><br><br>
+                Wazuh → Load Balancer → Ingestion Service → Redis Queue → Enrichment Services (Parallel) → 
+                ML Models (Sequential: Anomaly → FP → Root Cause) → RAG Retrieval → 
+                Agent 1 (LLM Analysis) → Agent 3 (Verification) → Agent 4 (RL Recommendation) → 
+                Decision Engine → Response Executor → Storage → Dashboard Update → Feedback Loop
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                <strong style="font-size: 1.3em;">Background Processes (Async):</strong><br><br>
+                • Model 4 (Attack Chain Detection): Runs every 5 minutes<br>
+                • Agent 2 (Threat Hunting): Runs every hour<br>
+                • Agent 5 (Forecasting): Runs every 6 hours<br>
+                • Feedback Collection: Continuous (waits for outcomes)<br>
+                • Model Retraining: Weekly (or on-demand)
+            </div>
+            
+            <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px;">
+                <strong style="font-size: 1.3em;">Total Function Calls Per Alert: ~50+</strong><br><br>
+                • Ingestion: 6 functions<br>
+                • Enrichment: 12 functions (3 services × 4 calls)<br>
+                • ML Models: 15 functions (3 models × 5 calls avg)<br>
+                • RAG: 4 functions<br>
+                • LLM Agent: 5 functions<br>
+                • Verification: 6 functions<br>
+                • Decision: 4 functions<br>
+                • Storage: 6 functions<br>
+                • Updates: 4 functions
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; text-align: center; color: #4a5568; font-size: 0.9em;">
+            <p><strong>Total Processing Time:</strong> 3-5 seconds per alert (end-to-end)</p>
+            <p><strong>Throughput:</strong> 1000+ alerts/hour</p>
+            <p><strong>Components:</strong> 8 ML Models + 5 AI Agents + 10+ Services</p>
+        </div>
+    </div>
+</body>
+</html>

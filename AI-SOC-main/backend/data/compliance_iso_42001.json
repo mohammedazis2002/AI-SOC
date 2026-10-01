@@ -1,0 +1,146 @@
+[
+    {
+        "rule_id": "ISO42001-8.1.1",
+        "framework": "iso_42001_aims",
+        "control_id": "8.1.1",
+        "control_name": "Human oversight for AI system decisions",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "automated_remediation",
+            "ai_generated_action"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "ai_confidence": {
+                "operator": "lt",
+                "threshold": 0.8
+            }
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 42001 8.1.1: AI decisions with confidence < 0.8 require human review before execution.",
+        "recommendation": "Flag low-confidence AI-generated actions for human approval."
+    },
+    {
+        "rule_id": "ISO42001-7.2.1",
+        "framework": "iso_42001_aims",
+        "control_id": "7.2.1",
+        "control_name": "Data quality for AI/ML systems",
+        "category": "data_quality",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "validate_input_data",
+        "applies_when": {
+            "incident_type": [
+                "ai_ml_poisoning",
+                "adversarial_attack",
+                "model_drift"
+            ],
+            "asset_type": [
+                "ml_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 7.2.1: AI/ML data quality violations require input validation before model use.",
+        "recommendation": "Add validate_input_data and sanitize_training_data actions."
+    },
+    {
+        "rule_id": "ISO42001-6.1.2",
+        "framework": "iso_42001_aims",
+        "control_id": "6.1.2",
+        "control_name": "AI Risk Assessment",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "ai_ml_poisoning",
+                "model_manipulation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 6.1.2: AI system security incidents must be documented for risk register updates.",
+        "recommendation": "Add document_incident recording the AI risk event."
+    },
+    {
+        "rule_id": "ISO42001-8.4.1",
+        "framework": "iso_42001_aims",
+        "control_id": "8.4.1",
+        "control_name": "AI system output validation",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "quarantine_ml_model",
+        "applies_when": {
+            "incident_type": [
+                "ai_ml_poisoning",
+                "model_manipulation",
+                "adversarial_attack"
+            ],
+            "asset_type": [
+                "ml_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "ISO 42001 8.4.1: Compromised AI models must be quarantined and outputs invalidated.",
+        "recommendation": "Add quarantine_ml_model and rollback_model_version to isolate compromised AI system."
+    },
+    {
+        "rule_id": "ISO42001-SUPPLY",
+        "framework": "iso_42001_aims",
+        "control_id": "8.5.2",
+        "control_name": "AI supply chain integrity",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "incident_type": [
+                "supply_chain",
+                "compromised_dependency"
+            ],
+            "asset_type": [
+                "ml_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 8.5.2: AI supply chain compromises require immediate security team assessment.",
+        "recommendation": "Notify security team and audit all AI model dependencies for compromise."
+    },
+    {
+        "rule_id": "ISO42001-NOAUTO",
+        "framework": "iso_42001_aims",
+        "control_id": "8.1.3",
+        "control_name": "Autonomous AI decisions require appropriate safeguards",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "full_auto_remediation_without_review"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 42001 8.1.3: Fully autonomous remediation without human oversight is prohibited for critical incidents.",
+        "recommendation": "Always require human-in-the-loop for critical automated actions."
+    }
+]

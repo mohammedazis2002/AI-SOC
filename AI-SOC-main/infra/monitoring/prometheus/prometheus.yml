@@ -1,0 +1,49 @@
+# Prometheus Configuration for SOAR Platform
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'soar-platform'
+    environment: 'development'
+
+# Alerting configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Rule files
+rule_files:
+  # - "rules/*.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # SOAR API
+  - job_name: 'soar-api'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['api:8000']
+        labels:
+          service: 'api'
+
+  # MongoDB Exporter (optional - add later)
+  # - job_name: 'mongodb'
+  #   static_configs:
+  #     - targets: ['mongodb-exporter:9216']
+
+  # Redis Exporter (optional - add later)
+  # - job_name: 'redis'
+  #   static_configs:
+  #     - targets: ['redis-exporter:9121']
+
+  # NGINX Exporter (optional - add later)
+  # - job_name: 'nginx'
+  #   static_configs:
+  #     - targets: ['nginx-exporter:9113']

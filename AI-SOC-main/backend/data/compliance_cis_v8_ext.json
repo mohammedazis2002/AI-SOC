@@ -1,0 +1,411 @@
+[
+    {
+        "rule_id": "CIS-v8-1.1",
+        "framework": "cis_controls_v8",
+        "control_id": "1.1",
+        "control_name": "Establish and Maintain Detailed Enterprise Asset Inventory",
+        "category": "asset_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "unknown_asset",
+                "rogue_device"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 1.1: Rogue device incidents require asset inventory update to document discovered assets.",
+        "recommendation": "Add document_incident with new asset details to update the enterprise asset inventory."
+    },
+    {
+        "rule_id": "CIS-v8-4.1",
+        "framework": "cis_controls_v8",
+        "control_id": "4.1",
+        "control_name": "Establish and Maintain a Secure Configuration Process",
+        "category": "hardening",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_config"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "CIS Controls v8 4.1: Configuration changes must follow the secure configuration management process.",
+        "recommendation": "Set requires_approval=True and document the secure configuration baseline change."
+    },
+    {
+        "rule_id": "CIS-v8-5.1",
+        "framework": "cis_controls_v8",
+        "control_id": "5.1",
+        "control_name": "Establish and Maintain Inventory of Accounts",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "disable_account",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "credential_compromise"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 5.1: Compromised accounts must be disabled and removed from active account inventory.",
+        "recommendation": "Add disable_account and update account inventory."
+    },
+    {
+        "rule_id": "CIS-v8-5.3",
+        "framework": "cis_controls_v8",
+        "control_id": "5.3",
+        "control_name": "Disable Dormant Accounts",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "disable_account",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 5.3: Dormant accounts used in incidents must be disabled immediately.",
+        "recommendation": "Identify and disable all dormant accounts that were accessed."
+    },
+    {
+        "rule_id": "CIS-v8-6.1",
+        "framework": "cis_controls_v8",
+        "control_id": "6.1",
+        "control_name": "Establish an Access Granting and Revoking Process",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "revoke_permissions",
+            "document_incident",
+            "notify_security_team"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "privilege_abuse"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 6.1: Privilege abuse must trigger: revoke → document → notify sequence.",
+        "recommendation": "Follow the access revocation sequence for insider threat incidents."
+    },
+    {
+        "rule_id": "CIS-v8-6.3",
+        "framework": "cis_controls_v8",
+        "control_id": "6.3",
+        "control_name": "Require MFA for all applications",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_mfa",
+            "bypass_mfa"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 6.3: MFA cannot be disabled. Required for all applications.",
+        "recommendation": "Remove MFA-disabling actions from the plan."
+    },
+    {
+        "rule_id": "CIS-v8-7.2",
+        "framework": "cis_controls_v8",
+        "control_id": "7.2",
+        "control_name": "Remediate detected vulnerabilities",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "trigger_edr_scan",
+            "patch_system",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 7.2: Detected vulnerabilities must be remediated following: scan → patch → document sequence.",
+        "recommendation": "Follow the vulnerability remediation sequence."
+    },
+    {
+        "rule_id": "CIS-v8-9.3",
+        "framework": "cis_controls_v8",
+        "control_id": "9.3",
+        "control_name": "Maintain and Enforce Network Access Control Lists",
+        "category": "network_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "modify_firewall_rules",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "network_intrusion",
+                "lateral_movement"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 9.3: Network intrusions require ACL updates to restrict attack paths.",
+        "recommendation": "Add modify_firewall_rules to enforce network access control list updates."
+    },
+    {
+        "rule_id": "CIS-v8-9.6",
+        "framework": "cis_controls_v8",
+        "control_id": "9.6",
+        "control_name": "Block and Report Unauthorised DNS Requests",
+        "category": "dns_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "block_dns_query",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "c2_communication",
+                "dns_tunneling",
+                "malware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 9.6: C2 or malicious DNS requests must be blocked and reported.",
+        "recommendation": "Add block_dns_query for identified malicious domains."
+    },
+    {
+        "rule_id": "CIS-v8-10.1",
+        "framework": "cis_controls_v8",
+        "control_id": "10.1",
+        "control_name": "Deploy and Maintain Anti-Malware Software",
+        "category": "endpoint_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_av",
+            "disable_edr",
+            "uninstall_agent"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 10.1: Anti-malware must remain deployed and active.",
+        "recommendation": "Do not disable anti-malware tools during incident response."
+    },
+    {
+        "rule_id": "CIS-v8-10.2",
+        "framework": "cis_controls_v8",
+        "control_id": "10.2",
+        "control_name": "Configure Automatic Anti-Malware Updates",
+        "category": "endpoint_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "update_threat_signatures",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "malware",
+                "ransomware",
+                "zero_day"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 10.2: Malware incidents require anti-malware signature updates.",
+        "recommendation": "Add update_threat_signatures to push latest malware definitions."
+    },
+    {
+        "rule_id": "CIS-v8-11.1",
+        "framework": "cis_controls_v8",
+        "control_id": "11.1",
+        "control_name": "Establish and Maintain a Data Recovery Process",
+        "category": "backup",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "must_execute_before": [
+            "patch_system",
+            "restore_from_backup"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 11.1: Backup must be confirmed before patching or restoring systems.",
+        "recommendation": "Add create_backup before remediation actions."
+    },
+    {
+        "rule_id": "CIS-v8-12.1",
+        "framework": "cis_controls_v8",
+        "control_id": "12.1",
+        "control_name": "Establish and Maintain Security Awareness Education",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "phishing",
+                "social_engineering"
+            ]
+        },
+        "blocked_actions": [
+            "clear_incident_without_training_note"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "phishing"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "CIS Controls v8 12.1: Phishing incidents should trigger security awareness training follow-up.",
+        "recommendation": "Include awareness training recommendation in final incident closure."
+    },
+    {
+        "rule_id": "CIS-v8-13.2",
+        "framework": "cis_controls_v8",
+        "control_id": "13.2",
+        "control_name": "Deploy a Host-Based Intrusion Detection Solution",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_edr",
+            "uninstall_agent"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 13.2: Host-based intrusion detection cannot be disabled.",
+        "recommendation": "Keep EDR/HIDS active. Tune it rather than disabling."
+    },
+    {
+        "rule_id": "CIS-v8-14.6",
+        "framework": "cis_controls_v8",
+        "control_id": "14.6",
+        "control_name": "Protect Information Through Access Control Lists",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "revoke_permissions",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "unauthorized_access",
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 14.6: Data access control violations require immediate ACL revocation.",
+        "recommendation": "Add revoke_permissions to tighten data access controls post-incident."
+    },
+    {
+        "rule_id": "CIS-v8-16.1",
+        "framework": "cis_controls_v8",
+        "control_id": "16.1",
+        "control_name": "Establish and Maintain Application Security Programme",
+        "category": "application_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_waf_rule",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "web_attack",
+                "sql_injection",
+                "xss"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 16.1: Web application attacks require WAF controls to be enforced.",
+        "recommendation": "Add enable_waf_rule to enforce the application security programme."
+    },
+    {
+        "rule_id": "CIS-v8-18.1",
+        "framework": "cis_controls_v8",
+        "control_id": "18.1",
+        "control_name": "Establish and Maintain Penetration Testing Programme",
+        "category": "testing",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation",
+                "zero_day"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "low",
+        "violation_message": "CIS Controls v8 18.1: Exploitation incidents should trigger a penetration test review recommendation.",
+        "recommendation": "Add create_compliance_report with penetration test review recommendation."
+    }
+]

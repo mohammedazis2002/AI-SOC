@@ -1,0 +1,490 @@
+[
+    {
+        "rule_id": "ISO42001-8.1.1",
+        "framework": "iso_42001",
+        "control_id": "8.1.1",
+        "control_name": "AI system lifecycle management — plan controls",
+        "category": "ai_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 8.1.1: AI system incidents must be managed within the AI lifecycle management process.",
+        "recommendation": "Document AI system incident within the AI lifecycle management process."
+    },
+    {
+        "rule_id": "ISO42001-8.1.2",
+        "framework": "iso_42001",
+        "control_id": "8.1.2",
+        "control_name": "Plan and control operational processes for AI systems",
+        "category": "ai_governance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "disable_ai_system",
+            "modify_ai_model",
+            "rollback_ai_version"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 42001 8.1.2: AI system operational changes require control process approval.",
+        "recommendation": "Obtain AI governance approval before modifying AI systems."
+    },
+    {
+        "rule_id": "ISO42001-8.1.3",
+        "framework": "iso_42001",
+        "control_id": "8.1.3",
+        "control_name": "Document operational controls for AI",
+        "category": "documentation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 8.1.3: AI operational control changes must be documented.",
+        "recommendation": "Add document_incident when modifying AI operational controls."
+    },
+    {
+        "rule_id": "ISO42001-7.2.1",
+        "framework": "iso_42001",
+        "control_id": "7.2.1",
+        "control_name": "AI competence requirements — ensure responsible AI personnel",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "ISO 42001 7.2.1: AI incident responders must have required AI competence.",
+        "recommendation": "Verify AI incident responder competency in incident documentation."
+    },
+    {
+        "rule_id": "ISO42001-7.2.2",
+        "framework": "iso_42001",
+        "control_id": "7.2.2",
+        "control_name": "AI awareness and training",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_type": [
+                "ai_model_compromise",
+                "adversarial_attack"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "ISO 42001 7.2.2: AI-related incidents trigger AI awareness training requirement.",
+        "recommendation": "Add AI security awareness training recommendation in compliance report."
+    },
+    {
+        "rule_id": "ISO42001-7.2.3",
+        "framework": "iso_42001",
+        "control_id": "7.2.3",
+        "control_name": "Communication on AI management",
+        "category": "communication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 7.2.3: AI incident communication must reach all relevant stakeholders.",
+        "recommendation": "Add notify_security_team for AI system incidents."
+    },
+    {
+        "rule_id": "ISO42001-8.2.1",
+        "framework": "iso_42001",
+        "control_id": "8.2.1",
+        "control_name": "AI risk assessment — identify AI-specific risks",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 8.2.1: AI-specific risk assessment must be updated after AI system incidents.",
+        "recommendation": "Add create_compliance_report with AI risk assessment update."
+    },
+    {
+        "rule_id": "ISO42001-8.2.2",
+        "framework": "iso_42001",
+        "control_id": "8.2.2",
+        "control_name": "AI risk treatment — apply risk controls",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "quarantine_ml_model",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_type": [
+                "ai_model_compromise",
+                "adversarial_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "ISO 42001 8.2.2: Compromised AI models must be quarantined as a risk treatment.",
+        "recommendation": "Add quarantine_ml_model for AI model compromise incidents."
+    },
+    {
+        "rule_id": "ISO42001-8.2.3",
+        "framework": "iso_42001",
+        "control_id": "8.2.3",
+        "control_name": "Implementation of AI risk treatment plan",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 8.2.3: AI risk treatment implementations must be documented.",
+        "recommendation": "Document AI risk treatment measures applied during incident response."
+    },
+    {
+        "rule_id": "ISO42001-6.2.1",
+        "framework": "iso_42001",
+        "control_id": "6.2.1",
+        "control_name": "AI objectives aligned with organisational policy",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "ISO 42001 6.2.1: AI incident response must align with organisational AI objectives.",
+        "recommendation": "Verify AI response aligns with organisational AI policy."
+    },
+    {
+        "rule_id": "ISO42001-6.2.2",
+        "framework": "iso_42001",
+        "control_id": "6.2.2",
+        "control_name": "Plan actions to achieve AI objectives",
+        "category": "planning",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "ISO 42001 6.2.2: Actions to achieve AI objectives must be planned post-incident.",
+        "recommendation": "Add create_compliance_report with AI improvement actions."
+    },
+    {
+        "rule_id": "ISO42001-6.2.3",
+        "framework": "iso_42001",
+        "control_id": "6.2.3",
+        "control_name": "AI impact assessment",
+        "category": "impact_assessment",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 6.2.3: AI impact assessment must be performed for significant AI system incidents.",
+        "recommendation": "Add create_compliance_report with AI impact assessment section."
+    },
+    {
+        "rule_id": "ISO42001-9.1.1",
+        "framework": "iso_42001",
+        "control_id": "9.1.1",
+        "control_name": "Monitoring, measurement, analysis and evaluation of AI",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 9.1.1: AI system performance and security must be continuously monitored.",
+        "recommendation": "Collect AI system logs and metrics during incident for analysis."
+    },
+    {
+        "rule_id": "ISO42001-9.1.2",
+        "framework": "iso_42001",
+        "control_id": "9.1.2",
+        "control_name": "AI management system effectiveness evaluation",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "ISO 42001 9.1.2: AI management system effectiveness should be re-evaluated post-incident.",
+        "recommendation": "Add compliance report recommending AIMS effectiveness review."
+    },
+    {
+        "rule_id": "ISO42001-9.1.3",
+        "framework": "iso_42001",
+        "control_id": "9.1.3",
+        "control_name": "AI audit and performance review",
+        "category": "auditing",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 9.1.3: AI system audit findings must be documented during incident.",
+        "recommendation": "Document AI audit findings and triggered anomalies during incident."
+    },
+    {
+        "rule_id": "ISO42001-5.1.1",
+        "framework": "iso_42001",
+        "control_id": "5.1.1",
+        "control_name": "Leadership commitment to AI management system",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 5.1.1: Leadership must be engaged for critical AI system incidents.",
+        "recommendation": "Add notify_incident_commander to escalate critical AI incidents to leadership."
+    },
+    {
+        "rule_id": "ISO42001-5.1.2",
+        "framework": "iso_42001",
+        "control_id": "5.1.2",
+        "control_name": "Policy for AI management",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "deploy_ai_without_approval",
+            "train_model_on_pii_without_consent"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 42001 5.1.2: AI deployment and training must comply with the AI management policy.",
+        "recommendation": "Remove unauthorised AI deployment actions."
+    },
+    {
+        "rule_id": "ISO42001-7.3.1",
+        "framework": "iso_42001",
+        "control_id": "7.3.1",
+        "control_name": "Awareness of AI impacts and responsible AI practices",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_type": [
+                "adversarial_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 7.3.1: Security team must be made aware of AI-specific attack techniques.",
+        "recommendation": "Notify security team with adversarial AI attack details for awareness."
+    },
+    {
+        "rule_id": "ISO42001-7.3.2",
+        "framework": "iso_42001",
+        "control_id": "7.3.2",
+        "control_name": "AI documentation and transparency",
+        "category": "transparency",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 7.3.2: AI system behaviour during incident must be documented for transparency.",
+        "recommendation": "Document AI model behaviour and decision rationale during incident."
+    },
+    {
+        "rule_id": "ISO42001-10.1.1",
+        "framework": "iso_42001",
+        "control_id": "10.1.1",
+        "control_name": "Non-conformity and corrective action for AIMS",
+        "category": "continuous_improvement",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_tags": [
+                "ai_system"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 10.1.1: Non-conformities in AI management must be documented and corrected.",
+        "recommendation": "Create compliance report with corrective actions for AI management non-conformities."
+    }
+]

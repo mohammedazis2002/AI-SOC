@@ -1,0 +1,28 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wazuh Alert Schema",
+  "description": "Validation contract for raw ingested Wazuh JSON logs.",
+  "type": "object",
+  "required": [
+    "timestamp",
+    "rule.level"
+  ],
+  "properties": {
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "agent.ip": {
+      "type": "string"
+    },
+    "rule.id": {
+      "type": ["string", "integer"]
+    },
+    "rule.level": {
+      "type": "integer"
+    },
+    "rule.mitre.tactic": {
+      "type": ["string", "array"]
+    }
+  }
+}

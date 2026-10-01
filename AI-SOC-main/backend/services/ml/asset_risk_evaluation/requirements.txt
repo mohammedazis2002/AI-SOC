@@ -1,0 +1,21 @@
+# Asset Risk Evaluation Service Requirements
+
+# Core dependencies
+fastapi==0.104.1
+uvicorn==0.24.0
+pydantic==2.5.0
+python-dotenv==1.0.0
+
+# MongoDB
+pymongo==4.6.0
+
+# HTTP client (for external APIs in Phase 2)
+requests==2.31.0
+
+# Logging
+python-json-logger==2.0.7
+
+# For testing (optional)
+pytest==7.4.3
+pytest-asyncio==0.21.1
+httpx==0.25.2

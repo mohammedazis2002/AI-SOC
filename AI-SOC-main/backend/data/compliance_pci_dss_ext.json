@@ -1,0 +1,362 @@
+[
+    {
+        "rule_id": "PCI-11.6.1",
+        "framework": "pci_dss_v4",
+        "control_id": "11.6.1",
+        "control_name": "Detect and respond to changes to payment page HTTP headers",
+        "category": "web_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_waf_rule",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde",
+                "payment_page"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 11.6.1: Payment page attacks must trigger WAF rule updates for HTTP header monitoring.",
+        "recommendation": "Add enable_waf_rule to cover payment page skimming vectors."
+    },
+    {
+        "rule_id": "PCI-12.3.1",
+        "framework": "pci_dss_v4",
+        "control_id": "12.3.1",
+        "control_name": "Targeted risk analysis for CDE technologies",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 12.3.1: CDE incidents require targeted risk analysis documentation.",
+        "recommendation": "Add create_compliance_report with CDE-specific risk analysis."
+    },
+    {
+        "rule_id": "PCI-3.3.1",
+        "framework": "pci_dss_v4",
+        "control_id": "3.3.1",
+        "control_name": "SAD (sensitive authentication data) not stored after authorisation",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "capture_disk_image",
+            "create_backup"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde",
+                "cardholder_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "PCI-DSS 3.3.1: Disk images of CDE systems may contain SAD. Requires PCI compliance officer approval.",
+        "recommendation": "Ensure disk images of CDE systems are handled under strict PCI evidence procedures."
+    },
+    {
+        "rule_id": "PCI-8.4.1",
+        "framework": "pci_dss_v4",
+        "control_id": "8.4.1",
+        "control_name": "MFA implemented for non-console access to CDE",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_mfa",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "unauthorized_access",
+                "credential_compromise"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 8.4.1: After CDE credential compromise, MFA must be re-enforced for all non-console access.",
+        "recommendation": "Add enable_mfa for CDE systems following credential incidents."
+    },
+    {
+        "rule_id": "PCI-6.3.1",
+        "framework": "pci_dss_v4",
+        "control_id": "6.3.1",
+        "control_name": "Security vulnerabilities identified and addressed promptly",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "notify_security_team",
+            "patch_system",
+            "create_compliance_report"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 6.3.1: CDE vulnerabilities must follow: notify → patch → document compliance sequence.",
+        "recommendation": "Follow: notify_security_team → patch_system → create_compliance_report."
+    },
+    {
+        "rule_id": "PCI-A1.2.2",
+        "framework": "pci_dss_v4",
+        "control_id": "A1.2.2",
+        "control_name": "Multi-tenancy isolation — no cross-tenant access",
+        "category": "isolation",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_cross_tenant_access",
+            "share_resources_across_tenants"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde",
+                "multi_tenant"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS A1.2.2: Cross-tenant access to CDE resources is strictly prohibited.",
+        "recommendation": "Remove any cross-tenant access grants from the remediation plan."
+    },
+    {
+        "rule_id": "PCI-12.6.2",
+        "framework": "pci_dss_v4",
+        "control_id": "12.6.2",
+        "control_name": "Security awareness program reviewed at least annually",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "phishing",
+                "social_engineering"
+            ]
+        },
+        "blocked_actions": [
+            "close_incident_without_training_review"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "phishing"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "PCI-DSS 12.6.2: Phishing incidents should trigger security awareness programme review.",
+        "recommendation": "Include security awareness remediation in phishing incident closure."
+    },
+    {
+        "rule_id": "PCI-8.3.9",
+        "framework": "pci_dss_v4",
+        "control_id": "8.3.9",
+        "control_name": "Passwords changed if compromised",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "reset_password",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "phishing",
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 8.3.9: Passwords on CDE accounts suspected of compromise must be reset immediately.",
+        "recommendation": "Add reset_password for all CDE accounts involved in the incident."
+    },
+    {
+        "rule_id": "PCI-9.5.1",
+        "framework": "pci_dss_v4",
+        "control_id": "9.5.1",
+        "control_name": "Physical security of POI devices",
+        "category": "physical_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "hardware_tampering",
+                "physical_theft"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 9.5.1: POI device tampering or theft requires immediate security team notification.",
+        "recommendation": "Add notify_security_team and document_incident for POI device incidents."
+    },
+    {
+        "rule_id": "PCI-11.1.2",
+        "framework": "pci_dss_v4",
+        "control_id": "11.1.2",
+        "control_name": "Authorised and unauthorised wireless access points",
+        "category": "wireless_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "isolate_host",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "rogue_access_point",
+                "wireless_intrusion"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 11.1.2: Rogue wireless access points connected to CDE must be isolated.",
+        "recommendation": "Isolate the system connected to the rogue access point."
+    },
+    {
+        "rule_id": "PCI-8.7",
+        "framework": "pci_dss_v4",
+        "control_id": "8.7",
+        "control_name": "All access to system components and cardholder data logged",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde",
+                "cardholder_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 8.7: All access to CDE system components must be logged and reviewed during incidents.",
+        "recommendation": "Add collect_logs for all CDE system access logs."
+    },
+    {
+        "rule_id": "PCI-12.5.2",
+        "framework": "pci_dss_v4",
+        "control_id": "12.5.2",
+        "control_name": "PCI DSS scope documented and verified at least every 12 months",
+        "category": "scope_management",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "notify_security_team",
+            "document_incident",
+            "create_compliance_report"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "data_breach",
+                "network_intrusion"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 12.5.2: CDE breaches trigger necessity to re-verify PCI DSS scope.",
+        "recommendation": "After CDE breach, follow: notify → document → compliance scope review."
+    },
+    {
+        "rule_id": "PCI-10.4.1",
+        "framework": "pci_dss_v4",
+        "control_id": "10.4.1",
+        "control_name": "Critical security controls reviewed at least daily",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_ids",
+            "disable_ips"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 10.4.1: IDS/IPS generating daily alerts for CDE cannot be disabled.",
+        "recommendation": "Do not disable event monitoring. Tune thresholds instead."
+    },
+    {
+        "rule_id": "PCI-6.5.1",
+        "framework": "pci_dss_v4",
+        "control_id": "6.5.1",
+        "control_name": "Changes are managed for bespoke software",
+        "category": "change_management",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "patch_system",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "pci_cde"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 6.5.1: Bespoke software changes must follow backup → patch → document sequence.",
+        "recommendation": "Follow change management sequence for all bespoke CDE software patches."
+    },
+    {
+        "rule_id": "PCI-3.2.1",
+        "framework": "pci_dss_v4",
+        "control_id": "3.2.1",
+        "control_name": "Account data minimisation and disposal",
+        "category": "data_minimization",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "export_cardholder_data",
+            "copy_card_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "cardholder_data",
+                "pci_cde"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "approval_message": "PCI-DSS 3.2.1: Cardholder data exports during incident response require PCI compliance officer approval.",
+        "recommendation": "Get PCI compliance officer approval before exporting any cardholder data."
+    }
+]

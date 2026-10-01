@@ -1,0 +1,552 @@
+[
+    {
+        "rule_id": "CIS-17.1",
+        "framework": "cis_controls_v8",
+        "control_id": "17.1",
+        "control_name": "Designate personnel to manage incident handling",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 17.1: Designated IR personnel must be engaged for high/critical incidents.",
+        "recommendation": "Add notify_incident_commander to formally assign IR responsibility."
+    },
+    {
+        "rule_id": "CIS-17.2",
+        "framework": "cis_controls_v8",
+        "control_id": "17.2",
+        "control_name": "Establish and maintain contact information for reporting incidents",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 17.2: Incident contacts and reporting procedures must be documented.",
+        "recommendation": "Add document_incident with contact/reporting details."
+    },
+    {
+        "rule_id": "CIS-17.3",
+        "framework": "cis_controls_v8",
+        "control_id": "17.3",
+        "control_name": "Establish and maintain an enterprise process for incident management",
+        "category": "incident_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_ticket",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 17.3: Incidents must be tracked via the enterprise incident management system.",
+        "recommendation": "Add create_ticket for formal incident tracking."
+    },
+    {
+        "rule_id": "CIS-17.4",
+        "framework": "cis_controls_v8",
+        "control_id": "17.4",
+        "control_name": "Establish and maintain an incident response plan",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 17.4: IR plan must be maintained and followed.",
+        "recommendation": "Follow the IR plan and document all response steps."
+    },
+    {
+        "rule_id": "CIS-17.5",
+        "framework": "cis_controls_v8",
+        "control_id": "17.5",
+        "control_name": "Assign key roles and responsibilities for incident handling",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 17.5: Key IR roles must be assigned for critical incidents.",
+        "recommendation": "Add notify_incident_commander to trigger role assignments."
+    },
+    {
+        "rule_id": "CIS-17.6",
+        "framework": "cis_controls_v8",
+        "control_id": "17.6",
+        "control_name": "Define mechanisms for communicating during incident response",
+        "category": "communication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 17.6: Communication mechanisms must be used during incident handling.",
+        "recommendation": "Add notify_security_team to activate IR communication channels."
+    },
+    {
+        "rule_id": "CIS-17.7",
+        "framework": "cis_controls_v8",
+        "control_id": "17.7",
+        "control_name": "Conduct routine incident response exercises",
+        "category": "testing",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "CIS Controls v8 17.7: IR exercises should be triggered by critical incidents.",
+        "recommendation": "Schedule IR exercise as post-incident action."
+    },
+    {
+        "rule_id": "CIS-17.8",
+        "framework": "cis_controls_v8",
+        "control_id": "17.8",
+        "control_name": "Conduct post-incident reviews",
+        "category": "continuous_improvement",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 17.8: Post-incident review must be conducted for high/critical incidents.",
+        "recommendation": "Add create_compliance_report with post-incident review findings."
+    },
+    {
+        "rule_id": "CIS-17.9",
+        "framework": "cis_controls_v8",
+        "control_id": "17.9",
+        "control_name": "Establish and maintain security incident thresholds",
+        "category": "incident_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 17.9: Incident severity classification must be documented.",
+        "recommendation": "Add document_incident with severity classification."
+    },
+    {
+        "rule_id": "CIS-8.1",
+        "framework": "cis_controls_v8",
+        "control_id": "8.1",
+        "control_name": "Establish and maintain an audit log management process",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_audit_logging",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 8.1: Audit log management must be established and followed.",
+        "recommendation": "Enable audit logging on all systems involved in the incident."
+    },
+    {
+        "rule_id": "CIS-8.2",
+        "framework": "cis_controls_v8",
+        "control_id": "8.2",
+        "control_name": "Collect audit logs",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 8.2: Audit logs must be collected from all affected assets.",
+        "recommendation": "Add collect_logs targeting all affected systems."
+    },
+    {
+        "rule_id": "CIS-8.3",
+        "framework": "cis_controls_v8",
+        "control_id": "8.3",
+        "control_name": "Protect audit logs from unauthorized access or modification",
+        "category": "log_integrity",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "modify_logs",
+            "clear_logs"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 8.3: Audit logs must be protected from unauthorized modification or deletion.",
+        "recommendation": "Remove all log deletion/modification actions from the plan."
+    },
+    {
+        "rule_id": "CIS-8.5",
+        "framework": "cis_controls_v8",
+        "control_id": "8.5",
+        "control_name": "Collect detailed audit logs",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 8.5: Detailed audit logs must be collected for high/critical incidents.",
+        "recommendation": "Collect granular logs including IP, user, resource, action, timestamp."
+    },
+    {
+        "rule_id": "CIS-8.10",
+        "framework": "cis_controls_v8",
+        "control_id": "8.10",
+        "control_name": "Retain audit logs as per retention requirements",
+        "category": "records_retention",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "preserve_evidence",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 8.10: Audit logs must be retained per organizational retention policy.",
+        "recommendation": "Add preserve_evidence to maintain logs for minimum retention period."
+    },
+    {
+        "rule_id": "CIS-8.11",
+        "framework": "cis_controls_v8",
+        "control_id": "8.11",
+        "control_name": "Conduct regular audit log reviews",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 8.11: Audit logs must be regularly reviewed during incidents.",
+        "recommendation": "Systematically review collected logs for incident indicators."
+    },
+    {
+        "rule_id": "CIS-6.1",
+        "framework": "cis_controls_v8",
+        "control_id": "6.1",
+        "control_name": "Establish an access granting and revoking process",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "revoke_permissions",
+            "document_incident",
+            "notify_security_team"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "privilege_abuse"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 6.1: Privilege abuse must trigger revoke → document → notify sequence.",
+        "recommendation": "Follow access revocation sequence for insider threat incidents."
+    },
+    {
+        "rule_id": "CIS-6.2",
+        "framework": "cis_controls_v8",
+        "control_id": "6.2",
+        "control_name": "Establish an access revoking process — centralized auth",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_mfa",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "credential_compromise"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 6.2: Centralized authentication must be enforced after credential incidents.",
+        "recommendation": "Enable MFA through centralized auth system."
+    },
+    {
+        "rule_id": "CIS-6.5",
+        "framework": "cis_controls_v8",
+        "control_id": "6.5",
+        "control_name": "Require MFA for externally-exposed applications",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_mfa",
+            "bypass_mfa",
+            "allow_remote_access_without_mfa"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 6.5: MFA is required for all external access and cannot be bypassed.",
+        "recommendation": "Remove MFA-disabling/bypassing actions."
+    },
+    {
+        "rule_id": "CIS-6.8",
+        "framework": "cis_controls_v8",
+        "control_id": "6.8",
+        "control_name": "Define and maintain role-based access control",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "revoke_permissions",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "privilege_escalation",
+                "insider_threat"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 6.8: RBAC must be enforced — excessive privileges must be revoked.",
+        "recommendation": "Add revoke_permissions to enforce RBAC post-incident."
+    },
+    {
+        "rule_id": "CIS-5.1",
+        "framework": "cis_controls_v8",
+        "control_id": "5.1",
+        "control_name": "Establish and maintain an inventory of all accounts",
+        "category": "asset_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "disable_account",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "insider_threat"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 5.1: Compromised accounts must be disabled and inventoried.",
+        "recommendation": "Add disable_account and update account inventory."
+    },
+    {
+        "rule_id": "CIS-5.2",
+        "framework": "cis_controls_v8",
+        "control_id": "5.2",
+        "control_name": "Use unique passwords per account",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "use_shared_credentials",
+            "create_shared_account"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 5.2: Shared credentials are prohibited. Each account requires a unique password.",
+        "recommendation": "Remove shared credential actions."
+    },
+    {
+        "rule_id": "CIS-5.3",
+        "framework": "cis_controls_v8",
+        "control_id": "5.3",
+        "control_name": "Disable dormant accounts",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "disable_account",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "CIS Controls v8 5.3: Dormant accounts exploited in incidents must be disabled.",
+        "recommendation": "Add disable_account for all dormant accounts accessed during incident."
+    },
+    {
+        "rule_id": "CIS-10.1",
+        "framework": "cis_controls_v8",
+        "control_id": "10.1",
+        "control_name": "Deploy and maintain anti-malware software",
+        "category": "endpoint_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_av",
+            "disable_edr",
+            "uninstall_agent"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "CIS Controls v8 10.1: Anti-malware must remain deployed and active.",
+        "recommendation": "Do not disable anti-malware. Activate EDR for malware incidents."
+    },
+    {
+        "rule_id": "CIS-11.1",
+        "framework": "cis_controls_v8",
+        "control_id": "11.1",
+        "control_name": "Establish and maintain a data recovery process",
+        "category": "backup",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 11.1: Backup must be confirmed before system changes.",
+        "recommendation": "Add create_backup before any major remediation actions."
+    },
+    {
+        "rule_id": "CIS-11.5",
+        "framework": "cis_controls_v8",
+        "control_id": "11.5",
+        "control_name": "Test data recovery",
+        "category": "backup",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "cis_controls"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "CIS Controls v8 11.5: Data recovery capability must be tested/used during ransomware incidents.",
+        "recommendation": "Add restore_from_backup to validate recovery capability."
+    }
+]

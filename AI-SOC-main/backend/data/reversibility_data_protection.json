@@ -1,0 +1,354 @@
+[
+    {
+        "action_type": "encrypt_data",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "decrypt_data",
+        "reversal_steps": [
+            "Decrypt using the same key and algorithm: openssl dec -d -aes-256-gcm -in encrypted.bin -out original.dat"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Symmetric encryption (AES-256-GCM per NIST FIPS 197) is reversible using the same key. Key must be preserved and accessible from KMS. Decryption restores original plaintext.",
+        "source_reference": "NIST FIPS 197 AES — https://csrc.nist.gov/publications/detail/fips/197/final | NIST SP 800-175B Cryptographic Standards — https://csrc.nist.gov/publications/detail/sp/800-175b/rev-1/final",
+        "risk_if_not_reversed": "Data remains encrypted — access requires decryption key. Low risk if key is secured.",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "decrypt_data",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "re_encrypt_data",
+        "reversal_steps": [
+            "Re-encrypt using the same or new key if data was decrypted for analysis"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Decryption exposes plaintext. If decrypted for authorized investigation, data must be re-encrypted after analysis. Key management must ensure the re-encryption key is stored in KMS.",
+        "source_reference": "NIST SP 800-57 Key Management — https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final",
+        "risk_if_not_reversed": "Data remains in plaintext — elevated exposure risk",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "anonymize_data",
+        "category": "data_protection",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "True anonymization is irreversible by design",
+            "If pseudonymization was used instead, de-pseudonymize using the mapping table"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": false,
+        "reversal_basis": "GDPR Article 29 WP Opinion 05/2014 on anonymization techniques distinguishes true anonymization (irreversible, not personal data) from pseudonymization (reversible). True anonymization is designed to be irreversible.",
+        "source_reference": "GDPR Art. 5(1)(e) / Art. 29 WP Op 05/2014 on Anonymisation — https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2014/wp216_en.pdf",
+        "risk_if_not_reversed": "Anonymized data cannot be re-identified — any analysis requiring original data is impossible",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "pseudonymize_data",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "de_pseudonymize_data",
+        "reversal_steps": [
+            "Apply inverse transformation using the pseudonymization key/mapping table stored in KMS"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Pseudonymization replaces identifying fields with pseudonyms using a secret mapping (GDPR Rec. 28). Reversal uses the mapping table to restore original identifiers. Requires authorized access to mapping key.",
+        "source_reference": "GDPR Recital 26, 28 / Art. 4(5) — https://gdpr-info.eu/recitals/no-26/ | ENISA Pseudonymisation — https://www.enisa.europa.eu/publications/pseudonymisation-techniques",
+        "risk_if_not_reversed": "Data remains pseudonymized — valid for many analytics use cases",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "classify_sensitive_data",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "update_data_classification",
+        "reversal_steps": [
+            "Re-run classification scan with corrected rules",
+            "Update classification labels in the DLP tool or metadata store"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Data classification is metadata tagging. Classification labels can be updated or reclassified at any time via DLP tools (Macie, Purview, Nightfall). No data modification occurs.",
+        "source_reference": "Microsoft Purview: Data classification — https://docs.microsoft.com/en-us/microsoft-365/compliance/data-classification-overview | AWS Macie — https://docs.aws.amazon.com/macie/latest/user/",
+        "risk_if_not_reversed": "Incorrect classification may lead to over- or under-protection of data",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "watermark_document",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "remove_document_watermark",
+        "reversal_steps": [
+            "Use document processing tool to remove watermark layer",
+            "Or restore from pre-watermark backup"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": false,
+        "reversal_basis": "Digital watermarks can be visible (easily removed via editing) or steganographic (harder). For forensic watermarks, removal may degrade document quality. If original backup exists, restoration is simple.",
+        "source_reference": "NIST: Digital watermarking overview — https://csrc.nist.gov/glossary/term/digital_watermark",
+        "risk_if_not_reversed": "Watermarked document has tracking identifier — minor operational impact",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "enable_dlp_policy",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "disable_dlp_policy",
+        "reversal_steps": [
+            "Disable or modify DLP policy in the DLP management console (Purview, Nightfall, Broadcom DLP)"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "DLP policies are configuration-based and can be enabled/disabled at any time. Reversal requires security team approval as disabling DLP removes a GDPR/PCI compliance control.",
+        "source_reference": "ISO 27001:2022 A.8.12 Data leakage prevention | NIST 800-53 SI-12",
+        "risk_if_not_reversed": "N/A — enabling DLP is a hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "secure_data_deletion",
+        "category": "data_protection",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Securely deleted data is irrecoverable by design (NIST 800-88)",
+            "Original data must have been backed up before deletion to restore"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "NIST SP 800-88 Rev.1 defines secure deletion as the rendering of data unrecoverable. Multi-pass overwrite or cryptographic erase (for SSDs, encrypted volumes) ensures data cannot be recovered even with forensic tools.",
+        "source_reference": "NIST SP 800-88 Rev.1 — Guidelines for Media Sanitization — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf",
+        "risk_if_not_reversed": "Data permanently destroyed — only restoration path is from backup",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "delete_data",
+        "category": "data_protection",
+        "reversible": false,
+        "reversal_method": "restore_from_backup",
+        "reversal_steps": [
+            "Restore from most recent backup",
+            "Check recycle bin or trash before initiating full backup restore"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Standard file/record deletion may be recoverable from recycle bin, file system journal, or database transaction log within a short window. Beyond this window, backup restoration is required.",
+        "source_reference": "NIST SP 800-61r2 §3.3.4 Recovery — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf",
+        "risk_if_not_reversed": "Data permanently lost if no backup exists",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "shred_data",
+        "category": "data_protection",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Shredded data cannot be recovered at any cost",
+            "File must be restored from offline/air-gapped backup if available"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "File shredding (e.g., Gutmann 35-pass, DoD 5220.22-M) overwrites the file's disk sectors multiple times. NIST SP 800-88 confirms this renders data unrecoverable with any known technique.",
+        "source_reference": "NIST SP 800-88 Rev.1 §2.3 — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-88r1.pdf",
+        "risk_if_not_reversed": "Data permanently irrecoverable",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "enable_encryption_at_rest",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "disable_encryption_at_rest",
+        "reversal_steps": [
+            "Disable at-rest encryption via cloud provider or OS settings",
+            "Note: Disabling requires security team approval — it removes a compliance control"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Encryption-at-rest can be enabled/disabled on cloud volumes (EBS, Azure Disk, GCP PD). On OS-level (BitLocker, LUKS), disabling requires decryption of the volume which is a lengthy process.",
+        "source_reference": "NIST SP 800-111 Storage Encryption — https://csrc.nist.gov/publications/detail/sp/800-111/final | CIS Controls v8 11.3",
+        "risk_if_not_reversed": "N/A — enabling encryption is a hardening/compliance measure",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "enable_encryption_in_transit",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "allow_unencrypted_transit",
+        "reversal_steps": [
+            "Disable TLS enforcement on the service",
+            "Note: Requires security team approval — removes PCI/HIPAA/NIST compliance control"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "TLS enforcement is a server-side configuration. It can be toggled but reversion is a compliance violation for PCI-DSS (4.2), HIPAA §164.312(e), and NIST SC-8. Requires explicit security team approval.",
+        "source_reference": "PCI-DSS v4 §4.2 — https://www.pcisecuritystandards.org/documents/PCI-DSS-v4_0.pdf | NIST 800-53 SC-8",
+        "risk_if_not_reversed": "N/A — enabling TLS is a hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "rotate_encryption_keys",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "restore_previous_encryption_key_version",
+        "reversal_steps": [
+            "Use KMS key versioning to restore prior key version",
+            "AWS: aws kms get-key-policy / disable new version",
+            "Azure Key Vault: restore previous key version via portal"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Modern KMS solutions (AWS KMS, Azure Key Vault, HashiCorp Vault) support key versioning. Rotation creates a new key version. Previous versions remain available for decryption of old data. Reverting active encryption key requires re-wrapping data keys.",
+        "source_reference": "NIST SP 800-57 Part 1 Rev5 §5.3 — https://csrc.nist.gov/publications/detail/sp/800-57-part-1/rev-5/final | AWS KMS: Key rotation — https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html",
+        "risk_if_not_reversed": "Old services using prior key version may fail to decrypt new data",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "revoke_encryption_key",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "restore_encryption_key",
+        "reversal_steps": [
+            "AWS KMS: Re-enable disabled key: aws kms enable-key --key-id <key-id>",
+            "Azure Key Vault: Set key to enabled state via portal or CLI"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "KMS keys can be disabled (revoked) rather than deleted. Disabled keys cannot be used for crypto operations but can be re-enabled. Deleted keys are irreversible after the key deletion window (7-30 days in AWS).",
+        "source_reference": "AWS KMS: DisableKey — https://docs.aws.amazon.com/kms/latest/APIReference/API_DisableKey.html | Azure Key Vault: Key operations",
+        "risk_if_not_reversed": "All data encrypted with this key becomes inaccessible",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "require_data_approval",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "remove_data_approval_requirement",
+        "reversal_steps": [
+            "Remove approval workflow from data access request process in the DAG/DLP tool"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Data access approval workflows are configurable DLP/governance tool settings. They can be enabled/disabled by data stewards. Reversal removes friction from data access requests.",
+        "source_reference": "NIST 800-53 AC-3 Access Enforcement / AC-6 Least Privilege",
+        "risk_if_not_reversed": "Data access requires manual approval — operational friction but security benefit",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "disable_public_sharing",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "re_enable_public_sharing",
+        "reversal_steps": [
+            "Re-enable public sharing in SaaS admin console (Google Workspace, Microsoft 365, SharePoint)"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Public sharing is an organizational policy setting in SaaS platforms. Toggling it restricts/allows external link sharing. Reversal requires security team and business justification.",
+        "source_reference": "ISO 27001:2022 A.5.10 / CIS Controls 3.3 — Configure Data Access Control Lists",
+        "risk_if_not_reversed": "Users cannot share files externally — business process impact",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "create_breach_notification",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "retract_breach_notification",
+        "reversal_steps": [
+            "Contact regulatory body to correct/retract notification if issued in error",
+            "Note: Regulatory bodies have formal processes for notification corrections"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "GDPR Art. 33 allows notification correction/rectification if initial information proved incorrect. SAR corrections must be submitted formally. Complete retraction is rare and must be agreed with the supervisory authority.",
+        "source_reference": "GDPR Art. 33 — https://gdpr-info.eu/art-33-gdpr/ | ICO Breach notification guidance",
+        "risk_if_not_reversed": "Incorrect notification may mislead regulators",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "enable_access_logging",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "disable_access_logging",
+        "reversal_steps": [
+            "Disable access logging via cloud provider settings",
+            "Note: Disabling removes audit trail — requires security team approval and may violate compliance requirements"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Access logging is a configurable feature (AWS S3 server access logging, CloudTrail, Azure Monitor). Enabling is a hardening measure. Disabling after an incident removes audit trail evidence.",
+        "source_reference": "CIS Controls v8 8.2 — Collect Audit Logs | PCI-DSS v4 10.2",
+        "risk_if_not_reversed": "N/A — enabling access logging is a compliance hardening measure",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "enable_versioning",
+        "category": "data_protection",
+        "reversible": true,
+        "reversal_method": "suspend_versioning",
+        "reversal_steps": [
+            "Suspend versioning via storage provider settings",
+            "Note: Prior versions remain — suspending stops new version creation only"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Storage versioning (S3, GCS, Blob) is a configurable feature. Suspending stops creating new versions; existing versions are preserved. Enabling is always safe.",
+        "source_reference": "AWS S3: Versioning — https://docs.aws.amazon.com/AmazonS3/latest/userguide/Versioning.html",
+        "risk_if_not_reversed": "N/A — enabling versioning is a data protection hardening measure",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "invalidate_application_cache",
+        "category": "data_protection",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Cache cannot be un-invalidated",
+            "Application will rebuild cache automatically from source data on next request"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Cache invalidation purges cached data. The application automatically re-populates the cache from the source of truth on the next request. This is a standard cache management operation with no lasting impact.",
+        "source_reference": "OWASP: Caching — https://cheatsheetseries.owasp.org/cheatsheets/Cache_Busting_Cheat_Sheet.html",
+        "risk_if_not_reversed": "Temporary performance degradation until cache warms up — self-resolving",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "invalidate_refresh_token",
+        "category": "data_protection",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Refresh tokens cannot be un-invalidated",
+            "User must re-authenticate to get a new refresh token"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "OAuth2 refresh tokens are server-side opaque tokens. Revocation via RFC 7009 is permanent. Users simply re-authenticate to receive new access + refresh token pair.",
+        "source_reference": "RFC 7009 Token Revocation — https://tools.ietf.org/html/rfc7009 | RFC 6749 §10.4",
+        "risk_if_not_reversed": "User session ended — self-resolving on re-authentication",
+        "estimated_reversal_time_minutes": 1
+    }
+]

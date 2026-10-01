@@ -1,0 +1,343 @@
+[
+    {
+        "rule_id": "HIPAA-164.312a1",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(1)",
+        "control_name": "Access Control - Unique User Identification",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "create_shared_account",
+            "share_credentials",
+            "grant_unauthorized_access",
+            "enable_generic_account"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi",
+                "healthcare"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(a)(1): Cannot create shared access to PHI systems. Every user must have unique credentials.",
+        "recommendation": "Use only individually named user accounts for PHI systems."
+    },
+    {
+        "rule_id": "HIPAA-164.312b",
+        "framework": "hipaa",
+        "control_id": "§164.312(b)",
+        "control_name": "Audit Controls — Hardware, Software, and Procedural Mechanisms",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "stop_audit",
+            "turn_off_monitoring",
+            "clear_audit_logs",
+            "delete_logs",
+            "disable_edr"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(b): Audit controls on PHI systems cannot be disabled or cleared.",
+        "recommendation": "Maintain all logging and audit mechanisms. Export logs before any system changes."
+    },
+    {
+        "rule_id": "HIPAA-164.308a6ii",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(6)(ii)",
+        "control_name": "Security Incident Response and Reporting",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "data_breach",
+                "unauthorized_access",
+                "phi_exposure",
+                "ransomware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(6)(ii): Security incidents involving PHI must be formally documented.",
+        "recommendation": "Add document_incident action with PHI breach documentation."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7ii",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(ii)",
+        "control_name": "Disaster Recovery - Data Backup Plan",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "must_execute_before": [
+            "patch_system",
+            "modify_config",
+            "delete_file"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(7)(ii): Exact copy of PHI must be backed up before system changes.",
+        "recommendation": "Add create_backup before any system modification on PHI systems."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2iv",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(iv)",
+        "control_name": "Automatic logoff from PHI systems",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "force_logout",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "unauthorized_access",
+                "insider_threat"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.312(a)(2)(iv): Unauthorized access to PHI systems requires forced termination of active sessions.",
+        "recommendation": "Add force_logout_all_sessions targeting the compromised PHI system."
+    },
+    {
+        "rule_id": "HIPAA-164.312c1",
+        "framework": "hipaa",
+        "control_id": "§164.312(c)(1)",
+        "control_name": "Integrity Controls — PHI not improperly altered or destroyed",
+        "category": "data_integrity",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_data",
+            "wipe_disk",
+            "truncate_table",
+            "shred_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(c)(1): PHI must not be improperly altered or destroyed. Deletion requires compliance officer approval.",
+        "recommendation": "Obtain HIPAA compliance officer approval before deleting PHI data."
+    },
+    {
+        "rule_id": "HIPAA-164.312e1",
+        "framework": "hipaa",
+        "control_id": "§164.312(e)(1)",
+        "control_name": "Transmission Security — Guard against unauthorized access during transmission",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "disable_tls",
+            "downgrade_encryption",
+            "enable_unencrypted_transfer"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(e)(1): PHI transmission must always be encrypted. Cannot disable encryption.",
+        "recommendation": "Remove encryption-disabling actions. PHI requires encrypted channels at all times."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1ii",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(ii)",
+        "control_name": "Risk Analysis — Assess vulnerabilities to PHI",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.308(a)(1)(ii): Security incidents involving PHI require updated risk analysis documentation.",
+        "recommendation": "Add create_compliance_report to document PHI risk posture post-incident."
+    },
+    {
+        "rule_id": "HIPAA-164.308a3",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(3)",
+        "control_name": "Workforce Security — Authorization and Supervision",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "revoke_permissions",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "privilege_abuse",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(3): Workforce authorization violations require immediate permission revocation.",
+        "recommendation": "Add revoke_permissions or disable_account for the offending user."
+    },
+    {
+        "rule_id": "HIPAA-164.308a4",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(4)",
+        "control_name": "Information Access Management",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_admin_access",
+            "add_to_privileged_group"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(4): Access to PHI must follow minimum necessary principles. Cannot grant broad admin access.",
+        "recommendation": "Apply least privilege principle. Grant only minimum necessary PHI access."
+    },
+    {
+        "rule_id": "HIPAA-164.310d2",
+        "framework": "hipaa",
+        "control_id": "§164.310(d)(2)",
+        "control_name": "Device and Media Controls — Disposal and Re-use",
+        "category": "media_controls",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "wipe_disk",
+            "factory_reset",
+            "decommission_asset"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "HIPAA §164.310(d)(2): PHI media disposal requires formal sanitation procedures and compliance officer approval.",
+        "recommendation": "Complete documented media sanitation before device disposal or re-use."
+    },
+    {
+        "rule_id": "HIPAA-164.312d",
+        "framework": "hipaa",
+        "control_id": "§164.312(d)",
+        "control_name": "Authentication — Verify identity before granting PHI access",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "bypass_mfa",
+            "disable_mfa",
+            "remove_mfa_requirement"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(d): Identity verification (MFA) cannot be disabled on PHI systems.",
+        "recommendation": "Never disable authentication mechanisms on PHI-scoped systems."
+    },
+    {
+        "rule_id": "HIPAA-164.308a5",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(5)",
+        "control_name": "Security Awareness and Training — Malicious Software",
+        "category": "endpoint_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_av",
+            "disable_edr",
+            "uninstall_agent"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(5): Anti-malware protection cannot be disabled on PHI systems.",
+        "recommendation": "Malware protection must remain active on all PHI-processing systems."
+    },
+    {
+        "rule_id": "HIPAA-164.308a1iiA",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(1)(ii)(A)",
+        "control_name": "Risk Analysis — Identification of potential threats to PHI",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(1)(ii)(A): PHI incidents require security team notification for risk analysis.",
+        "recommendation": "Add notify_security_team with PHI risk context."
+    }
+]

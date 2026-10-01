@@ -1,0 +1,145 @@
+[
+    {
+        "rule_id": "DPDP-8.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 8(1)",
+        "control_name": "Data fiduciary must ensure accuracy, completeness, and consistency of personal data",
+        "category": "data_integrity",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_data",
+            "shred_data",
+            "wipe_disk"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "dpdp"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "DPDP Act 2023 Section 8(1): Personal data of Indian individuals must not be altered or destroyed without legal justification.",
+        "recommendation": "Obtain legal/DPO approval before deleting Indian personal data."
+    },
+    {
+        "rule_id": "DPDP-8.6",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 8(6)",
+        "control_name": "Notify Board in the event of a personal data breach",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_data_protection_authority",
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "dpdp"
+            ],
+            "incident_type": [
+                "data_breach",
+                "unauthorized_access",
+                "data_exposure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "DPDP Act 2023 Section 8(6): Must notify the Data Protection Board of India in event of personal data breach.",
+        "recommendation": "Add notify_data_protection_authority targeting the DPBI."
+    },
+    {
+        "rule_id": "DPDP-8.7",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 8(7)",
+        "control_name": "Notify affected data principals of breach",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "dpdp"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "DPDP Act 2023 Section 8(7): Affected data principals must be individually notified of the breach.",
+        "recommendation": "Add notify_affected_users with breach details."
+    },
+    {
+        "rule_id": "DPDP-11.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 11(1)",
+        "control_name": "Data Erasure — Erase data when purpose is fulfilled",
+        "category": "data_retention",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "delete_data",
+            "shred_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "DPDP Act 2023 Section 11(1): Data erasure requests must be validated to ensure legal basis.",
+        "recommendation": "Validate data erasure against DPDP retention and purpose policies."
+    },
+    {
+        "rule_id": "DPDP-ENCRYPT",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 4 (Reasonable Security)",
+        "control_name": "Reasonable security safeguards for personal data",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "downgrade_encryption",
+            "export_unencrypted_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "dpdp"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "DPDP Act 2023: Reasonable security safeguards (encryption) cannot be disabled for Indian personal data.",
+        "recommendation": "Keep encryption active for all systems processing Indian personal data."
+    },
+    {
+        "rule_id": "DPDP-CONSENT",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 6 (Consent)",
+        "control_name": "Processing must be based on valid consent",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_access",
+            "enable_new_data_processing"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "DPDP Act 2023 Section 6: Cannot enable new data processing or grant access to Indian personal data without valid consent.",
+        "recommendation": "Validate consent before any new access or processing of Indian personal data."
+    }
+]

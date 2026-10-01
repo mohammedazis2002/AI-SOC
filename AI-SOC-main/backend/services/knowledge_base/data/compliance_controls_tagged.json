@@ -1,0 +1,2740 @@
+[
+  {
+    "framework": "NIST_CSF",
+    "control_id": "GV.OC-01",
+    "control_name": "Mission Objectives",
+    "description": "Organizational mission context is established and communicated.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "GV - GOVERN"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "c": false,
+      "i": true,
+      "a": false
+    },
+    "severity_weight": 0.5,
+    "llama_tagged": true
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "ID.AM-01",
+    "control_name": "Asset Inventory",
+    "description": "Software assets (apps, OS, FW, tools) inventoried.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "ID - IDENTIFY",
+      "ID.AM - Asset Management"
+    ],
+    "mitre_technique_ids": [
+      "T1592",
+      "T1590"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.6,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "ID.AM-02",
+    "control_name": "Software Inventory",
+    "description": "Hardware assets on network inventoried.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "ID - IDENTIFY",
+      "ID.AM - Asset Management"
+    ],
+    "mitre_technique_ids": [
+      "T1592"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.6,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "ID.RA-01",
+    "control_name": "Vulnerability Identification",
+    "description": "Assets identified for vulnerability identification.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "ID - IDENTIFY",
+      "ID.RA - Risk Assessment"
+    ],
+    "mitre_technique_ids": [
+      "T1190",
+      "T1203"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "ID.RA-06",
+    "control_name": "Risk Response",
+    "description": "Risk responses are chosen, prioritized, planned, tracked, communicated.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "ID - IDENTIFY",
+      "ID.RA - Risk Assessment"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": true
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.AA-01",
+    "control_name": "Identity Management",
+    "description": "Identities and credentials managed for authorized assets and individuals.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.AA - Identity Management, Authentication and Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1110",
+      "T1556"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.AA-02",
+    "control_name": "Authentication",
+    "description": "Identities verified before access granted.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.AA - Identity Management, Authentication and Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1110",
+      "T1078",
+      "T1556"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.AA-03",
+    "control_name": "IAM Lifecycle",
+    "description": "Users, services, and hardware managed consistently.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.AA - Identity Management, Authentication and Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1098",
+      "T1136",
+      "T1531"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.AA-05",
+    "control_name": "Access Permissions",
+    "description": "Access permissions managed incorporating least privilege principles.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.AA - Identity Management, Authentication and Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548",
+      "T1134"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.AA-06",
+    "control_name": "Remote Access",
+    "description": "Remote access managed to prevent unauthorized access.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.AA - Identity Management, Authentication and Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1133",
+      "T1021"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.AT-01",
+    "control_name": "Security Awareness",
+    "description": "Personnel educated on cybersecurity responsibilities.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.AT - Awareness and Training"
+    ],
+    "mitre_technique_ids": [
+      "T1566"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.6,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.DS-01",
+    "control_name": "Data at Rest",
+    "description": "Data-at-rest protected.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.DS - Data Security"
+    ],
+    "mitre_technique_ids": [
+      "T1486",
+      "T1530",
+      "T1552"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.DS-02",
+    "control_name": "Data in Transit",
+    "description": "Data-in-transit protected.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.DS - Data Security"
+    ],
+    "mitre_technique_ids": [
+      "T1040",
+      "T1557"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.DS-10",
+    "control_name": "Data in Use",
+    "description": "Data-in-use protected.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.DS - Data Security"
+    ],
+    "mitre_technique_ids": [
+      "T1055",
+      "T1003"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.IR-01",
+    "control_name": "Network Segmentation",
+    "description": "Networks and environments protected from unauthorized logical access.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.IR - Technology Infrastructure Resilience"
+    ],
+    "mitre_technique_ids": [
+      "T1021",
+      "T1210"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "PR.PS-01",
+    "control_name": "Configuration Management",
+    "description": "Configuration management practices applied.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "PR - PROTECT",
+      "PR.PS - Platform Security"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1490"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "DE.AE-02",
+    "control_name": "Event Analysis",
+    "description": "Potentially adverse events analyzed to characterize the events.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "DE - DETECT",
+      "DE.AE - Adverse Event Analysis"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1055"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "DE.CM-01",
+    "control_name": "Network Monitoring",
+    "description": "Networks and network services monitored for anomalies.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "DE - DETECT",
+      "DE.CM - Continuous Monitoring"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1041",
+      "T1071"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "DE.CM-03",
+    "control_name": "Personnel Activity",
+    "description": "Personnel activity monitored for unauthorized behavior.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "DE - DETECT",
+      "DE.CM - Continuous Monitoring"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1530"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "DE.CM-06",
+    "control_name": "External Service Monitoring",
+    "description": "External service activity monitored.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "DE - DETECT",
+      "DE.CM - Continuous Monitoring"
+    ],
+    "mitre_technique_ids": [
+      "T1195",
+      "T1199"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "RS.MA-01",
+    "control_name": "Incident Execution",
+    "description": "Incident response plan executed.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "RS - RESPOND",
+      "RS.MA - Incident Management"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": true
+  },
+  {
+    "framework": "NIST_CSF",
+    "control_id": "RC.RP-01",
+    "control_name": "Recovery Execution",
+    "description": "Recovery plan executed to restore assets.",
+    "parent_chain": [
+      "NIST CSF 2.0",
+      "RC - RECOVER",
+      "RC.RP - Incident Recovery Plan Execution"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": true
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-01.01",
+    "control_name": "Enterprise Asset Inventory",
+    "description": "Actively manage all enterprise assets.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 01 - Inventory and Control of Enterprise Assets"
+    ],
+    "mitre_technique_ids": [
+      "T1592",
+      "T1590"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-02.01",
+    "control_name": "Software Inventory",
+    "description": "Maintain inventory of authorized software.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 02 - Inventory and Control of Software Assets"
+    ],
+    "mitre_technique_ids": [
+      "T1204",
+      "T1218"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-03.03",
+    "control_name": "Data Protection",
+    "description": "Protect sensitive data.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 03 - Data Protection"
+    ],
+    "mitre_technique_ids": [
+      "T1486",
+      "T1530",
+      "T1041"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-04.01",
+    "control_name": "Vulnerability Management",
+    "description": "Establish and maintain vulnerability management process.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 04 - Vulnerability Management"
+    ],
+    "mitre_technique_ids": [
+      "T1190",
+      "T1203",
+      "T1068"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-05.01",
+    "control_name": "Account Management",
+    "description": "Establish and maintain account inventory.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 05 - Account Management"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1098",
+      "T1136"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-05.02",
+    "control_name": "Administrator Accounts",
+    "description": "Use unique passwords, ensure mFA for privileged accounts.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 05 - Account Management"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1110"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-06.01",
+    "control_name": "Access Control Management",
+    "description": "Establish an access control process.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 06 - Access Control Management"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548",
+      "T1134"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-08.01",
+    "control_name": "Audit Log Management",
+    "description": "Establish and maintain audit log process.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 08 - Audit Log Management"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1070"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-09.01",
+    "control_name": "Email Protection",
+    "description": "Use DNS-based filtering services.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 09 - Email and Web Browser Protections"
+    ],
+    "mitre_technique_ids": [
+      "T1566",
+      "T1071"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-10.01",
+    "control_name": "Malware Defense",
+    "description": "Deploy anti-malware software.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 10 - Malware Defenses"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1204",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-12.01",
+    "control_name": "Network Defense",
+    "description": "Network monitoring and defense.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG2",
+      "Control 12 - Network Infrastructure Management"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1210",
+      "T1021"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-13.01",
+    "control_name": "Network Monitoring",
+    "description": "Perform traffic and log analysis.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG2",
+      "Control 13 - Network Monitoring and Defense"
+    ],
+    "mitre_technique_ids": [
+      "T1041",
+      "T1071",
+      "T1048"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-16.01",
+    "control_name": "Application Security",
+    "description": "Establish and maintain secure application dev practice.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG2",
+      "Control 16 - Application Software Security"
+    ],
+    "mitre_technique_ids": [
+      "T1190",
+      "T1059"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-17.01",
+    "control_name": "Incident Response",
+    "description": "Designate personnel to manage incidents.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG1",
+      "Control 17 - Incident Response Management"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": true
+  },
+  {
+    "framework": "CIS_18",
+    "control_id": "CIS-18.01",
+    "control_name": "Penetration Testing",
+    "description": "Establish penetration testing program.",
+    "parent_chain": [
+      "CIS Controls v8",
+      "IG2",
+      "Control 18 - Penetration Testing"
+    ],
+    "mitre_technique_ids": [
+      "T1595",
+      "T1190"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AC-2",
+    "control_name": "Account Management",
+    "description": "Manage information system accounts including establishment, authorization, review, and disabling.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AC - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1098",
+      "T1136",
+      "T1531"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AC-3",
+    "control_name": "Access Enforcement",
+    "description": "Enforce approved authorizations for logical access.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AC - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AC-6",
+    "control_name": "Least Privilege",
+    "description": "Employ least privilege principle.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AC - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1548",
+      "T1134",
+      "T1078"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AC-7",
+    "control_name": "Unsuccessful Login Attempts",
+    "description": "Enforce limit on consecutive invalid access attempts.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AC - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1110"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AC-17",
+    "control_name": "Remote Access",
+    "description": "Establish usage restrictions for remote access.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AC - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1133",
+      "T1021"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AU-2",
+    "control_name": "Event Logging",
+    "description": "Identify events to be logged.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AU - Audit and Accountability"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1070"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "AU-6",
+    "control_name": "Audit Record Review",
+    "description": "Review and analyze audit records.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "AU - Audit and Accountability"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1070.001"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "CM-6",
+    "control_name": "Configuration Settings",
+    "description": "Establish and document config settings.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "CM - Configuration Management"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1490"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "CM-7",
+    "control_name": "Least Functionality",
+    "description": "Configure system to provide only essential capabilities.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "CM - Configuration Management"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1218"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "IA-2",
+    "control_name": "Identification and Authentication",
+    "description": "Uniquely identify and authenticate users.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "IA - Identification and Authentication"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1110",
+      "T1556"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "IA-5",
+    "control_name": "Authenticator Management",
+    "description": "Manage system authenticators.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "IA - Identification and Authentication"
+    ],
+    "mitre_technique_ids": [
+      "T1552",
+      "T1555",
+      "T1003"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "IR-4",
+    "control_name": "Incident Handling",
+    "description": "Implement incident handling capability.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "IR - Incident Response"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "SC-7",
+    "control_name": "Boundary Protection",
+    "description": "Monitor and control communications at external boundaries.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "SC - System and Communications Protection"
+    ],
+    "mitre_technique_ids": [
+      "T1041",
+      "T1048",
+      "T1071"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "SC-28",
+    "control_name": "Protection of Information at Rest",
+    "description": "Implement cryptographic mechanisms to protect information at rest.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "SC - System and Communications Protection"
+    ],
+    "mitre_technique_ids": [
+      "T1486",
+      "T1530"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "SI-3",
+    "control_name": "Malicious Code Protection",
+    "description": "Implement malicious code protection mechanisms.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "SI - System and Information Integrity"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1204",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "NIST_800_53",
+    "control_id": "SI-4",
+    "control_name": "System Monitoring",
+    "description": "Monitor systems to detect attacks and indicators of attack.",
+    "parent_chain": [
+      "NIST 800-53r5",
+      "SI - System and Information Integrity"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1055",
+      "T1003"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.5.1",
+    "control_name": "Policies for Information Security",
+    "description": "Define and review information security policies.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "5. Organizational Controls"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.5,
+    "llama_tagged": true
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.5.15",
+    "control_name": "Access Control",
+    "description": "Establish rules to control physical/logical access.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "5. Organizational Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.5.16",
+    "control_name": "Identity Management",
+    "description": "Manage full lifecycle of identities.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "5. Organizational Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1098",
+      "T1136"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.5.17",
+    "control_name": "Authentication Information",
+    "description": "Manage authentication information appropriately.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "5. Organizational Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1110",
+      "T1552",
+      "T1003"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.5.23",
+    "control_name": "Information Security for Cloud",
+    "description": "Establish security processes for cloud services.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "5. Organizational Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1530",
+      "T1537",
+      "T1526"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.5.26",
+    "control_name": "Response to Information Security Incidents",
+    "description": "Respond to incidents according to procedures.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "5. Organizational Controls"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.2",
+    "control_name": "Privileged Access Rights",
+    "description": "Restrict and manage privileged access rights.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1134",
+      "T1548"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.3",
+    "control_name": "Information Access Restriction",
+    "description": "Restrict access to information per access control policy.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1530"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.5",
+    "control_name": "Secure Authentication",
+    "description": "Implement secure authentication technologies.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1110",
+      "T1078",
+      "T1556"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.7",
+    "control_name": "Protection Against Malware",
+    "description": "Protect against malware.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1204",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.9",
+    "control_name": "Configuration Management",
+    "description": "Manage configurations including security.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1490"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.12",
+    "control_name": "Data Leakage Prevention",
+    "description": "Apply DLP measures to systems and networks.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1041",
+      "T1048",
+      "T1567"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.15",
+    "control_name": "Logging",
+    "description": "Produce, store, protect and analyze event logs.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1070"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.16",
+    "control_name": "Monitoring Activities",
+    "description": "Monitor networks and applications for anomalous behavior.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1071",
+      "T1059"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.20",
+    "control_name": "Network Security",
+    "description": "Secure and manage networks and network devices.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1021",
+      "T1210"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_27001",
+    "control_id": "A.8.24",
+    "control_name": "Use of Cryptography",
+    "description": "Define and implement rules on cryptography.",
+    "parent_chain": [
+      "ISO 27001:2022",
+      "8. Technological Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1557",
+      "T1040",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "ISO_42001",
+    "control_id": "A.6.1.2",
+    "control_name": "AI Risk Assessment",
+    "description": "Identify and assess risks specific to AI system development and use.",
+    "parent_chain": [
+      "ISO 42001:2023",
+      "A.6 - AI Risk Management"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.7,
+    "llama_tagged": true
+  },
+  {
+    "framework": "ISO_42001",
+    "control_id": "A.6.2.1",
+    "control_name": "Bias and Fairness",
+    "description": "Implement measures to assess and mitigate bias in AI systems.",
+    "parent_chain": [
+      "ISO 42001:2023",
+      "A.6 - AI Risk Management"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.6,
+    "llama_tagged": true
+  },
+  {
+    "framework": "ISO_42001",
+    "control_id": "A.8.4",
+    "control_name": "AI Data Governance",
+    "description": "Manage data used for AI training and operation.",
+    "parent_chain": [
+      "ISO 42001:2023",
+      "A.8 - AI System Life Cycle"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": true
+  },
+  {
+    "framework": "ISO_42001",
+    "control_id": "A.9.3",
+    "control_name": "AI System Transparency",
+    "description": "Provide transparency about AI system capabilities and limitations.",
+    "parent_chain": [
+      "ISO 42001:2023",
+      "A.9 - AI System Transparency"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.6,
+    "llama_tagged": true
+  },
+  {
+    "framework": "ISO_42001",
+    "control_id": "A.10.1",
+    "control_name": "Adversarial Robustness",
+    "description": "Protect AI systems from adversarial inputs and manipulation.",
+    "parent_chain": [
+      "ISO 42001:2023",
+      "A.10 - AI Security"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.5.1.f",
+    "control_name": "Integrity and Confidentiality",
+    "description": "Personal data processed to ensure appropriate security including protection against unauthorized processing.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter II - Principles"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.25",
+    "control_name": "Data Protection by Design",
+    "description": "Implement appropriate technical measures to ensure data protection principles are met by design.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter III - Rights of Data Subject"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.32.1",
+    "control_name": "Security of Processing",
+    "description": "Implement appropriate technical and organizational measures to ensure security appropriate to the risk.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter IV - Controller and Processor"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.32.1.a",
+    "control_name": "Pseudonymisation and Encryption",
+    "description": "Implement pseudonymisation and encryption of personal data.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter IV - Controller and Processor",
+      "Art.32 - Security of Processing"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.32.1.b",
+    "control_name": "Ongoing Confidentiality",
+    "description": "Ensure ongoing confidentiality, integrity, availability and resilience of processing systems.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter IV - Controller and Processor",
+      "Art.32 - Security of Processing"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.32.1.d",
+    "control_name": "Regular Testing",
+    "description": "Regularly test, assess and evaluate the effectiveness of technical and organizational measures.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter IV - Controller and Processor",
+      "Art.32 - Security of Processing"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.33",
+    "control_name": "Breach Notification to Authority",
+    "description": "Notify supervisory authority of personal data breach within 72 hours.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter IV - Controller and Processor"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": true
+  },
+  {
+    "framework": "GDPR",
+    "control_id": "Art.34",
+    "control_name": "Communication to Data Subject",
+    "description": "Communicate personal data breach to data subject without undue delay.",
+    "parent_chain": [
+      "GDPR",
+      "Chapter IV - Controller and Processor"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": true
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.308.a.1",
+    "control_name": "Security Management Process",
+    "description": "Implement policies and procedures to prevent, detect, contain, correct security violations.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.308 - Administrative Safeguards"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.308.a.3",
+    "control_name": "Workforce Authorization",
+    "description": "Implement procedures to authorize access to ePHI.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.308 - Administrative Safeguards"
+    ],
+    "mitre_technique_ids": [
+      "T1078"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.308.a.5",
+    "control_name": "Security Awareness Training",
+    "description": "Train workforce on security awareness.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.308 - Administrative Safeguards"
+    ],
+    "mitre_technique_ids": [
+      "T1566"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.308.a.6",
+    "control_name": "Security Incident Procedures",
+    "description": "Implement policies to address security incidents.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.308 - Administrative Safeguards"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.312.a.1",
+    "control_name": "Access Control",
+    "description": "Implement technical policies restricting access to ePHI.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.312 - Technical Safeguards"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.312.a.2.i",
+    "control_name": "Unique User Identification",
+    "description": "Assign a unique name/number for identifying and tracking user identity.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.312 - Technical Safeguards",
+      "164.312.a - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1078"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.312.a.2.iii",
+    "control_name": "Automatic Logoff",
+    "description": "Implement electronic procedures to terminate sessions after period of inactivity.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.312 - Technical Safeguards",
+      "164.312.a - Access Control"
+    ],
+    "mitre_technique_ids": [
+      "T1078"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.312.b",
+    "control_name": "Audit Controls",
+    "description": "Implement hardware, software, and procedural mechanisms to record and examine ePHI access.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.312 - Technical Safeguards"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1070"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.312.c.1",
+    "control_name": "Integrity Controls",
+    "description": "Implement policies to protect ePHI from improper alteration or destruction.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.312 - Technical Safeguards"
+    ],
+    "mitre_technique_ids": [
+      "T1565",
+      "T1491"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "HIPAA",
+    "control_id": "164.312.e.1",
+    "control_name": "Transmission Security",
+    "description": "Implement technical security measures to guard against unauthorized ePHI access during transmission.",
+    "parent_chain": [
+      "HIPAA Security Rule",
+      "164.312 - Technical Safeguards"
+    ],
+    "mitre_technique_ids": [
+      "T1040",
+      "T1557"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-01.1",
+    "control_name": "Network Security Controls",
+    "description": "Establish and implement network security controls.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 1 - Network Security Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1021",
+      "T1210"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-02.1",
+    "control_name": "Secure Configurations",
+    "description": "Do not use vendor-supplied defaults for system passwords.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 2 - Secure Configurations"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1110"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-03.4",
+    "control_name": "Cardholder Data Protection",
+    "description": "Render PAN unreadable anywhere it is stored.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 3 - Protect Stored Account Data"
+    ],
+    "mitre_technique_ids": [
+      "T1486",
+      "T1530"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-04.2",
+    "control_name": "Strong Cryptography",
+    "description": "Use strong cryptography for transmission of cardholder data.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 4 - Protect Cardholder Data with Strong Cryptography"
+    ],
+    "mitre_technique_ids": [
+      "T1040",
+      "T1557"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-05.1",
+    "control_name": "Anti-Malware",
+    "description": "Deploy anti-malware solutions on all applicable systems.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 5 - Protect All Systems Against Malware"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1204",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-06.3",
+    "control_name": "Vulnerability Management",
+    "description": "Develop secure software and protect systems from known vulnerabilities.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 6 - Develop and Maintain Secure Systems"
+    ],
+    "mitre_technique_ids": [
+      "T1190",
+      "T1203"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-07.2",
+    "control_name": "Restrict Access",
+    "description": "Restrict access to system components and cardholder data by need to know.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 7 - Restrict Access to System Components"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-08.2",
+    "control_name": "User Authentication",
+    "description": "Identify and authenticate access to system components.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 8 - Identify Users and Authenticate Access"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1110",
+      "T1556"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-08.4",
+    "control_name": "MFA Required",
+    "description": "Implement MFA for all access to the cardholder data environment.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 8 - Identify Users and Authenticate Access"
+    ],
+    "mitre_technique_ids": [
+      "T1110",
+      "T1078"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-10.2",
+    "control_name": "Audit Logs",
+    "description": "Implement audit logs to capture all access to system components.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 10 - Log and Monitor All Access"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1070"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-11.3",
+    "control_name": "Penetration Testing",
+    "description": "Implement penetration testing methodology.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 11 - Test Security Regularly"
+    ],
+    "mitre_technique_ids": [
+      "T1595",
+      "T1190"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": false
+  },
+  {
+    "framework": "PCI_DSS",
+    "control_id": "PCI-12.10",
+    "control_name": "Incident Response Plan",
+    "description": "Implement an incident response plan.",
+    "parent_chain": [
+      "PCI-DSS v4.0",
+      "Requirement 12 - Support Information Security Policies"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC6.1",
+    "control_name": "Logical Access Controls",
+    "description": "Implement logical access security software, infrastructure, and architectures.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC6 - Logical and Physical Access Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548",
+      "T1134"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC6.2",
+    "control_name": "Authentication",
+    "description": "Before allowing access, authenticate users and subjects.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC6 - Logical and Physical Access Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1110",
+      "T1556"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC6.3",
+    "control_name": "Role-Based Access",
+    "description": "Create and maintain role-based access controls.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC6 - Logical and Physical Access Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC6.6",
+    "control_name": "Threats from Outside Network",
+    "description": "Implement controls to prevent external threats.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC6 - Logical and Physical Access Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1133",
+      "T1190",
+      "T1046"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC6.8",
+    "control_name": "Malware Prevention",
+    "description": "Implement controls to prevent and detect unauthorized or malicious software.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC6 - Logical and Physical Access Controls"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1204",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC7.1",
+    "control_name": "Anomaly Detection",
+    "description": "Monitor system components for anomalies.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC7 - System Operations"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1059",
+      "T1055"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC7.2",
+    "control_name": "Evaluate Security Events",
+    "description": "Monitor system components for anomalous behavior.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC7 - System Operations"
+    ],
+    "mitre_technique_ids": [
+      "T1071",
+      "T1041",
+      "T1048"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC7.3",
+    "control_name": "Incident Response",
+    "description": "Evaluate identified security incidents.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC7 - System Operations"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "CC8.1",
+    "control_name": "Change Management",
+    "description": "Authorize and implement changes to infrastructure, data, software.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "CC8 - Change Management"
+    ],
+    "mitre_technique_ids": [
+      "T1562",
+      "T1490"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "A1.2",
+    "control_name": "Availability Commitments",
+    "description": "Meet availability commitments and system requirements.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "A1 - Availability"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SOC2",
+    "control_id": "C1.1",
+    "control_name": "Data Classification",
+    "description": "Identify and maintain confidential information.",
+    "parent_chain": [
+      "SOC2 TSC",
+      "C1 - Confidentiality"
+    ],
+    "mitre_technique_ids": [
+      "T1530",
+      "T1041"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-GOV-01",
+    "control_name": "Cybersecurity Governance",
+    "description": "Establish board-level cybersecurity governance framework.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Governance"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.6,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-ID-01",
+    "control_name": "Asset Classification",
+    "description": "Identify and classify critical assets including trading systems.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Identify"
+    ],
+    "mitre_technique_ids": [
+      "T1592"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-PR-01",
+    "control_name": "Access Control",
+    "description": "Implement strong access controls for trading and core systems.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Protect"
+    ],
+    "mitre_technique_ids": [
+      "T1078",
+      "T1548",
+      "T1110"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-PR-02",
+    "control_name": "Encryption",
+    "description": "Encrypt sensitive financial data at rest and in transit.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Protect"
+    ],
+    "mitre_technique_ids": [
+      "T1040",
+      "T1530",
+      "T1557"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-PR-03",
+    "control_name": "Network Security",
+    "description": "Implement network segmentation and monitoring for trading infrastructure.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Protect"
+    ],
+    "mitre_technique_ids": [
+      "T1046",
+      "T1021",
+      "T1210"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-DE-01",
+    "control_name": "Threat Detection",
+    "description": "Implement continuous monitoring for cyber threats to financial systems.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Detect"
+    ],
+    "mitre_technique_ids": [
+      "T1059",
+      "T1041",
+      "T1486"
+    ],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": false
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-RS-01",
+    "control_name": "Incident Response",
+    "description": "Establish cyber incident response capability and report to SEBI within prescribed timelines.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Respond"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-RC-01",
+    "control_name": "Recovery",
+    "description": "Ensure business continuity and recovery of critical market infrastructure.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Recover"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": false,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-RA-01",
+    "control_name": "Risk Assessment",
+    "description": "Conduct annual cyber risk assessment for SEBI-regulated entities.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Risk Assessment"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": true
+  },
+  {
+    "framework": "SEBI_CSCRF",
+    "control_id": "SEBI-TP-01",
+    "control_name": "Third-Party Risk",
+    "description": "Manage cybersecurity risks from third-party vendors and service providers.",
+    "parent_chain": [
+      "SEBI CSCRF 2023",
+      "Third Party Risk"
+    ],
+    "mitre_technique_ids": [
+      "T1195",
+      "T1199"
+    ],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": false
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S4",
+    "control_name": "Consent and Lawful Processing",
+    "description": "Process personal data only with consent or other lawful basis under the Act.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 4 - Grounds for Processing"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S8.1",
+    "control_name": "Data Security",
+    "description": "Implement appropriate technical and organizational measures to ensure security of personal data.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 8 - Obligations of Data Fiduciary"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.95,
+    "llama_tagged": true
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S8.3",
+    "control_name": "Data Minimization",
+    "description": "Collect only such personal data as is necessary for the specified purpose.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 8 - Obligations of Data Fiduciary"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.8,
+    "llama_tagged": true
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S8.6",
+    "control_name": "Data Breach Notification",
+    "description": "Notify Data Protection Board and affected data principals upon personal data breach.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 8 - Obligations of Data Fiduciary"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.9,
+    "llama_tagged": true
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S9",
+    "control_name": "Children's Data",
+    "description": "Process children's personal data with verifiable parental consent.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 9 - Processing of Children's Data"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.75,
+    "llama_tagged": true
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S10",
+    "control_name": "Significant Data Fiduciary",
+    "description": "Additional obligations for Significant Data Fiduciaries including data audits.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 10 - Additional Obligations"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": true,
+      "availability": true
+    },
+    "severity_weight": 0.85,
+    "llama_tagged": true
+  },
+  {
+    "framework": "DPDP",
+    "control_id": "DPDP-S17",
+    "control_name": "Exemptions",
+    "description": "Conditions under which government may exempt certain processing.",
+    "parent_chain": [
+      "India DPDP Act 2023",
+      "Section 17 - Exemptions"
+    ],
+    "mitre_technique_ids": [],
+    "cia_flags": {
+      "confidentiality": true,
+      "integrity": false,
+      "availability": false
+    },
+    "severity_weight": 0.5,
+    "llama_tagged": true
+  }
+]

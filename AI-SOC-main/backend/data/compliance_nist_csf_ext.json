@@ -1,0 +1,295 @@
+[
+    {
+        "rule_id": "NISTCSF-GV.OC-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "GV.OC-1",
+        "control_name": "Organisational context — align security to mission",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 GV.OC-1: Critical incidents must engage leadership aligned to the organisational security mission.",
+        "recommendation": "Add notify_incident_commander for leadership-level incident management."
+    },
+    {
+        "rule_id": "NISTCSF-ID.AM-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "ID.AM-1",
+        "control_name": "Asset Management — inventories of assets maintained",
+        "category": "asset_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "rogue_device",
+                "unknown_asset"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 ID.AM-1: Rogue device incidents require asset inventory update.",
+        "recommendation": "Add document_incident to update asset inventory with newly discovered devices."
+    },
+    {
+        "rule_id": "NISTCSF-ID.RA-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "ID.RA-1",
+        "control_name": "Risk Assessment — vulnerabilities identified and documented",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation",
+                "zero_day"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 ID.RA-1: Exploited vulnerabilities require risk register documentation update.",
+        "recommendation": "Add create_compliance_report with vulnerability risk assessment."
+    },
+    {
+        "rule_id": "NISTCSF-PR.IR-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "PR.IR-2",
+        "control_name": "Protect — Identity Management and Access Control",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_access",
+            "disable_mfa",
+            "create_shared_account"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 PR.IR-2: Identity and access management protections cannot be bypassed.",
+        "recommendation": "Remove unauthorised access grants and MFA disabling from remediation plan."
+    },
+    {
+        "rule_id": "NISTCSF-PR.PS-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "PR.PS-1",
+        "control_name": "Protect — Policy and standards defined for platform security",
+        "category": "hardening",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_config",
+            "update_software"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "NIST CSF 2.0 PR.PS-1: Platform configuration changes require policy-aligned change management approval.",
+        "recommendation": "Set requires_approval=True for production system configuration changes."
+    },
+    {
+        "rule_id": "NISTCSF-DE.CM-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "DE.CM-1",
+        "control_name": "Detect — Continuous monitoring of networks and assets",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_edr",
+            "disable_logging",
+            "stop_audit",
+            "disable_ids"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 DE.CM-1: Continuous monitoring controls must remain active.",
+        "recommendation": "Do not disable monitoring. Tune detection capabilities instead."
+    },
+    {
+        "rule_id": "NISTCSF-RS.CO-3",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.CO-3",
+        "control_name": "Respond — share incident information with designated parties",
+        "category": "communication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.CO-3: Incident information must be shared with designated internal and external parties.",
+        "recommendation": "Add notify_security_team and document_incident for information sharing."
+    },
+    {
+        "rule_id": "NISTCSF-RS.MA-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.MA-1",
+        "control_name": "Respond — Incident management — classification and prioritisation",
+        "category": "incident_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 RS.MA-1: Incidents must be documented with classification and prioritisation.",
+        "recommendation": "Add document_incident with severity and priority classification."
+    },
+    {
+        "rule_id": "NISTCSF-RS.MA-3",
+        "framework": "nist_csf_2_0",
+        "control_id": "RS.MA-3",
+        "control_name": "Respond — Incident analysis — root cause identified",
+        "category": "analysis",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "generate_forensic_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST CSF 2.0 RS.MA-3: Root cause analysis required for high/critical incidents.",
+        "recommendation": "Add generate_forensic_report to document root cause findings."
+    },
+    {
+        "rule_id": "NISTCSF-RC.CO-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "RC.CO-1",
+        "control_name": "Recover — manage public relations after incidents",
+        "category": "communication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "data_breach"
+            ],
+            "asset_tags": [
+                "customer_facing"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST CSF 2.0 RC.CO-1: Public-facing service breaches require customer notification.",
+        "recommendation": "Add notify_affected_users for customer-facing service breach events."
+    },
+    {
+        "rule_id": "NISTCSF-PR.AT-1",
+        "framework": "nist_csf_2_0",
+        "control_id": "PR.AT-1",
+        "control_name": "Protect — Awareness Training — all personnel aware of responsibilities",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "phishing"
+            ]
+        },
+        "blocked_actions": [
+            "clear_phishing_incident_without_training"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "phishing",
+                "social_engineering"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "NIST CSF 2.0 PR.AT-1: Phishing incidents should trigger security awareness training follow-up.",
+        "recommendation": "Include awareness training in phishing incident closure steps."
+    },
+    {
+        "rule_id": "NISTCSF-ID.SC-2",
+        "framework": "nist_csf_2_0",
+        "control_id": "ID.SC-2",
+        "control_name": "Supply Chain — suppliers screened using risk process",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "quarantine_malicious_package",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_csf"
+            ],
+            "incident_type": [
+                "supply_chain",
+                "compromised_dependency"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST CSF 2.0 ID.SC-2: Supply chain compromises require: collect → quarantine → notify → document sequence.",
+        "recommendation": "Follow the supply chain incident response sequence."
+    }
+]

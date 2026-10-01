@@ -1,0 +1,337 @@
+[
+    {
+        "rule_id": "HIPAA-164.302",
+        "framework": "hipaa",
+        "control_id": "§164.302",
+        "control_name": "Applicability of Administrative Safeguards",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.302: All PHI security incidents require engagement of HIPAA-trained security personnel.",
+        "recommendation": "Add notify_security_team to engage HIPAA-trained workforce."
+    },
+    {
+        "rule_id": "HIPAA-164.308a2",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(2)",
+        "control_name": "Assigned Security Responsibility",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.308(a)(2): Critical PHI incidents must involve the designated HIPAA security officer.",
+        "recommendation": "Add notify_incident_commander to escalate to HIPAA security official."
+    },
+    {
+        "rule_id": "HIPAA-164.308a6i",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(6)(i)",
+        "control_name": "Security Incident Procedures — Identify and Respond",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "isolate_host",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(6)(i): PHI incidents must follow: collect → contain → notify → document sequence.",
+        "recommendation": "Apply the standard HIPAA incident response sequence."
+    },
+    {
+        "rule_id": "HIPAA-164.308a8",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(8)",
+        "control_name": "Evaluation — Periodic Technical and Nontechnical Evaluation",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.308(a)(8): PHI security incidents trigger requirement for updated security evaluation.",
+        "recommendation": "Add create_compliance_report to document security posture evaluation."
+    },
+    {
+        "rule_id": "HIPAA-164.310a1",
+        "framework": "hipaa",
+        "control_id": "§164.310(a)(1)",
+        "control_name": "Physical Safeguards — Facility Access Controls",
+        "category": "physical_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "physical_breach",
+                "hardware_theft"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.310(a)(1): Physical access violations to PHI facilities require security team notification.",
+        "recommendation": "Notify security team and begin physical access review."
+    },
+    {
+        "rule_id": "HIPAA-164.310b",
+        "framework": "hipaa",
+        "control_id": "§164.310(b)",
+        "control_name": "Workstation Use — PHI workstations have limited access",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "lock_account",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "unauthorized_access",
+                "insider_threat"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.310(b): Unauthorised PHI workstation access requires immediate account lockout.",
+        "recommendation": "Add lock_account for unauthorised access on PHI workstations."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2i",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(i)",
+        "control_name": "Unique User Identification — Emergency Access Procedure",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "enable_generic_account",
+            "create_emergency_account"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "HIPAA §164.312(a)(2)(i): Emergency access accounts on PHI systems require HIPAA compliance approval.",
+        "recommendation": "Document emergency access justification and obtain HIPAA officer approval."
+    },
+    {
+        "rule_id": "HIPAA-164.312a2ii",
+        "framework": "hipaa",
+        "control_id": "§164.312(a)(2)(ii)",
+        "control_name": "Emergency Access Procedure for PHI",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "notify_incident_commander",
+            "document_incident",
+            "collect_logs"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.312(a)(2)(ii): PHI system failures require: notify commander → document → collect logs sequence.",
+        "recommendation": "Follow emergency access procedure sequence for PHI system outages."
+    },
+    {
+        "rule_id": "HIPAA-164.316a",
+        "framework": "hipaa",
+        "control_id": "§164.316(a)",
+        "control_name": "Policies and Procedures — Maintain written documentation",
+        "category": "documentation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "data_breach",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "HIPAA §164.316(a): PHI incidents must be documented per required policies and procedures.",
+        "recommendation": "Add document_incident with formal PHI breach record."
+    },
+    {
+        "rule_id": "HIPAA-164.316b1",
+        "framework": "hipaa",
+        "control_id": "§164.316(b)(1)",
+        "control_name": "Documentation Retention — 6 year minimum",
+        "category": "records_retention",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "delete_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.316(b)(1): PHI security documentation must be retained for 6 years. Premature deletion violates HIPAA.",
+        "recommendation": "Obtain HIPAA compliance officer approval before deleting any PHI-related security records."
+    },
+    {
+        "rule_id": "HIPAA-BREACH-INDIVIDUAL",
+        "framework": "hipaa",
+        "control_id": "§164.404",
+        "control_name": "Notification to Individuals of PHI breach",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "data_breach",
+                "phi_exposure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.404: Affected individuals must be notified of PHI breaches without unreasonable delay and within 60 days.",
+        "recommendation": "Add notify_affected_users with 60-day SLA for PHI breach notification."
+    },
+    {
+        "rule_id": "HIPAA-BREACH-HHS",
+        "framework": "hipaa",
+        "control_id": "§164.408",
+        "control_name": "Notification to HHS Secretary",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_data_protection_authority",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "data_breach"
+            ],
+            "breach_records_count": {
+                "operator": "gte",
+                "threshold": 500
+            }
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.408: PHI breaches affecting 500+ individuals require immediate HHS Secretary notification.",
+        "recommendation": "Add notify_data_protection_authority (HHS) for large PHI breach events."
+    },
+    {
+        "rule_id": "HIPAA-164.308a7i",
+        "framework": "hipaa",
+        "control_id": "§164.308(a)(7)(i)",
+        "control_name": "Contingency Plan — Data Backup and Recovery",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "restore_from_backup",
+            "verify_phi_integrity"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "ransomware",
+                "data_destruction"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "HIPAA §164.308(a)(7)(i): PHI recovery requires: backup verification → restore → integrity verification sequence.",
+        "recommendation": "Follow PHI-specific backup and recovery sequence."
+    },
+    {
+        "rule_id": "HIPAA-164.404b",
+        "framework": "hipaa",
+        "control_id": "§164.404(b)",
+        "control_name": "Content of breach notification to individuals",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_breach_notification",
+        "applies_when": {
+            "asset_tags": [
+                "phi"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "HIPAA §164.404(b): PHI breach notifications to individuals must include required content (what happened, what data, steps individuals may take).",
+        "recommendation": "Add create_breach_notification with HIPAA-required content structure."
+    }
+]

@@ -1,0 +1,1002 @@
+[
+    {
+        "rule_id": "GDPR-Art.33.1",
+        "framework": "gdpr",
+        "control_id": "Art. 33(1)",
+        "control_name": "Notify supervisory authority within 72 hours of breach",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_data_protection_authority",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "eu_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 33(1): Personal data breaches must be notified to the supervisory authority within 72 hours.",
+        "recommendation": "Add notify_data_protection_authority immediately upon confirming a personal data breach."
+    },
+    {
+        "rule_id": "GDPR-Art.33.2",
+        "framework": "gdpr",
+        "control_id": "Art. 33(2)",
+        "control_name": "Provide breach details to supervisory authority",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_breach_notification",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "eu_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 33(2): Breach notification must include all required details.",
+        "recommendation": "Add create_breach_notification with nature, categories, approximate numbers, consequences, and measures taken."
+    },
+    {
+        "rule_id": "GDPR-Art.33.3a",
+        "framework": "gdpr",
+        "control_id": "Art. 33(3)(a)",
+        "control_name": "Document nature of breach",
+        "category": "breach_documentation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 33(3)(a): The nature of the personal data breach must be documented.",
+        "recommendation": "Add document_incident capturing breach type, categories of data, and number of data subjects affected."
+    },
+    {
+        "rule_id": "GDPR-Art.33.3b",
+        "framework": "gdpr",
+        "control_id": "Art. 33(3)(b)",
+        "control_name": "Document DPO contact details in breach notification",
+        "category": "breach_documentation",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "blocked_actions": [
+            "delete_logs",
+            "delete_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 33(3)(b): Evidence cannot be deleted while breach documentation is being prepared for the DPA.",
+        "recommendation": "Preserve all evidence until breach notification is filed with the supervisory authority."
+    },
+    {
+        "rule_id": "GDPR-Art.33.3c",
+        "framework": "gdpr",
+        "control_id": "Art. 33(3)(c)",
+        "control_name": "Document remediation measures taken",
+        "category": "breach_documentation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 33(3)(c): Remediation measures taken must be documented in the breach notification.",
+        "recommendation": "Add create_compliance_report capturing all remediation steps and security measures taken."
+    },
+    {
+        "rule_id": "GDPR-Art.33.5",
+        "framework": "gdpr",
+        "control_id": "Art. 33(5)",
+        "control_name": "Maintain documentation of all personal data breaches",
+        "category": "records_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 33(5): All personal data breaches must be documented regardless of DPA notification requirement.",
+        "recommendation": "Document every personal data breach even if below DPA notification threshold."
+    },
+    {
+        "rule_id": "GDPR-Art.34.1",
+        "framework": "gdpr",
+        "control_id": "Art. 34(1)",
+        "control_name": "Notify data subjects of high-risk breach",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ],
+            "breach_risk": "high"
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 34(1): High-risk breaches must be communicated directly to affected data subjects.",
+        "recommendation": "Add notify_affected_users for all high-risk personal data breaches without undue delay."
+    },
+    {
+        "rule_id": "GDPR-Art.34.3a",
+        "framework": "gdpr",
+        "control_id": "Art. 34(3)(a)",
+        "control_name": "No notification required if data encrypted",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "encryption_verified": false
+        },
+        "blocked_actions": [
+            "disable_encryption"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 34(3)(a): Encryption exemption from data subject notification only applies if encryption was in place. Do not disable encryption.",
+        "recommendation": "Maintain encryption to qualify for the notification exemption."
+    },
+    {
+        "rule_id": "GDPR-Art.32.1a",
+        "framework": "gdpr",
+        "control_id": "Art. 32(1)(a)",
+        "control_name": "Implement pseudonymisation and encryption of personal data",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "eu_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 32(1)(a): Encryption protecting EU personal data cannot be disabled.",
+        "recommendation": "Do not disable encryption on systems processing EU personal data."
+    },
+    {
+        "rule_id": "GDPR-Art.32.1b",
+        "framework": "gdpr",
+        "control_id": "Art. 32(1)(b)",
+        "control_name": "Ensure ongoing CIA of processing systems and services",
+        "category": "availability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 32(1)(b): CIA of systems processing personal data must be maintained.",
+        "recommendation": "Add create_backup and enable_encryption_at_rest to maintain data security."
+    },
+    {
+        "rule_id": "GDPR-Art.32.1c",
+        "framework": "gdpr",
+        "control_id": "Art. 32(1)(c)",
+        "control_name": "Restore availability and access to data after incident",
+        "category": "recovery",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "ransomware",
+                "system_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 32(1)(c): Personal data availability must be restored promptly after an incident.",
+        "recommendation": "Add restore_from_backup to recover personal data system availability."
+    },
+    {
+        "rule_id": "GDPR-Art.32.1d",
+        "framework": "gdpr",
+        "control_id": "Art. 32(1)(d)",
+        "control_name": "Process for regularly testing security measures",
+        "category": "testing",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 32(1)(d): Security measure testing must be documented and reviewed post-incident.",
+        "recommendation": "Schedule security measure testing review as part of incident closure."
+    },
+    {
+        "rule_id": "GDPR-Art.32.2",
+        "framework": "gdpr",
+        "control_id": "Art. 32(2)",
+        "control_name": "Implement appropriate technical measures",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_mfa",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 32(2): Appropriate technical measures must be implemented to protect personal data.",
+        "recommendation": "Add enable_mfa and enable_dlp_policy as technical protective measures."
+    },
+    {
+        "rule_id": "GDPR-Art.25.1",
+        "framework": "gdpr",
+        "control_id": "Art. 25(1)",
+        "control_name": "Data protection by design and by default",
+        "category": "privacy_engineering",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "anonymize_data",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 25(1): Data minimization and privacy-by-design must be applied post-incident.",
+        "recommendation": "Consider anonymize_data or pseudonymize_data for non-essential personal data."
+    },
+    {
+        "rule_id": "GDPR-Art.25.2",
+        "framework": "gdpr",
+        "control_id": "Art. 25(2)",
+        "control_name": "Data protection by default — minimal data retention",
+        "category": "data_minimization",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_dlp_policy",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_exfiltration"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 25(2): Data protection by default requires DLP controls for personal data.",
+        "recommendation": "Enable DLP policy to enforce data minimization by default."
+    },
+    {
+        "rule_id": "GDPR-Art.5.1e",
+        "framework": "gdpr",
+        "control_id": "Art. 5(1)(e)",
+        "control_name": "Storage limitation — retain data no longer than necessary",
+        "category": "data_retention",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "delete_data",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 5(1)(e): Personal data must not be retained beyond its retention period.",
+        "recommendation": "Review data retention after breach and delete data past its retention period."
+    },
+    {
+        "rule_id": "GDPR-Art.5.1f",
+        "framework": "gdpr",
+        "control_id": "Art. 5(1)(f)",
+        "control_name": "Integrity and confidentiality of personal data",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "expose_personal_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 5(1)(f): Personal data must remain protected with appropriate integrity and confidentiality measures.",
+        "recommendation": "Do not disable encryption or expose personal data."
+    },
+    {
+        "rule_id": "GDPR-Art.6",
+        "framework": "gdpr",
+        "control_id": "Art. 6",
+        "control_name": "Lawfulness of processing — require lawful basis",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "process_data_without_consent",
+            "process_pii_without_lawful_basis"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "GDPR Art. 6: Processing personal data requires a lawful basis.",
+        "recommendation": "Verify lawful basis before any monitoring or processing actions involving personal data."
+    },
+    {
+        "rule_id": "GDPR-Art.9",
+        "framework": "gdpr",
+        "control_id": "Art. 9",
+        "control_name": "Processing of special categories of personal data",
+        "category": "special_categories",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "expose_sensitive_data",
+            "process_health_data_without_consent"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "health_data",
+                "biometric_data",
+                "special_category_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 9: Special category data requires explicit consent and additional safeguards.",
+        "recommendation": "Special category data cannot be processed without explicit consent and legal basis."
+    },
+    {
+        "rule_id": "GDPR-Art.15",
+        "framework": "gdpr",
+        "control_id": "Art. 15",
+        "control_name": "Right of access by the data subject",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 15: Data subjects have right to access information about their data.",
+        "recommendation": "Ensure data subject access rights remain available during incident response."
+    },
+    {
+        "rule_id": "GDPR-Art.17",
+        "framework": "gdpr",
+        "control_id": "Art. 17",
+        "control_name": "Right to erasure (right to be forgotten)",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "delete_data",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 17: Erasure requests for personal data must be fulfilled within lawful boundaries.",
+        "recommendation": "Support delete_data workflow for data subject erasure requests."
+    },
+    {
+        "rule_id": "GDPR-Art.18",
+        "framework": "gdpr",
+        "control_id": "Art. 18",
+        "control_name": "Right to restriction of processing",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 18: Processing restrictions requested by data subjects must be implemented.",
+        "recommendation": "Document and implement processing restrictions when requested by affected data subjects."
+    },
+    {
+        "rule_id": "GDPR-Art.20",
+        "framework": "gdpr",
+        "control_id": "Art. 20",
+        "control_name": "Right to data portability",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 20: Data portability rights must not be impeded by incident response procedures.",
+        "recommendation": "Maintain portability capabilities during incident response."
+    },
+    {
+        "rule_id": "GDPR-Art.21",
+        "framework": "gdpr",
+        "control_id": "Art. 21",
+        "control_name": "Right to object to processing",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 21: Objections to data processing must be respected during incident response.",
+        "recommendation": "Document any exemptions to data subject objections applied during incident response."
+    },
+    {
+        "rule_id": "GDPR-Art.35",
+        "framework": "gdpr",
+        "control_id": "Art. 35",
+        "control_name": "Data protection impact assessment",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 35: High-risk processing activities require a DPIA.",
+        "recommendation": "Add create_compliance_report with DPIA content for high-risk personal data processing incidents."
+    },
+    {
+        "rule_id": "GDPR-Art.37",
+        "framework": "gdpr",
+        "control_id": "Art. 37",
+        "control_name": "Designation of data protection officer",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 37: The Data Protection Officer must be involved in critical personal data breach response.",
+        "recommendation": "Add notify_incident_commander targeting the designated DPO."
+    },
+    {
+        "rule_id": "GDPR-Art.44",
+        "framework": "gdpr",
+        "control_id": "Art. 44",
+        "control_name": "General principle for international transfers",
+        "category": "data_sovereignty",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "transfer_data_to_unsafe_country",
+            "replicate_data_to_non_adequacy_country"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "eu_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 44: Transfer of personal data to countries without adequate protection is prohibited.",
+        "recommendation": "Remove data transfer actions targeting non-adequate third countries."
+    },
+    {
+        "rule_id": "GDPR-Art.46",
+        "framework": "gdpr",
+        "control_id": "Art. 46",
+        "control_name": "Transfers subject to appropriate safeguards",
+        "category": "data_sovereignty",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "transfer_data_to_third_country"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "GDPR Art. 46: Cross-border personal data transfers require appropriate safeguards (SCCs, BCRs).",
+        "recommendation": "Obtain DPO approval and verify SCCs/BCRs before transferring EU personal data internationally."
+    },
+    {
+        "rule_id": "GDPR-Recital.49",
+        "framework": "gdpr",
+        "control_id": "Recital 49",
+        "control_name": "Breach notification content requirements",
+        "category": "breach_documentation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_breach_notification",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Recital 49: Breach notification must include all required content.",
+        "recommendation": "Ensure create_breach_notification includes all Recital 49 required fields."
+    },
+    {
+        "rule_id": "GDPR-Recital.75",
+        "framework": "gdpr",
+        "control_id": "Recital 75",
+        "control_name": "Risk assessment of data breach",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Recital 75: Data breach risk must be formally assessed.",
+        "recommendation": "Add create_compliance_report with risk assessment of data breach impact on data subjects."
+    },
+    {
+        "rule_id": "GDPR-Recital.83",
+        "framework": "gdpr",
+        "control_id": "Recital 83",
+        "control_name": "Implement appropriate technical and organisational security measures",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_encryption_at_rest",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "GDPR Recital 83: Technical security measures must be implemented to prevent future breaches.",
+        "recommendation": "Implement encryption_at_rest and access controls as post-breach hardening."
+    },
+    {
+        "rule_id": "GDPR-Recital.87",
+        "framework": "gdpr",
+        "control_id": "Recital 87",
+        "control_name": "Pseudonymisation as mitigation for high-risk processing",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "pseudonymize_data",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Recital 87: Pseudonymisation should be considered as a mitigation for high-risk processing.",
+        "recommendation": "Consider pseudonymize_data as a risk reduction measure."
+    },
+    {
+        "rule_id": "GDPR-Art.30",
+        "framework": "gdpr",
+        "control_id": "Art. 30",
+        "control_name": "Records of processing activities",
+        "category": "records_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 30: Records of processing activities must be maintained and updated.",
+        "recommendation": "Update records of processing activities after any significant incident affecting personal data."
+    },
+    {
+        "rule_id": "GDPR-Art.24",
+        "framework": "gdpr",
+        "control_id": "Art. 24",
+        "control_name": "Responsibility of the controller",
+        "category": "accountability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 24: Controllers must demonstrate compliance with GDPR during incidents.",
+        "recommendation": "Add create_compliance_report demonstrating compliance measures taken."
+    },
+    {
+        "rule_id": "GDPR-Art.28",
+        "framework": "gdpr",
+        "control_id": "Art. 28",
+        "control_name": "Processor obligations and controller-processor contracts",
+        "category": "third_party",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "share_data_with_processor",
+            "engage_subprocessor"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "GDPR Art. 28: Engaging processors or subprocessors requires controller approval and data processing agreements.",
+        "recommendation": "Obtain DPO approval before sharing personal data with third-party processors."
+    },
+    {
+        "rule_id": "GDPR-Art.47",
+        "framework": "gdpr",
+        "control_id": "Art. 47",
+        "control_name": "Binding corporate rules",
+        "category": "data_sovereignty",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 47: BCR compliance must be verified during data breach response.",
+        "recommendation": "Verify BCR requirements are met in incident documentation."
+    },
+    {
+        "rule_id": "GDPR-Art.58",
+        "framework": "gdpr",
+        "control_id": "Art. 58",
+        "control_name": "Powers of the supervisory authority",
+        "category": "regulatory_compliance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_data_protection_authority",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 58: The supervisory authority must be notified and cooperated with during breach investigations.",
+        "recommendation": "Add notify_data_protection_authority and document all DPA cooperation activities."
+    },
+    {
+        "rule_id": "GDPR-Art.77",
+        "framework": "gdpr",
+        "control_id": "Art. 77",
+        "control_name": "Right to lodge a complaint with a supervisory authority",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 77: Data subjects must be informed of their right to lodge complaints.",
+        "recommendation": "Include complaint rights in breach notification to data subjects."
+    },
+    {
+        "rule_id": "GDPR-Art.82",
+        "framework": "gdpr",
+        "control_id": "Art. 82",
+        "control_name": "Right to compensation and liability",
+        "category": "liability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 82: Data breach liability must be documented for potential compensation claims.",
+        "recommendation": "Add create_compliance_report with breach impact documentation for legal purposes."
+    },
+    {
+        "rule_id": "GDPR-Art.83",
+        "framework": "gdpr",
+        "control_id": "Art. 83",
+        "control_name": "Administrative fines",
+        "category": "accountability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 83: GDPR administrative fine exposure must be documented post-breach.",
+        "recommendation": "Document compliance posture to mitigate Art. 83 fine risk."
+    },
+    {
+        "rule_id": "GDPR-Art.12",
+        "framework": "gdpr",
+        "control_id": "Art. 12",
+        "control_name": "Transparent information and communication to data subjects",
+        "category": "transparency",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 12: Communication to data subjects must be clear, transparent, and in plain language.",
+        "recommendation": "Ensure notify_affected_users uses plain language and meets Art. 12 transparency requirements."
+    },
+    {
+        "rule_id": "GDPR-Art.13",
+        "framework": "gdpr",
+        "control_id": "Art. 13",
+        "control_name": "Information to be provided where personal data collected from data subject",
+        "category": "transparency",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_breach_notification",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 13: Privacy notice must be updated post-breach.",
+        "recommendation": "Update privacy notice information as part of breach response."
+    },
+    {
+        "rule_id": "GDPR-Art.14",
+        "framework": "gdpr",
+        "control_id": "Art. 14",
+        "control_name": "Information where personal data has not been obtained from data subject",
+        "category": "transparency",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_affected_users",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 14: Data subjects whose data was obtained indirectly must be notified of breaches.",
+        "recommendation": "Extend notify_affected_users to indirectly collected data subjects."
+    },
+    {
+        "rule_id": "GDPR-Art.38",
+        "framework": "gdpr",
+        "control_id": "Art. 38",
+        "control_name": "Position of the data protection officer",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 38: The DPO must be involved in all high-risk data processing incidents.",
+        "recommendation": "Add notify_incident_commander targeting the DPO for all high-risk incidents."
+    },
+    {
+        "rule_id": "GDPR-Art.40",
+        "framework": "gdpr",
+        "control_id": "Art. 40",
+        "control_name": "Codes of conduct as voluntary compliance mechanism",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 40: Applicable codes of conduct must be referenced in incident compliance documentation.",
+        "recommendation": "Reference applicable codes of conduct in post-breach compliance reporting."
+    }
+]

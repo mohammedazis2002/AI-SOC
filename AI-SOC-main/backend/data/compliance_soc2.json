@@ -1,0 +1,206 @@
+[
+    {
+        "rule_id": "SOC2-CC7.4",
+        "framework": "soc2_type2",
+        "control_id": "CC7.4",
+        "control_name": "Respond to security incidents and communicate as appropriate",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC7.4: Security incidents must be responded to and communicated to relevant stakeholders.",
+        "recommendation": "Add notify_security_team and document_incident to the plan."
+    },
+    {
+        "rule_id": "SOC2-CC7.3",
+        "framework": "soc2_type2",
+        "control_id": "CC7.3",
+        "control_name": "Evaluate security events and determine whether they are incidents",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "SOC 2 CC7.3: Security events must be evaluated and decisions documented for evidential purposes.",
+        "recommendation": "Add document_incident recording the assessment rationale."
+    },
+    {
+        "rule_id": "SOC2-CC6.1",
+        "framework": "soc2_type2",
+        "control_id": "CC6.1",
+        "control_name": "Logical and physical access controls restrict access",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_access",
+            "create_shared_account",
+            "add_to_privileged_group"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "SOC 2 CC6.1: Logical access controls must restrict access to only authorized users.",
+        "recommendation": "Do not grant unauthorized access during remediation on SOC 2 scoped systems."
+    },
+    {
+        "rule_id": "SOC2-CC6.6",
+        "framework": "soc2_type2",
+        "control_id": "CC6.6",
+        "control_name": "Transmission and movement of information protected",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "disable_tls",
+            "enable_unencrypted_transfer",
+            "downgrade_encryption"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "data_classification": [
+                "confidential",
+                "secret"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SOC 2 CC6.6: Data transmission must be protected. Cannot disable encryption on SOC 2 scoped systems.",
+        "recommendation": "Keep encryption active for all data in transit."
+    },
+    {
+        "rule_id": "SOC2-CC7.2",
+        "framework": "soc2_type2",
+        "control_id": "CC7.2",
+        "control_name": "Monitor system components for anomalies and threats",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "disable_edr",
+            "disable_ids",
+            "stop_audit",
+            "disable_av"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "SOC 2 CC7.2: Monitoring systems cannot be disabled. Continuous monitoring is required for SOC 2.",
+        "recommendation": "Monitoring must remain active. Tune rather than disable."
+    },
+    {
+        "rule_id": "SOC2-A1.2",
+        "framework": "soc2_type2",
+        "control_id": "A1.2",
+        "control_name": "Availability — Recovery time objectives met",
+        "category": "business_continuity",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "isolate_host",
+            "shutdown_system",
+            "disconnect_network"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "asset_tags": [
+                "customer_facing"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "SOC 2 A1.2: Isolating customer-facing systems may impact SLA availability commitments.",
+        "recommendation": "Obtain management approval and notify customers before isolation."
+    },
+    {
+        "rule_id": "SOC2-CC9.2",
+        "framework": "soc2_type2",
+        "control_id": "CC9.2",
+        "control_name": "Risk mitigation — Vendor and business partner risk managed",
+        "category": "third_party",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "incident_type": [
+                "supply_chain",
+                "third_party_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "SOC 2 CC9.2: Third-party security incidents must be escalated to assess vendor risk.",
+        "recommendation": "Add notify_security_team and notify_incident_commander for supply chain incidents."
+    },
+    {
+        "rule_id": "SOC2-CC8.1",
+        "framework": "soc2_type2",
+        "control_id": "CC8.1",
+        "control_name": "Change management — infrastructure and software changes controlled",
+        "category": "change_management",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "update_software",
+            "patch_system",
+            "modify_config"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "soc2"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "SOC 2 CC8.1: Infrastructure changes require change management approval for SOC 2 compliance.",
+        "recommendation": "Set requires_approval=True and document change ticket ID."
+    }
+]

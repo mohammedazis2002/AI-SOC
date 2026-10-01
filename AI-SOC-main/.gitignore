@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables — keep .env.example, exclude real secrets
+.env
+.env.local
+.env.*.local
+# explicitly do NOT ignore .env.example
+!.env.example
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.sqlite
+
+# Large ML model binaries (>50 MB — too big for GitHub)
+models/*.gguf
+models/attack_forecaster.pkl
+# Keep small models tracked (anomaly_detector.pkl = 1.9 MB is fine)
+!models/anomaly_detector.pkl
+!models/test_anomaly_detector.pkl
+!models/.gitkeep
+backend/models/*.gguf
+
+# Secrets / certs
+secrets/
+*.pem
+*.key
+infra/certs/
+
+# Docker override
+docker-compose.override.yml
+
+# Monitoring data volumes
+prometheus_data/
+grafana_data/
+
+# Node / frontend build
+node_modules/
+.npm
+frontend/.next/
+frontend/out/
+frontend/build/
+
+# Test artifacts
+tests/*.txt
+tests/*.json
+
+# Misc scratch / temp
+tmp/
+*.tmp
+backups/
+
+# Large alert data files
+data/alerts/*.gz
+data/alerts/*.json
+*.zip

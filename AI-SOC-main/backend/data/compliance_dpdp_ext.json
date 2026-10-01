@@ -1,0 +1,145 @@
+[
+    {
+        "rule_id": "DPDP-4.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 4 (Processing of Personal Data)",
+        "control_name": "Personal data processed only for lawful purposes with consent",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "monitor_employee_activity",
+            "capture_screenshot"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "employee_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "DPDP Act 2023 Section 4: Monitoring activities on employee devices require lawful basis verification under DPDP.",
+        "recommendation": "Verify lawful basis and obtain DPO approval for monitoring actions."
+    },
+    {
+        "rule_id": "DPDP-9.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 9(1)",
+        "control_name": "Processing children's personal data — parental consent",
+        "category": "special_categories",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "export_user_data",
+            "notify_affected_users"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "children_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "approval_message": "DPDP Act 2023 Section 9(1): Actions involving children's data require parental consent verification.",
+        "recommendation": "Verify parental consent before any action involving children's personal data."
+    },
+    {
+        "rule_id": "DPDP-10.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 10(1)",
+        "control_name": "Significant Data Fiduciaries — additional obligations",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "significant_data_fiduciary"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "DPDP Act 2023 Section 10: Significant Data Fiduciaries must involve DPO in critical breach response.",
+        "recommendation": "Escalate to incident commander (DPO) for Significant Data Fiduciary incidents."
+    },
+    {
+        "rule_id": "DPDP-12.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 12(1)",
+        "control_name": "Data principal's right to access information",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "blocked_actions": [
+            "disable_user_data_portal",
+            "revoke_user_portal_access"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "DPDP Act 2023 Section 12: Restricting data principal access to their own data during breach needs justification.",
+        "recommendation": "Document the justification for restricting data principal access during the breach investigation."
+    },
+    {
+        "rule_id": "DPDP-13.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 13(1)",
+        "control_name": "Right to correction and erasure of personal data",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "validate_retention_period",
+            "document_incident",
+            "delete_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "DPDP Act 2023 Section 13: Data erasure under DPDP must follow validate → document → delete sequence.",
+        "recommendation": "Validate erasure request and document before executing deletion."
+    },
+    {
+        "rule_id": "DPDP-16.1",
+        "framework": "dpdp_act_2023",
+        "control_id": "Section 16(1)",
+        "control_name": "Data localisation for government-specified data",
+        "category": "data_sovereignty",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "backup_to_cloud_non_india",
+            "replicate_data_outside_india",
+            "transfer_data_to_foreign_server"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "indian_personal_data",
+                "critical_personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "DPDP Act 2023 Section 16: Critical personal data of Indian citizens cannot be transferred outside India.",
+        "recommendation": "Remove data transfer actions for India-resident personal data."
+    }
+]

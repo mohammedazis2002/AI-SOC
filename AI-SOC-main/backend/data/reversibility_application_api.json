@@ -1,0 +1,348 @@
+[
+    {
+        "action_type": "block_api_endpoint",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "unblock_api_endpoint",
+        "reversal_steps": [
+            "Remove the WAF rule or rate limit rule blocking the endpoint",
+            "Or re-enable the route in the API Gateway"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "API endpoint blocking is typically done via WAF rules, API Gateway route disabling, or reverse proxy configuration. All are software-configurable and reversible.",
+        "source_reference": "OWASP API Security Top 10 — https://owasp.org/www-project-api-security/ | AWS API Gateway: Disabling endpoints",
+        "risk_if_not_reversed": "API consumers receive 403/404 for the blocked endpoint",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "block_http_method",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "re_enable_http_method",
+        "reversal_steps": [
+            "Remove the WAF rule or server configuration blocking the HTTP method"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "HTTP method restriction (PUT, DELETE, PATCH) is typically a WAF rule or web server configuration. These are configuration changes that are fully reversible.",
+        "source_reference": "OWASP: HTTP Method restriction — https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
+        "risk_if_not_reversed": "API calls using the blocked HTTP method fail with 405 Method Not Allowed",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "block_user_agent",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "remove_user_agent_block",
+        "reversal_steps": [
+            "Remove the WAF rule or nginx/apache config blocking the User-Agent pattern"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "User-Agent blocking is a WAF or web server configuration rule. It can be added/removed at any time.",
+        "source_reference": "OWASP: Bot management — https://owasp.org/www-community/Bot_protection",
+        "risk_if_not_reversed": "Legitimate requests from blocked User-Agent string are rejected",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "block_waf_signature",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "remove_waf_signature",
+        "reversal_steps": [
+            "Disable or remove the WAF rule from the rule group",
+            "AWS WAF: aws wafv2 update-rule-group"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "WAF rules are software configurations. Individual signatures can be enabled/disabled. AWS WAF, Cloudflare, and ModSecurity all support per-rule management.",
+        "source_reference": "AWS WAF: Rule groups — https://docs.aws.amazon.com/waf/latest/developerguide/waf-rule-groups.html",
+        "risk_if_not_reversed": "Legitimate traffic matching the WAF pattern is blocked",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "enable_bot_protection",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "disable_bot_protection",
+        "reversal_steps": [
+            "Disable bot rules in WAF or Cloudflare bot management settings"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Bot protection rules are WAF/CDN features that can be enabled/disabled via configuration. Disabling removes protection against automated attacks. Security team approval required.",
+        "source_reference": "Cloudflare Bot Management — https://www.cloudflare.com/products/bot-management/ | OWASP Bot protection",
+        "risk_if_not_reversed": "N/A — enabling bot protection is a hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "rate_limit_endpoint",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "remove_rate_limit",
+        "reversal_steps": [
+            "Remove or raise the rate limit rule in the API Gateway, WAF, or reverse proxy"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Rate limiting is a configurable policy in API Gateways (Kong, AWS API GW, NGINX), WAFs, and reverse proxies. Limits can be adjusted or removed at any time.",
+        "source_reference": "OWASP: API Security — API4:2023 Unrestricted Resource Consumption — https://owasp.org/API-Security/editions/2023/en/0xa4-unrestricted-resource-consumption/",
+        "risk_if_not_reversed": "Legitimate high-volume API consumers are throttled",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "block_protocol",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "unblock_protocol",
+        "reversal_steps": [
+            "Remove firewall rule blocking the protocol",
+            "Or re-enable the protocol in the network device configuration"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Network protocol blocking is enforced via firewall rules (iptables, AWS Security Groups, Azure NSG). Rules are deletable configuration entries.",
+        "source_reference": "NIST 800-53 SC-7 Boundary Protection | CIS Controls v8 12.2",
+        "risk_if_not_reversed": "All traffic using the blocked protocol is dropped",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "enable_api_authentication",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "disable_api_authentication",
+        "reversal_steps": [
+            "Disable API key requirement in API Gateway settings",
+            "Note: Requires security review — removing API authentication is a compliance violation"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "API authentication requirements are API Gateway configuration settings. Toggling is possible but disabling violates OWASP API Security API2:2023 (Authentication) and compliance requirements.",
+        "source_reference": "OWASP API Security API2:2023 — https://owasp.org/API-Security/ | NIST 800-53 IA-3",
+        "risk_if_not_reversed": "N/A — enabling API authentication is a security hardening measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "challenge_with_captcha",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "remove_captcha_challenge",
+        "reversal_steps": [
+            "Remove CAPTCHA challenge rule from WAF or application layer"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "CAPTCHA challenges are WAF or application-level rules that can be toggled. They add a verification step for suspected bot traffic.",
+        "source_reference": "OWASP: Bot Management — https://owasp.org/www-community/Bot_protection",
+        "risk_if_not_reversed": "Legitimate users face CAPTCHA friction on the affected endpoint",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "revert_code_deployment",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "redeploy_reverted_version",
+        "reversal_steps": [
+            "Trigger CI/CD rollback pipeline",
+            "Or: git revert <commit-hash> && deploy",
+            "Or: kubectl rollout undo deployment/<name>"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Code deployment rollback re-deploys a prior version. Git revert creates a new commit that undoes the change. Kubernetes rollouts maintain revision history (--revision flag) allowing rollback to any prior version.",
+        "source_reference": "K8s: Deployment rollback — https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-back-a-deployment | Git: git revert — https://git-scm.com/docs/git-revert",
+        "risk_if_not_reversed": "Potentially vulnerable code version remains deployed",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "restart_application",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "no_reversal_needed",
+        "reversal_steps": [
+            "Application restart is self-completing — no reversal needed"
+        ],
+        "reversal_complexity": "none",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Application restart clears in-memory state and reloads configuration. It is a standard operational procedure with no lasting data change. Sessions may be lost if not using persistent session store.",
+        "source_reference": "NIST SP 800-61r2 §3.3 Incident Containment — https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-61r2.pdf",
+        "risk_if_not_reversed": "N/A — restart is self-completing",
+        "estimated_reversal_time_minutes": 0
+    },
+    {
+        "action_type": "enable_session_recording",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "disable_session_recording",
+        "reversal_steps": [
+            "Disable session recording in PAM tool (CyberArk, BeyondTrust) or monitoring platform"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Session recording is a PAM/monitoring configuration setting. Enabling records privileged sessions. Disabling stops new recordings. Existing recordings are preserved.",
+        "source_reference": "CIS Controls v8 8.5 | NIST 800-53 AU-12 Audit Record Generation",
+        "risk_if_not_reversed": "N/A — session recording is a hardening/audit measure",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "enable_maintenance_mode",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "disable_maintenance_mode",
+        "reversal_steps": [
+            "Toggle maintenance mode flag off via application admin panel or platform configuration"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Maintenance mode is a feature flag that redirects user traffic to a static maintenance page. Disabling it immediately restores normal application routing.",
+        "source_reference": "SOC 2 A1.1 Availability — https://www.aicpa.org/resources/article/trust-services-criteria",
+        "risk_if_not_reversed": "Application is unavailable to all users — SLA/availability impact",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "disable_feature_flag",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "enable_feature_flag",
+        "reversal_steps": [
+            "Re-enable the feature flag in the feature flag management system (LaunchDarkly, Flagsmith, AWS AppConfig)"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Feature flags are runtime configuration toggles. Disabling makes a feature unavailable. Re-enabling restores it. Changes take effect in seconds without deployment.",
+        "source_reference": "Martin Fowler: Feature toggles — https://martinfowler.com/articles/feature-toggles.html",
+        "risk_if_not_reversed": "Feature is unavailable to users",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "block_dependency_download",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "unblock_dependency_download",
+        "reversal_steps": [
+            "Remove the firewall or proxy rule blocking the package registry",
+            "Or re-enable the package in the artifact repository allowlist"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Package registry blocking is implemented via network firewall rules or artifact repository policies. These are software configurations reversible by removing the block rule.",
+        "source_reference": "NIST 800-53 CM-7 Least Functionality | CISA Supply Chain Security — https://www.cisa.gov/publication/defending-against-software-supply-chain-attacks",
+        "risk_if_not_reversed": "Build pipelines cannot download dependencies — CI/CD failures",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "disable_webhook",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "re_enable_webhook",
+        "reversal_steps": [
+            "Re-enable the webhook in the application settings or API platform",
+            "Verify webhook endpoint is secure before re-enabling after an incident"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Webhooks are configurable integrations that can be enabled/disabled via platform settings. Re-enabling restores event-driven integrations.",
+        "source_reference": "OWASP: Webhook security — https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html",
+        "risk_if_not_reversed": "Event notifications to the webhook consumer stop",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "disable_third_party_integration",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "re_enable_third_party_integration",
+        "reversal_steps": [
+            "Re-enable the integration in the platform admin settings",
+            "Verify integration security before re-enabling after a supply chain incident"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Third-party integrations can be disabled/re-enabled via platform admin settings. Re-enabling after a supply chain incident requires security review of the third-party.",
+        "source_reference": "NIST 800-53 SA-9 External System Services | ISO 27001 A.5.19",
+        "risk_if_not_reversed": "Third-party functionality is unavailable to users",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "quarantine_malicious_package",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "restore_quarantined_package",
+        "reversal_steps": [
+            "If package was mis-identified, remove it from quarantine in the artifact repository (Artifactory, Nexus, ECR)"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Package quarantine moves a package to an isolated repository space. Restoration requires security team review to confirm the package is safe before restoring to the active feed.",
+        "source_reference": "CISA: Software Supply Chain Security — https://www.cisa.gov/publication/defending-against-software-supply-chain-attacks | JFrog Xray quarantine",
+        "risk_if_not_reversed": "Builds requiring the quarantined package will fail",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "enable_privileged_access_management",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "disable_pam_enforcement",
+        "reversal_steps": [
+            "Disable PAM enforcement via the PAM tool administration console",
+            "Note: Requires CISO approval — disabling PAM removes a critical security control"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "PAM enforcement is a platform-level configuration. Disabling allows privileged access without PAM controls. This is a critical compliance-relevant action requiring CISO-level approval.",
+        "source_reference": "CIS Controls v8 5.3 / 6.8 | NIST 800-53 AC-6 Least Privilege",
+        "risk_if_not_reversed": "N/A — enabling PAM is a hardening measure",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "block_registry_modification",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "unblock_registry_modification",
+        "reversal_steps": [
+            "Remove the registry modification block via GPO, EDR policy, or host-based firewall rule"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Registry modification blocking is enforced via GPO (Windows Registry policies), AppLocker, or EDR behavioral rules. These are policy configurations that can be reverted.",
+        "source_reference": "CIS Benchmarks: Windows Registry hardening | NIST 800-53 CM-7 Least Functionality",
+        "risk_if_not_reversed": "Legitimate application installers and system tools that require registry writes will fail",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "enable_kernel_logging",
+        "category": "application_api",
+        "reversible": true,
+        "reversal_method": "disable_kernel_logging",
+        "reversal_steps": [
+            "Disable auditd (Linux: systemctl stop auditd) or kernel logging configuration"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Kernel logging (Linux auditd, Windows kernel audit events) is a configuration that can be enabled/disabled. Disabling after an incident removes forensic visibility. Security team approval required.",
+        "source_reference": "Linux auditd: https://linux-audit.com/linux-audit-framework-basics/ | NIST 800-53 AU-12",
+        "risk_if_not_reversed": "N/A — enabling kernel logging is a forensic/audit hardening measure",
+        "estimated_reversal_time_minutes": 3
+    }
+]

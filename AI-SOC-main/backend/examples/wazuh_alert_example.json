@@ -1,0 +1,33 @@
+{
+  "timestamp": "2024-12-30T10:00:00.000+0000",
+  "rule": {
+    "level": 10,
+    "description": "sshd: brute force trying to get access to the system.",
+    "id": "5710",
+    "mitre": {
+      "id": ["T1110"],
+      "tactic": ["Credential Access"],
+      "technique": ["Brute Force"]
+    },
+    "groups": ["syslog", "sshd", "authentication_failed"]
+  },
+  "agent": {
+    "id": "001",
+    "name": "prod-server-01",
+    "ip": "10.0.1.50"
+  },
+  "manager": {
+    "name": "wazuh-manager"
+  },
+  "id": "1703596800.1234567",
+  "full_log": "Dec 30 10:00:00 prod-server-01 sshd[12345]: Failed password for invalid user admin from 192.168.1.100 port 52341 ssh2",
+  "decoder": {
+    "name": "sshd"
+  },
+  "data": {
+    "srcip": "192.168.1.100",
+    "srcport": "52341",
+    "dstuser": "admin"
+  },
+  "location": "/var/log/auth.log"
+}

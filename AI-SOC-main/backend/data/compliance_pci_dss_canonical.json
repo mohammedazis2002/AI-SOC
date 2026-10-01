@@ -1,0 +1,798 @@
+[
+    {
+        "rule_id": "PCI-10.2.1",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.1",
+        "control_name": "Log user access to cardholder data",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.2.1: User access to cardholder data environment must be logged.",
+        "recommendation": "Add collect_logs targeting CDE access logs."
+    },
+    {
+        "rule_id": "PCI-10.2.2",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.2",
+        "control_name": "Log administrative actions on CDE",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_audit_logging",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.2.2: All administrative actions in the CDE must be audit-logged.",
+        "recommendation": "Enable audit logging for all admin actions on CDE systems."
+    },
+    {
+        "rule_id": "PCI-10.2.4",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.4",
+        "control_name": "Log invalid access attempts",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "brute_force",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.2.4: Invalid access attempts to the CDE must be logged.",
+        "recommendation": "Add collect_logs targeting failed authentication events on CDE."
+    },
+    {
+        "rule_id": "PCI-10.2.5",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.5",
+        "control_name": "Log privilege changes",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "privilege_escalation",
+                "insider_threat"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.2.5: All privilege changes must be logged and documented.",
+        "recommendation": "Add document_incident capturing any privilege changes made during remediation."
+    },
+    {
+        "rule_id": "PCI-10.2.6",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.6",
+        "control_name": "Log initialization of audit logs",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_audit_logging",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 10.2.6: Audit log initialization and stop events must be logged.",
+        "recommendation": "Ensure audit logging is enabled and log initialization is captured."
+    },
+    {
+        "rule_id": "PCI-10.2.7",
+        "framework": "pci_dss_v4",
+        "control_id": "10.2.7",
+        "control_name": "Log creation and deletion of system objects",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 10.2.7: Creation and deletion of system objects in CDE must be logged.",
+        "recommendation": "Add collect_logs with object creation/deletion audit scope."
+    },
+    {
+        "rule_id": "PCI-10.5.1",
+        "framework": "pci_dss_v4",
+        "control_id": "10.5.1",
+        "control_name": "Protect audit logs from unauthorized modifications",
+        "category": "log_integrity",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "modify_logs",
+            "clear_logs"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 10.5.1: Audit logs must be protected from modification or destruction.",
+        "recommendation": "Remove any log deletion or modification actions from the remediation plan."
+    },
+    {
+        "rule_id": "PCI-10.7.2",
+        "framework": "pci_dss_v4",
+        "control_id": "10.7.2",
+        "control_name": "Detect and respond to failures of critical security controls",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "control_failure",
+                "monitoring_failure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 10.7.2: Failures of critical security controls must trigger immediate notification.",
+        "recommendation": "Add notify_security_team for all security control failure events."
+    },
+    {
+        "rule_id": "PCI-10.7.3",
+        "framework": "pci_dss_v4",
+        "control_id": "10.7.3",
+        "control_name": "Respond promptly to failures",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "escalate_to_manager",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 10.7.3: Critical control failures must be escalated promptly.",
+        "recommendation": "Add escalate_to_manager for prompt failure response."
+    },
+    {
+        "rule_id": "PCI-11.4.7",
+        "framework": "pci_dss_v4",
+        "control_id": "11.4.7",
+        "control_name": "Multi-layered intrusion detection",
+        "category": "detection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_ips_mode",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "network_intrusion"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 11.4.7: Network intrusion events should trigger IPS mode activation.",
+        "recommendation": "Add enable_ips_mode for multi-layer intrusion response."
+    },
+    {
+        "rule_id": "PCI-12.10.1",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.1",
+        "control_name": "Create incident response plan",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 12.10.1: Incident response must follow a documented plan.",
+        "recommendation": "Add document_incident to capture the executed incident response steps."
+    },
+    {
+        "rule_id": "PCI-12.10.2",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.2",
+        "control_name": "Review and test incident response plan at least annually",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "PCI-DSS 12.10.2: Post-incident review should trigger IR plan update check.",
+        "recommendation": "Create compliance report recommending annual IR plan review after critical incidents."
+    },
+    {
+        "rule_id": "PCI-12.10.4",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.4",
+        "control_name": "Assign incident response responsibilities",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 12.10.4: Incident response team roles must be assigned and notified.",
+        "recommendation": "Add notify_incident_commander to formally initiate IR team assignments."
+    },
+    {
+        "rule_id": "PCI-12.10.5",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.5",
+        "control_name": "Monitor and respond to alerts from security systems",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_ticket",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 12.10.5: Security alerts must be tracked via ticketing system.",
+        "recommendation": "Add create_ticket for formal tracking of the incident response."
+    },
+    {
+        "rule_id": "PCI-12.10.6",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.6",
+        "control_name": "Modify incident response plan based on lessons learned",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "PCI-DSS 12.10.6: Lessons learned from incidents must update the IR plan.",
+        "recommendation": "Add create_compliance_report with lessons-learned section."
+    },
+    {
+        "rule_id": "PCI-12.10.7",
+        "framework": "pci_dss_v4",
+        "control_id": "12.10.7",
+        "control_name": "Provide incident response training to appropriate personnel",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "phishing",
+                "social_engineering"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "PCI-DSS 12.10.7: Training recommendation should follow social engineering incidents.",
+        "recommendation": "Notify security team with phishing-awareness training recommendation."
+    },
+    {
+        "rule_id": "PCI-6.3.3",
+        "framework": "pci_dss_v4",
+        "control_id": "6.3.3",
+        "control_name": "All system components are protected from known vulnerabilities by installing security patches",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "patch_system",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 6.3.3: Exploited vulnerabilities in CDE must be patched promptly.",
+        "recommendation": "Add patch_system for all exploited vulnerabilities on CDE systems."
+    },
+    {
+        "rule_id": "PCI-6.4.3",
+        "framework": "pci_dss_v4",
+        "control_id": "6.4.3",
+        "control_name": "Change control process for patches and changes",
+        "category": "change_management",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "patch_system",
+            "modify_config"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "PCI-DSS 6.4.3: All patches and config changes on CDE require change control approval.",
+        "recommendation": "Set requires_approval=true for all patch and config actions on CDE."
+    },
+    {
+        "rule_id": "PCI-7.1.1",
+        "framework": "pci_dss_v4",
+        "control_id": "7.1.1",
+        "control_name": "Limit access to system components and cardholder data to only those whose job requires it",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_access",
+            "create_shared_account"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde",
+                "cardholder_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "PCI-DSS 7.1.1: Access to cardholder data must be limited to job-function necessity.",
+        "recommendation": "Obtain PCI compliance officer approval before granting access to CDE."
+    },
+    {
+        "rule_id": "PCI-7.2.5",
+        "framework": "pci_dss_v4",
+        "control_id": "7.2.5",
+        "control_name": "Assign access based on business need",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_access"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 7.2.5: Unauthorized access grants to CDE are prohibited.",
+        "recommendation": "Remove unauthorized access grants from the remediation plan."
+    },
+    {
+        "rule_id": "PCI-7.2.6",
+        "framework": "pci_dss_v4",
+        "control_id": "7.2.6",
+        "control_name": "Review user accounts and access privileges regularly",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "PCI-DSS 7.2.6: Access review should be triggered after unauthorized access incidents.",
+        "recommendation": "Initiate user account review as part of incident closure."
+    },
+    {
+        "rule_id": "PCI-8.2.6",
+        "framework": "pci_dss_v4",
+        "control_id": "8.2.6",
+        "control_name": "Reset authentication factors once account is compromised",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "force_password_reset_all_users",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "credential_compromise",
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 8.2.6: All compromised authentication factors must be immediately reset.",
+        "recommendation": "Add force_password_reset_all_users and revoke all active tokens."
+    },
+    {
+        "rule_id": "PCI-8.2.8",
+        "framework": "pci_dss_v4",
+        "control_id": "8.2.8",
+        "control_name": "Multi-factor authentication required for all CDE access",
+        "category": "authentication",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_mfa",
+            "bypass_mfa"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 8.2.8: MFA cannot be disabled for CDE access.",
+        "recommendation": "Remove MFA-disabling actions. MFA must remain enforced for all CDE access."
+    },
+    {
+        "rule_id": "PCI-8.3.10",
+        "framework": "pci_dss_v4",
+        "control_id": "8.3.10",
+        "control_name": "Terminate idle sessions after defined period",
+        "category": "session_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "force_logout",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "session_hijacking",
+                "insider_threat"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 8.3.10: Idle sessions must be terminated; suspicious sessions force-terminated.",
+        "recommendation": "Add force_logout to terminate active suspect sessions."
+    },
+    {
+        "rule_id": "PCI-3.4",
+        "framework": "pci_dss_v4",
+        "control_id": "3.4",
+        "control_name": "Primary account numbers must be rendered unreadable anywhere they are stored",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde",
+                "cardholder_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 3.4: Encryption protecting cardholder PANs cannot be disabled.",
+        "recommendation": "Remove any encryption-disabling actions from plan. PAN must remain encrypted."
+    },
+    {
+        "rule_id": "PCI-3.5.1",
+        "framework": "pci_dss_v4",
+        "control_id": "3.5.1",
+        "control_name": "Protect cryptographic keys from disclosure and misuse",
+        "category": "key_management",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "share_credentials",
+            "export_keys",
+            "expose_encryption_keys"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 3.5.1: Cryptographic keys must not be shared or exported unprotected.",
+        "recommendation": "Remove key-sharing actions. Use key management system for key rotation only."
+    },
+    {
+        "rule_id": "PCI-4.2",
+        "framework": "pci_dss_v4",
+        "control_id": "4.2",
+        "control_name": "PAN must never be sent via unencrypted messaging",
+        "category": "transmission_security",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption_in_transit",
+            "transmit_phi_unencrypted"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 4.2: PANs must always be transmitted with strong encryption.",
+        "recommendation": "Encryption-in-transit cannot be disabled for CDE systems."
+    },
+    {
+        "rule_id": "PCI-5.2.1",
+        "framework": "pci_dss_v4",
+        "control_id": "5.2.1",
+        "control_name": "Anti-malware solution deployed on applicable system components",
+        "category": "malware_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "update_threat_signatures",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "malware",
+                "ransomware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 5.2.1: Anti-malware must be active and updated during malware incidents.",
+        "recommendation": "Add update_threat_signatures to ensure anti-malware is current."
+    },
+    {
+        "rule_id": "PCI-5.3.2",
+        "framework": "pci_dss_v4",
+        "control_id": "5.3.2",
+        "control_name": "Ensure anti-malware solution is current and generating audit logs",
+        "category": "malware_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "enable_audit_logging",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "malware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 5.3.2: Anti-malware audit logging must be active during malware incidents.",
+        "recommendation": "Enable audit logging for anti-malware engine."
+    },
+    {
+        "rule_id": "PCI-9.9.1",
+        "framework": "pci_dss_v4",
+        "control_id": "9.9.1",
+        "control_name": "Maintain an inventory of payment devices",
+        "category": "physical_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "hardware_tampering",
+                "physical_theft"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 9.9.1: Payment device incidents must update the device inventory.",
+        "recommendation": "Add document_incident to update payment device inventory."
+    },
+    {
+        "rule_id": "PCI-9.9.3",
+        "framework": "pci_dss_v4",
+        "control_id": "9.9.3",
+        "control_name": "Train personnel to detect tampering or substitution of payment devices",
+        "category": "awareness",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "hardware_tampering"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 9.9.3: Device tampering must trigger security team alert and training reminder.",
+        "recommendation": "Add notify_security_team with tampering alert for payment device staff."
+    },
+    {
+        "rule_id": "PCI-1.4.1",
+        "framework": "pci_dss_v4",
+        "control_id": "1.4.1",
+        "control_name": "Network access controls implemented between trusted and untrusted networks",
+        "category": "network_security",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_firewall_rules"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "asset_tags": [
+                "pci_cde"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "PCI-DSS 1.4.1: Firewall rule changes affecting CDE boundaries require change approval.",
+        "recommendation": "All CDE firewall changes require change management sign-off."
+    },
+    {
+        "rule_id": "PCI-1.4.5",
+        "framework": "pci_dss_v4",
+        "control_id": "1.4.5",
+        "control_name": "Restrict inbound and outbound traffic to only necessary communications",
+        "category": "network_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "block_ip",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "network_intrusion",
+                "data_exfiltration"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "PCI-DSS 1.4.5: Unauthorised egress from CDE must be blocked.",
+        "recommendation": "Add block_ip for unauthorized egress sources identified in the incident."
+    },
+    {
+        "rule_id": "PCI-2.2.7",
+        "framework": "pci_dss_v4",
+        "control_id": "2.2.7",
+        "control_name": "Encrypt all non-console administrative access",
+        "category": "transmission_security",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_ssh_encryption",
+            "enable_telnet"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "PCI-DSS 2.2.7: Non-console admin access must always be encrypted.",
+        "recommendation": "Do not disable SSH encryption or enable unencrypted admin protocols."
+    },
+    {
+        "rule_id": "PCI-2.3.2",
+        "framework": "pci_dss_v4",
+        "control_id": "2.3.2",
+        "control_name": "Enable only necessary services, protocols, and functions",
+        "category": "hardening",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "block_port",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "pci_dss"
+            ],
+            "incident_type": [
+                "network_intrusion",
+                "lateral_movement"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "PCI-DSS 2.3.2: Unnecessary services and protocols exposed in incident must be blocked.",
+        "recommendation": "Add block_port for all non-essential services identified in the attack surface."
+    }
+]

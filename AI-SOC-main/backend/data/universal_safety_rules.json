@@ -1,0 +1,292 @@
+[
+    {
+        "rule_id": "UNIVERSAL-001",
+        "rule_name": "Evidence Destruction Prevention",
+        "severity": "critical",
+        "enforcement": "require_approval",
+        "approval_level": "L2_AND_MANAGER",
+        "route_to": "l2",
+        "override_allowed": false,
+        "universal_human_in_loop": true,
+        "rationale": "Log deletion destroys forensic evidence, violates chain of custody, and breaches compliance requirements across PCI-DSS 10.5.1, HIPAA §164.312(b), GDPR Art.5(1)(e), NIST AU-9. Even scheduled deletions require human visibility during an active incident.",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "truncate_logs",
+            "purge_logs",
+            "wipe_logs",
+            "overwrite_logs",
+            "shred_logs",
+            "rotate_logs_with_deletion",
+            "clear_event_viewer",
+            "clear_syslog",
+            "delete_audit_trail",
+            "modify_logs",
+            "alter_audit_records",
+            "delete_audit_log",
+            "wipe_audit_log"
+        ],
+        "applies_when": {
+            "universal": true,
+            "exceptions": []
+        },
+        "pre_execution_requirements": [
+            "L1 analyst reviews request",
+            "L2 analyst validates necessity",
+            "Manager approves business justification",
+            "Create backup of logs before deletion",
+            "Document reason in incident ticket",
+            "Execute with full audit trail"
+        ],
+        "violation_message": "🚨 CRITICAL: Log/audit trail deletion requested. This action destroys forensic evidence, violates chain of custody, and is blocked from auto-execution unconditionally. Requires L2 + Manager approval.",
+        "source_reference": "PCI-DSS v4 10.5.1 | HIPAA §164.312(b) | NIST 800-53 AU-9 | GDPR Art.5(1)(e)"
+    },
+    {
+        "rule_id": "UNIVERSAL-002",
+        "rule_name": "Permanent Data Destruction Prevention",
+        "severity": "critical",
+        "enforcement": "require_approval",
+        "approval_level": "L3_AND_DIRECTOR",
+        "route_to": "l3",
+        "override_allowed": false,
+        "universal_human_in_loop": true,
+        "rationale": "Permanent data destruction is irreversible. NIST SP 800-88 Rev.1 mandates a documented destruction process. Execution without verified backup and legal clearance risks compliance violation and permanent evidence loss.",
+        "blocked_actions": [
+            "wipe_disk",
+            "shred_data",
+            "secure_delete",
+            "factory_reset",
+            "format_disk",
+            "delete_partition",
+            "destroy_encryption_keys",
+            "wipe_encryption_keys",
+            "delete_all_backups",
+            "purge_recycle_bin",
+            "permanent_delete",
+            "delete_without_backup",
+            "overwrite_data",
+            "secure_data_deletion"
+        ],
+        "applies_when": {
+            "universal": true,
+            "no_exceptions": true
+        },
+        "pre_execution_requirements": [
+            "Verify backups exist and are validated",
+            "Document full business justification",
+            "Obtain legal approval if regulated data involved",
+            "Create forensic image before destruction",
+            "Confirm no ongoing legal hold or investigation",
+            "Confirm data retention period has expired"
+        ],
+        "violation_message": "🔴 CRITICAL: Permanent/irreversible data destruction requested. This action requires L3 + Director approval and verified backup confirmation before execution.",
+        "source_reference": "NIST SP 800-88 Rev.1 | GDPR Art.17 | HIPAA §164.310(d)(2) | PCI-DSS v4 9.4.6"
+    },
+    {
+        "rule_id": "UNIVERSAL-003",
+        "rule_name": "Irrecoverable Infrastructure Deletion Prevention",
+        "severity": "critical",
+        "enforcement": "require_approval",
+        "approval_level": "L2_AND_MANAGER",
+        "route_to": "l2",
+        "override_allowed": false,
+        "universal_human_in_loop": true,
+        "rationale": "Permanent deletion of infrastructure resources (VMs, databases, images) can cause irrecoverable service loss. Requires backup verification and dependency check before execution.",
+        "blocked_actions": [
+            "terminate_ec2_instance",
+            "delete_database",
+            "drop_database",
+            "delete_production_database",
+            "delete_vm",
+            "delete_ami",
+            "delete_snapshot",
+            "delete_backup",
+            "delete_production_data",
+            "decommission_server",
+            "remove_redundancy",
+            "delete_replication",
+            "delete_container_image",
+            "delete_persistent_volume_claim"
+        ],
+        "conditional_exceptions": {
+            "allowed_if": {
+                "environment": "dev",
+                "has_recent_backup": true,
+                "verified_backup_valid": true,
+                "no_production_dependencies": true
+            },
+            "still_requires_approval": "L1"
+        },
+        "applies_when": {
+            "universal": true
+        },
+        "pre_execution_requirements": [
+            "Verify recent backup exists and is valid",
+            "Confirm no production dependencies",
+            "Document specific resource to be deleted",
+            "L2 analyst approves with manager sign-off"
+        ],
+        "violation_message": "⚠️ HIGH RISK: Irrecoverable infrastructure deletion requested. Verify all backups and dependencies before proceeding. Requires L2 + Manager approval.",
+        "source_reference": "NIST 800-53 CP-9 Information System Backup | ISO 27001 A.8.13 | SOC 2 A1.2"
+    },
+    {
+        "rule_id": "UNIVERSAL-004",
+        "rule_name": "Wide-Impact Network Change Prevention",
+        "severity": "critical",
+        "enforcement": "require_approval",
+        "approval_level": "L3_INCIDENT_COMMANDER",
+        "route_to": "l3",
+        "override_allowed": true,
+        "override_requires": "INCIDENT_COMMANDER",
+        "universal_human_in_loop": true,
+        "rationale": "Network-wide changes affect all users and systems simultaneously. Impact assessment including user count, revenue, and SLA must be done before execution. Only an Incident Commander can authorize.",
+        "blocked_actions": [
+            "shutdown_datacenter",
+            "disconnect_datacenter",
+            "isolate_entire_network",
+            "disable_network_segment",
+            "shutdown_all_servers",
+            "disable_load_balancer",
+            "delete_dns_zone",
+            "flush_routing_table",
+            "disable_internet_gateway",
+            "remove_all_firewall_rules",
+            "shutdown_production_cluster",
+            "disable_vpc_peering"
+        ],
+        "impact_analysis_required": [
+            "Estimated users affected",
+            "Estimated downtime in minutes",
+            "Revenue impact",
+            "Customer-facing SLA impact"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "violation_message": "🚨 CRITICAL: Wide-impact network change proposed. Blast radius is organization-wide. Requires Incident Commander authorization. Impact analysis must be completed first.",
+        "source_reference": "NIST 800-53 SC-7 / CM-3 | ISO 27001 A.8.20 | SOC 2 A1.1 Availability"
+    },
+    {
+        "rule_id": "UNIVERSAL-005",
+        "rule_name": "Security Control Removal Prevention",
+        "severity": "critical",
+        "enforcement": "require_approval",
+        "approval_level": "L2_AND_SECURITY_MANAGER",
+        "route_to": "l2",
+        "override_allowed": false,
+        "universal_human_in_loop": true,
+        "rationale": "Disabling security controls directly increases attack surface. These actions violate fundamental security operations principles and multiple compliance requirements. Even temporary disabling must be reviewed and logged.",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption",
+            "downgrade_encryption",
+            "expose_encryption_keys",
+            "disable_mfa",
+            "remove_mfa_requirement",
+            "disable_firewall",
+            "disable_antivirus",
+            "disable_edr",
+            "turn_off_monitoring",
+            "disable_audit_logging",
+            "stop_security_monitoring",
+            "disable_intrusion_detection",
+            "allow_all_traffic",
+            "disable_dlp",
+            "disable_waf",
+            "disable_ids",
+            "disable_ips"
+        ],
+        "environment_exceptions": {
+            "dev": {
+                "still_requires_approval": "L1",
+                "max_duration_hours": 4
+            }
+        },
+        "applies_when": {
+            "environment": [
+                "production",
+                "staging"
+            ]
+        },
+        "violation_message": "🔒 SECURITY CRITICAL: Disabling a security control increases attack surface and is blocked from auto-execution. Requires L2 + Security Manager approval with documented justification and duration.",
+        "source_reference": "PCI-DSS v4 8.3.10 | CIS Controls v8 6.5 | ISO 27001:2022 A.8.21 | NIST 800-53 SI-3 / AU-12"
+    },
+    {
+        "rule_id": "UNIVERSAL-006",
+        "rule_name": "Privilege Escalation Prevention",
+        "severity": "high",
+        "enforcement": "require_approval",
+        "approval_level": "L2_AND_IAM_TEAM",
+        "route_to": "l2",
+        "override_allowed": false,
+        "universal_human_in_loop": true,
+        "rationale": "Admin access grants are high-risk and must comply with least-privilege principles. Time-limited JIT access should be preferred over standing admin rights. IAM team review is mandatory to prevent privilege creep.",
+        "blocked_actions": [
+            "grant_admin_rights",
+            "grant_root_access",
+            "grant_domain_admin",
+            "create_admin_account",
+            "add_to_admin_group",
+            "grant_unrestricted_access",
+            "grant_all_permissions",
+            "create_service_account_with_admin",
+            "grant_database_admin",
+            "grant_cloud_admin_role",
+            "elevate_privileges_to_root",
+            "assign_global_admin"
+        ],
+        "justification_required": [
+            "Why is admin access needed?",
+            "How long is access needed (max 8h)?",
+            "What resources specifically?",
+            "Can this be done with less privilege?"
+        ],
+        "time_limit_hours": 8,
+        "applies_when": {
+            "universal": true
+        },
+        "violation_message": "🔑 PRIVILEGE ESCALATION: Admin/root access grant requested. Violates least-privilege principle. Requires IAM team review. Prefer JIT access with max 8h duration.",
+        "source_reference": "NIST 800-53 AC-6 Least Privilege | CIS Controls v8 5.3 / 6.8 | PCI-DSS v4 7.2 | ISO 27001 A.8.2"
+    },
+    {
+        "rule_id": "UNIVERSAL-007",
+        "rule_name": "Production Environment Change Prevention",
+        "severity": "high",
+        "enforcement": "require_approval",
+        "approval_level": "L2_AND_CHANGE_MANAGER",
+        "route_to": "l2",
+        "override_allowed": true,
+        "override_requires": "INCIDENT_COMMANDER",
+        "universal_human_in_loop": true,
+        "rationale": "Production changes must go through change management to prevent unintended outages and ensure rollback plans exist. Emergency exceptions (active incident) require Incident Commander authorization and post-incident review.",
+        "blocked_actions": [
+            "modify_production_database",
+            "update_production_schema",
+            "modify_production_config",
+            "restart_production_service",
+            "deploy_to_production",
+            "rollback_production_deployment",
+            "modify_production_firewall",
+            "change_production_dns",
+            "modify_load_balancer_config",
+            "scale_down_production_cluster",
+            "drop_production_table",
+            "alter_production_table"
+        ],
+        "pre_execution_requirements": [
+            "Change ticket created in ITSM",
+            "Rollback plan documented",
+            "Approval from Change Manager",
+            "Maintenance window defined"
+        ],
+        "emergency_exception": {
+            "requires": "INCIDENT_COMMANDER",
+            "post_incident_review_required": true
+        },
+        "applies_when": {
+            "environment": "production"
+        },
+        "violation_message": "⚙️ PRODUCTION CHANGE: Change to production environment requires change management approval and a documented rollback plan. Emergency changes require Incident Commander authorization.",
+        "source_reference": "ITIL Change Management | NIST 800-53 CM-3 Configuration Change Control | ISO 27001 A.8.32 | SOC 2 CC8.1"
+    }
+]

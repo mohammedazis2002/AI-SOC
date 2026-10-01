@@ -1,0 +1,550 @@
+[
+    {
+        "action_type": "rotate_access_keys",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "restore_old_access_key",
+        "reversal_steps": [
+            "Re-create the previous access key using aws iam create-access-key",
+            "Update all dependent services to use new key",
+            "Deactivate rotated key if needed"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "AWS IAM supports multiple active access keys per user. The old key can be re-created (new key ID) or if stored in secrets manager, restored. Rotation is reversible by creating a fresh key.",
+        "source_reference": "AWS IAM User Guide: Managing access keys — https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html",
+        "risk_if_not_reversed": "Services using the old key will break until updated",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "delete_access_key",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Deleted access keys cannot be restored",
+            "A new access key must be generated for the user"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "AWS permanently deletes access keys when deleted. A new key ID/secret pair is generated. Old key cannot be restored. All systems using the old key must be updated.",
+        "source_reference": "AWS IAM API: DeleteAccessKey — https://docs.aws.amazon.com/IAM/latest/APIReference/API_DeleteAccessKey.html",
+        "risk_if_not_reversed": "Services using deleted key lose access permanently until new key is distributed",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "revoke_sts_token",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Revoked STS tokens cannot be un-revoked",
+            "User must obtain a new STS token via AssumeRole"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "AWS STS tokens are short-lived and cannot be un-revoked once the IAM policy denies them. Legitimate users simply re-authenticate to obtain a new token.",
+        "source_reference": "AWS STS: Revoking IAM role temporary credentials — https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_revoke-sessions.html",
+        "risk_if_not_reversed": "Legitimate users are temporarily unable to perform actions until they re-authenticate",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "detach_iam_policy",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "reattach_iam_policy",
+        "reversal_steps": [
+            "Run: aws iam attach-role-policy --role-name <role> --policy-arn <arn>",
+            "Or: aws iam attach-user-policy --user-name <user> --policy-arn <arn>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "IAM managed policies are reusable — detaching removes the attachment but the policy itself is preserved. Re-attaching with the same ARN restores all permissions.",
+        "source_reference": "AWS IAM: AttachRolePolicy — https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachRolePolicy.html",
+        "risk_if_not_reversed": "Role/user loses the permissions granted by the policy until reattached",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "remove_from_iam_group",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "add_to_iam_group",
+        "reversal_steps": [
+            "Run: aws iam add-user-to-group --group-name <group> --user-name <user>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "AWS IAM group membership is a simple add/remove operation. Groups persist independently of membership.",
+        "source_reference": "AWS IAM: AddUserToGroup — https://docs.aws.amazon.com/IAM/latest/APIReference/API_AddUserToGroup.html",
+        "risk_if_not_reversed": "User loses group-inherited permissions",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "enable_mfa_requirement",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "remove_mfa_requirement_policy",
+        "reversal_steps": [
+            "Detach the IAM policy enforcing MFA from the affected role/user/group",
+            "Run: aws iam detach-user-policy --policy-arn <mfa-policy-arn>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "MFA enforcement is typically implemented via an IAM policy condition (aws:MultiFactorAuthPresent). Detaching this policy removes the requirement. Reversing MFA requirements needs security team approval per compliance.",
+        "source_reference": "AWS IAM: MFA policy conditions — https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_mfa_enable_virtual.html",
+        "risk_if_not_reversed": "N/A — MFA requirement is a security hardening measure, not a risk",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_compromised_role",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Deleted IAM roles cannot be restored",
+            "Must recreate role with same name and re-attach all policies",
+            "All role-based trust relationships must be re-established"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "AWS permanently deletes IAM roles. All attached policies, trust policies, and permission boundaries are lost. Requires full recreation from IaC templates or documented role definitions.",
+        "source_reference": "AWS IAM: DeleteRole — https://docs.aws.amazon.com/IAM/latest/APIReference/API_DeleteRole.html",
+        "risk_if_not_reversed": "Services and principals that assumed this role lose all access",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "disable_iam_user",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "enable_iam_user",
+        "reversal_steps": [
+            "Run: aws iam update-login-profile --user-name <user> [to restore console access]",
+            "Reactivate any deactivated access keys: aws iam update-access-key --status Active"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "IAM user disable typically involves deactivating access keys and removing console password. Both are fully reversible — keys can be reactivated (status: Active) and console login re-enabled.",
+        "source_reference": "AWS IAM: UpdateAccessKey — https://docs.aws.amazon.com/IAM/latest/APIReference/API_UpdateAccessKey.html",
+        "risk_if_not_reversed": "User cannot access AWS resources",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_iam_user",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Deleted IAM users cannot be restored",
+            "Must create new user with same username and re-add all group memberships and policies"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "AWS permanently deletes IAM users. All associated group memberships, policies, access keys, MFA devices, and SSH keys are destroyed. Must be reconstructed from IaC or manually.",
+        "source_reference": "AWS IAM: DeleteUser — https://docs.aws.amazon.com/IAM/latest/APIReference/API_DeleteUser.html",
+        "risk_if_not_reversed": "User permanently loses all AWS access",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "isolate_ec2_instance",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "restore_ec2_security_groups",
+        "reversal_steps": [
+            "Run: aws ec2 modify-instance-attribute --instance-id <id> --groups <original-sg-id>",
+            "Re-attach original security groups to instance"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "EC2 instance isolation works by replacing security groups with a deny-all SG. The original SG IDs must be recorded before isolation. Reversal swaps the SGs back.",
+        "source_reference": "AWS EC2: ModifyInstanceAttribute — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyInstanceAttribute.html",
+        "risk_if_not_reversed": "Instance remains network-isolated and inaccessible to legitimate traffic",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "detach_ec2_volume",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "reattach_ec2_volume",
+        "reversal_steps": [
+            "Run: aws ec2 attach-volume --volume-id <vol-id> --instance-id <inst-id> --device <device>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "EBS volumes persist after detachment. Re-attaching uses the same Volume ID and specifies device name. Volume data is preserved.",
+        "source_reference": "AWS EC2: AttachVolume — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AttachVolume.html",
+        "risk_if_not_reversed": "Instance disk I/O for the detached volume is unavailable",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_ami",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Deregistered AMIs cannot be restored",
+            "Must create new AMI from a running instance or EBS snapshot"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "AWS permanently deregisters AMIs. The underlying EBS snapshots may still exist (unless also deleted), allowing potentially creating a new AMI from them.",
+        "source_reference": "AWS EC2: DeregisterImage — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DeregisterImage.html",
+        "risk_if_not_reversed": "Cannot launch new instances from this AMI",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "deregister_ami",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": "create_new_ami_from_snapshot",
+        "reversal_steps": [
+            "If underlying snapshot preserved: aws ec2 register-image --snapshot-id <snap-id>"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "AMI deregistration is permanent. If the backing snapshot was not deleted simultaneously, a new AMI can be created from it — but it gets a new AMI ID.",
+        "source_reference": "AWS EC2: RegisterImage — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_RegisterImage.html",
+        "risk_if_not_reversed": "Launch templates and auto-scaling groups referencing this AMI ID will fail",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "terminate_lambda_function",
+        "category": "cloud_aws",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Deleted Lambda functions cannot be restored",
+            "Must redeploy from source code repository or CI/CD pipeline"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "AWS permanently deletes Lambda functions when deleted. Code, configuration, layers, and event source mappings are destroyed. Must redeploy from code repository.",
+        "source_reference": "AWS Lambda: DeleteFunction — https://docs.aws.amazon.com/lambda/latest/dg/API_DeleteFunction.html",
+        "risk_if_not_reversed": "All Lambda-triggered workloads fail permanently",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "disable_lambda_trigger",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "re_enable_lambda_trigger",
+        "reversal_steps": [
+            "Re-enable event source mapping: aws lambda update-event-source-mapping --uuid <uuid> --enabled"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Lambda event source mappings (SQS, Kinesis, DynamoDB Streams) can be enabled/disabled via UpdateEventSourceMapping. The mapping UUID must be known.",
+        "source_reference": "AWS Lambda: UpdateEventSourceMapping — https://docs.aws.amazon.com/lambda/latest/dg/API_UpdateEventSourceMapping.html",
+        "risk_if_not_reversed": "Events accumulate in the source queue/stream without processing",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "block_s3_public_access",
+        "category": "cloud_aws",
+        "reversible": true,
+        "reversal_method": "unblock_s3_public_access",
+        "reversal_steps": [
+            "aws s3api put-public-access-block --bucket <bucket> --public-access-block-configuration BlockPublicAcls=false,..."
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "S3 Block Public Access is a flag that can be toggled. Reversing requires security team approval — removing public access blocks is a security risk.",
+        "source_reference": "AWS S3: PutPublicAccessBlock — https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutPublicAccessBlock.html",
+        "risk_if_not_reversed": "Public-facing static assets become inaccessible",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "delete_s3_bucket_policy",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_s3_bucket_policy",
+        "reversal_steps": [
+            "Reapply saved bucket policy: aws s3api put-bucket-policy --bucket <bucket> --policy file://policy.json"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": false,
+        "reversal_basis": "S3 bucket policies are JSON documents that can be restored if a backup was taken. PutBucketPolicy replaces the current policy entirely.",
+        "source_reference": "AWS S3: PutBucketPolicy — https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketPolicy.html",
+        "risk_if_not_reversed": "Bucket loses cross-account access and custom permission rules",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "enable_s3_versioning",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "suspend_s3_versioning",
+        "reversal_steps": [
+            "aws s3api put-bucket-versioning --bucket <bucket> --versioning-configuration Status=Suspended"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "S3 versioning can be suspended (but not fully disabled once enabled). Suspending stops creation of new versions; existing versions are preserved.",
+        "source_reference": "AWS S3: PutBucketVersioning — https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketVersioning.html",
+        "risk_if_not_reversed": "N/A — enabling versioning is a hardening measure",
+        "estimated_reversal_time_minutes": 2
+    },
+    {
+        "action_type": "revoke_s3_bucket_access",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_s3_bucket_acl_or_policy",
+        "reversal_steps": [
+            "Restore original bucket ACL: aws s3api put-bucket-acl",
+            "Or restore bucket policy: aws s3api put-bucket-policy"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "S3 access is controlled via bucket policies and ACLs. Both are replaceable documents. Restoring requires having the original policy/ACL backed up before revocation.",
+        "source_reference": "AWS S3: PutBucketAcl — https://docs.aws.amazon.com/AmazonS3/latest/API/API_PutBucketAcl.html",
+        "risk_if_not_reversed": "Authorized users/services lose access to the bucket",
+        "estimated_reversal_time_minutes": 15
+    },
+    {
+        "action_type": "quarantine_s3_object",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_s3_object_from_quarantine",
+        "reversal_steps": [
+            "Copy object from quarantine bucket back: aws s3 cp s3://quarantine-bucket/<key> s3://original-bucket/<key>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Object quarantine moves (copy + delete) an S3 object to an isolated quarantine bucket. Reversal copies it back. Requires scan clearance before reversal.",
+        "source_reference": "AWS S3: CopyObject — https://docs.aws.amazon.com/AmazonS3/latest/API/API_CopyObject.html",
+        "risk_if_not_reversed": "Object remains inaccessible from original location",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_security_group_rule",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "re_add_security_group_rule",
+        "reversal_steps": [
+            "aws ec2 authorize-security-group-ingress/egress --group-id <sg-id> --ip-permissions <original-rule>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Security group rules are individually addable/removable. Deleted rules can be re-added with the same parameters. Original rule must be documented prior to deletion.",
+        "source_reference": "AWS EC2: AuthorizeSecurityGroupIngress — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AuthorizeSecurityGroupIngress.html",
+        "risk_if_not_reversed": "Legitimate traffic blocked by missing rule",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "isolate_vpc",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_vpc_route_tables",
+        "reversal_steps": [
+            "Restore original route table associations",
+            "Remove deny-all NACLs: aws ec2 replace-network-acl-association",
+            "Restore VPC peering routes if needed"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "VPC isolation works by modifying route tables and network ACLs to block all traffic. Reversal requires restoring original route table entries and NACL rules. Pre-isolation state must be documented.",
+        "source_reference": "AWS VPC: ReplaceRouteTableAssociation — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ReplaceRouteTableAssociation.html",
+        "risk_if_not_reversed": "Entire VPC workload is network-isolated and inaccessible",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "delete_vpc_endpoint",
+        "category": "cloud_multi",
+        "reversible": false,
+        "reversal_method": "recreate_vpc_endpoint",
+        "reversal_steps": [
+            "Create a new VPC endpoint: aws ec2 create-vpc-endpoint --vpc-id <vpc> --service-name <svc> --route-table-ids <rt>"
+        ],
+        "reversal_complexity": "medium",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "VPC endpoints are deleted permanently but can be recreated with the same service name. The new endpoint gets a new ID but provides the same private connectivity.",
+        "source_reference": "AWS VPC: CreateVpcEndpoint — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateVpcEndpoint.html",
+        "risk_if_not_reversed": "Private connectivity to AWS services is disrupted (traffic routes via internet instead)",
+        "estimated_reversal_time_minutes": 10
+    },
+    {
+        "action_type": "disable_vpc_peering",
+        "category": "cloud_multi",
+        "reversible": false,
+        "reversal_method": "recreate_vpc_peering_connection",
+        "reversal_steps": [
+            "Create new peering request: aws ec2 create-vpc-peering-connection",
+            "Accept from peer: aws ec2 accept-vpc-peering-connection",
+            "Re-add routes in both VPCs"
+        ],
+        "reversal_complexity": "high",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Deleted VPC peering connections cannot be restored. A new peering connection must be established, which requires acceptance from the peer VPC account.",
+        "source_reference": "AWS VPC: CreateVpcPeeringConnection — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateVpcPeeringConnection.html",
+        "risk_if_not_reversed": "Cross-VPC private network traffic is disrupted",
+        "estimated_reversal_time_minutes": 30
+    },
+    {
+        "action_type": "revoke_gcp_service_account",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_gcp_service_account_iam",
+        "reversal_steps": [
+            "gcloud projects add-iam-policy-binding <project> --member='serviceAccount:<sa>' --role='<role>'"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "GCP IAM bindings are ADD/REMOVE operations. Revoking removes a binding. Re-granting adds it back with the same role.",
+        "source_reference": "GCP IAM: gcloud iam policies — https://cloud.google.com/iam/docs/granting-changing-revoking-access",
+        "risk_if_not_reversed": "GCP services using this service account lose authorized access",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_gcp_instance",
+        "category": "cloud_multi",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "GCP Compute instances are permanently deleted",
+            "Must create new instance from snapshot if available"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "GCP permanently deletes VM instances. Boot disk may be preserved if delete_on_termination=false. Must restore from snapshot or recreate from instance template.",
+        "source_reference": "GCP Compute: instances.delete — https://cloud.google.com/compute/docs/reference/rest/v1/instances/delete",
+        "risk_if_not_reversed": "VM workload is permanently terminated",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "disable_gcp_api",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "re_enable_gcp_api",
+        "reversal_steps": [
+            "gcloud services enable <api-name>.googleapis.com --project <project>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "GCP service APIs can be enabled/disabled freely. Re-enabling restores API access immediately.",
+        "source_reference": "GCP: Enable/Disable services — https://cloud.google.com/service-usage/docs/enable-disable",
+        "risk_if_not_reversed": "Dependent workloads cannot use the disabled GCP API",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "revoke_gcp_iam_binding",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_gcp_iam_binding",
+        "reversal_steps": [
+            "gcloud projects add-iam-policy-binding <project> --member='<member>' --role='<role>'"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "GCP IAM policy bindings are fully reversible. Revoked bindings can be re-added using add-iam-policy-binding with the same member and role.",
+        "source_reference": "GCP IAM: Policy binding — https://cloud.google.com/iam/docs/reference/rest/v1/Policy",
+        "risk_if_not_reversed": "Principal loses all permissions granted by this role",
+        "estimated_reversal_time_minutes": 3
+    },
+    {
+        "action_type": "revoke_azure_ad_token",
+        "category": "cloud_multi",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Revoked Azure AD tokens cannot be un-revoked",
+            "User must re-authenticate to obtain a new access token"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Azure AD token revocation via revoke-sign-in-sessions is permanent. New tokens are issued on next successful authentication. Tokens are short-lived (1hr for access tokens) anyway.",
+        "source_reference": "Azure AD: revokeSignInSessions — https://docs.microsoft.com/en-us/graph/api/user-revokesigninsessions",
+        "risk_if_not_reversed": "User is temporarily signed out — resolved automatically on re-authentication",
+        "estimated_reversal_time_minutes": 1
+    },
+    {
+        "action_type": "disable_azure_vm",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "start_azure_vm",
+        "reversal_steps": [
+            "az vm start --resource-group <rg> --name <vm-name>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Azure VM deallocate/stop preserves all VM data and configuration. Starting restores the VM to Running state.",
+        "source_reference": "Azure VM: az vm start — https://docs.microsoft.com/en-us/cli/azure/vm#az_vm_start",
+        "risk_if_not_reversed": "VM workload is offline, all network endpoints unreachable",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "revoke_azure_rbac",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "restore_azure_rbac",
+        "reversal_steps": [
+            "az role assignment create --assignee <principal> --role '<role>' --scope <scope>"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": true,
+        "reversal_basis": "Azure RBAC role assignments can be re-added with the same principal, role, and scope. Original assignment details must be documented before revocation.",
+        "source_reference": "Azure RBAC: az role assignment create — https://docs.microsoft.com/en-us/azure/role-based-access-control/role-assignments-cli",
+        "risk_if_not_reversed": "Principal loses access to Azure resources in the specified scope",
+        "estimated_reversal_time_minutes": 5
+    },
+    {
+        "action_type": "delete_azure_resource",
+        "category": "cloud_multi",
+        "reversible": false,
+        "reversal_method": null,
+        "reversal_steps": [
+            "Azure resources once deleted cannot be restored unless recovery options were pre-configured (e.g., soft delete for Key Vault, storage)"
+        ],
+        "reversal_complexity": "irreversible",
+        "requires_backup_first": true,
+        "human_approval_required": true,
+        "reversal_basis": "Most Azure resources are permanently deleted. Some (Azure Key Vault, Storage soft-delete) have recovery options if enabled. Must verify soft-delete before assuming irreversibility.",
+        "source_reference": "Azure Resource Manager: Resources deletion — https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/delete-resource-group",
+        "risk_if_not_reversed": "Azure resource permanently lost",
+        "estimated_reversal_time_minutes": null
+    },
+    {
+        "action_type": "snapshot_cloud_resource",
+        "category": "cloud_multi",
+        "reversible": true,
+        "reversal_method": "delete_cloud_snapshot",
+        "reversal_steps": [
+            "Delete snapshot if no longer needed: aws ec2 delete-snapshot / gcloud compute snapshots delete / az snapshot delete"
+        ],
+        "reversal_complexity": "low",
+        "requires_backup_first": false,
+        "human_approval_required": false,
+        "reversal_basis": "Creating a snapshot is always safe and reversible — the snapshot can be deleted if not needed. The original resource is unaffected.",
+        "source_reference": "AWS EC2: CreateSnapshot — https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_CreateSnapshot.html",
+        "risk_if_not_reversed": "Snapshot stored indefinitely (minor cost impact)",
+        "estimated_reversal_time_minutes": 5
+    }
+]

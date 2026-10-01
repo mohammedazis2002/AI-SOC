@@ -1,0 +1,358 @@
+[
+    {
+        "rule_id": "NIST800-IR-4",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IR-4",
+        "control_name": "Incident Handling",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 IR-4: Incident handling procedures require formal documentation of response actions.",
+        "recommendation": "Add document_incident to ensure audit trail of all response steps."
+    },
+    {
+        "rule_id": "NIST800-IR-6",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IR-6",
+        "control_name": "Incident Reporting",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "medium",
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 IR-6: Security incidents must be reported to designated organizational officials.",
+        "recommendation": "Add notify_security_team and notify_incident_commander for critical incidents."
+    },
+    {
+        "rule_id": "NIST800-AU-9",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AU-9",
+        "control_name": "Protection of Audit Information",
+        "category": "logging",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "modify_logs",
+            "disable_logging",
+            "stop_audit",
+            "clear_audit_logs"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 AU-9: Audit information and tools must be protected from unauthorized access, modification, and deletion.",
+        "recommendation": "Audit logs cannot be deleted. Export and preserve them to a secure location."
+    },
+    {
+        "rule_id": "NIST800-CM-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "CM-3",
+        "control_name": "Configuration Change Control",
+        "category": "change_management",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_config",
+            "update_firewall_rules",
+            "modify_firewall_rules",
+            "patch_system",
+            "update_software"
+        ],
+        "applies_when": {
+            "environment": [
+                "production"
+            ],
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "NIST 800-53 CM-3: Configuration changes in production require documented change control approval.",
+        "recommendation": "Set requires_approval=True and log the change request reference."
+    },
+    {
+        "rule_id": "NIST800-SC-28",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SC-28",
+        "control_name": "Protection of Information at Rest",
+        "category": "encryption",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption",
+            "downgrade_encryption"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "data_classification": [
+                "confidential",
+                "secret"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 SC-28: Data at rest must maintain encryption protection. Cannot disable encryption.",
+        "recommendation": "Remove encryption-disabling actions. Data at rest must remain encrypted."
+    },
+    {
+        "rule_id": "NIST800-SI-2",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SI-2",
+        "control_name": "Flaw Remediation",
+        "category": "vulnerability_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "patch_system",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "vulnerability_exploitation",
+                "zero_day"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 SI-2: Exploited vulnerabilities must be remediated through patch application or workaround.",
+        "recommendation": "Add patch_system or apply_workaround to remediate the exploited flaw."
+    },
+    {
+        "rule_id": "NIST800-AC-17",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AC-17",
+        "control_name": "Remote Access",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "enable_remote_access",
+            "create_vpn_account",
+            "enable_remote_desktop"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "NIST 800-53 AC-17: Remote access must be authorized and monitored. Requires management approval.",
+        "recommendation": "Set requires_approval=True for any remote access enabling action."
+    },
+    {
+        "rule_id": "NIST800-IR-4-CONTAIN",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IR-4(1)",
+        "control_name": "Incident Handling — Automated Incident Handling Processes",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "isolate_host",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 IR-4(1): Critical incidents should follow the collect → contain → notify → document sequence.",
+        "recommendation": "Ensure the plan follows: collect_logs → isolate_host → notify_security_team → document_incident."
+    },
+    {
+        "rule_id": "NIST800-SI-5",
+        "framework": "nist_800_53_rev5",
+        "control_id": "SI-5",
+        "control_name": "Security Alerts, Advisories, and Directives",
+        "category": "threat_intelligence",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "update_threat_signatures",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "zero_day",
+                "apt",
+                "malware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 SI-5: Security advisories must trigger updating of threat detection signatures.",
+        "recommendation": "Add update_threat_signatures to distribute IOCs to detection systems."
+    },
+    {
+        "rule_id": "NIST800-CP-9",
+        "framework": "nist_800_53_rev5",
+        "control_id": "CP-9",
+        "control_name": "System Backup",
+        "category": "backup",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "must_execute_before": [
+            "patch_system",
+            "restore_from_backup",
+            "wipe_disk"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "NIST 800-53 CP-9: Backup system information before applying patches or restoring configurations.",
+        "recommendation": "Add create_backup before modification actions in production."
+    },
+    {
+        "rule_id": "NIST800-AC-2",
+        "framework": "nist_800_53_rev5",
+        "control_id": "AC-2",
+        "control_name": "Account Management",
+        "category": "access_control",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "disable_account",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "insider_threat",
+                "credential_compromise",
+                "privilege_abuse"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "NIST 800-53 AC-2: Compromised or malicious accounts must be disabled immediately.",
+        "recommendation": "Add disable_account for any account involved in the incident."
+    },
+    {
+        "rule_id": "NIST800-IR-9",
+        "framework": "nist_800_53_rev5",
+        "control_id": "IR-9",
+        "control_name": "Information Spillage Response",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "data_breach",
+                "data_exposure",
+                "unauthorized_disclosure"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 IR-9: Information spillage (data exposure) must trigger personnel notification and response.",
+        "recommendation": "Notify security team and document the extent of spillage."
+    },
+    {
+        "rule_id": "NIST800-MA-2",
+        "framework": "nist_800_53_rev5",
+        "control_id": "MA-2",
+        "control_name": "Controlled Maintenance",
+        "category": "maintenance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "reboot_system",
+            "shutdown_system",
+            "restore_system_snapshot"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "environment": [
+                "production"
+            ],
+            "asset_tags": [
+                "mission_critical"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "NIST 800-53 MA-2: Maintenance activities on mission-critical systems require prior authorization.",
+        "recommendation": "Set requires_approval=True for system restarts and maintenance on critical assets."
+    },
+    {
+        "rule_id": "NIST800-PE-3",
+        "framework": "nist_800_53_rev5",
+        "control_id": "PE-3",
+        "control_name": "Physical Access Control",
+        "category": "physical_security",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "nist_800_53"
+            ],
+            "incident_type": [
+                "physical_breach",
+                "hardware_theft",
+                "hardware_tampering"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "NIST 800-53 PE-3: Physical security incidents require immediate security team notification.",
+        "recommendation": "Add notify_security_team and document_incident for physical breach events."
+    }
+]

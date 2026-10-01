@@ -1,0 +1,379 @@
+[
+    {
+        "rule_id": "ISO27001-5.2",
+        "framework": "iso_27001_2022",
+        "control_id": "5.2",
+        "control_name": "Information security policy",
+        "category": "governance",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 27001 5.2: Security incidents must be handled in alignment with the information security policy.",
+        "recommendation": "Document incident response actions to demonstrate policy compliance."
+    },
+    {
+        "rule_id": "ISO27001-5.33",
+        "framework": "iso_27001_2022",
+        "control_id": "5.33",
+        "control_name": "Protection of records",
+        "category": "records_management",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_audit_logs",
+            "modify_logs"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 27001 5.33: Records must be protected from loss, destruction, and alteration.",
+        "recommendation": "Preserve all logs and records. Use archival instead of deletion."
+    },
+    {
+        "rule_id": "ISO27001-5.34",
+        "framework": "iso_27001_2022",
+        "control_id": "5.34",
+        "control_name": "Privacy and protection of PII",
+        "category": "privacy",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "export_user_data",
+            "share_data_with_third_party"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 27001 5.34: PII sharing during incident response requires privacy impact approval.",
+        "recommendation": "Obtain privacy officer approval before sharing user data externally."
+    },
+    {
+        "rule_id": "ISO27001-5.36",
+        "framework": "iso_27001_2022",
+        "control_id": "5.36",
+        "control_name": "Compliance with policies, rules and standards",
+        "category": "compliance",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 27001 5.36: Critical incidents must produce compliance verification reports.",
+        "recommendation": "Add create_compliance_report to verify compliance posture post-incident."
+    },
+    {
+        "rule_id": "ISO27001-6.1",
+        "framework": "iso_27001_2022",
+        "control_id": "6.1.2",
+        "control_name": "Information security risk assessment",
+        "category": "risk_management",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 27001 6.1.2: Risk assessments must be updated based on security incident findings.",
+        "recommendation": "Document incident for risk register update."
+    },
+    {
+        "rule_id": "ISO27001-8.4",
+        "framework": "iso_27001_2022",
+        "control_id": "8.4",
+        "control_name": "Access to source code",
+        "category": "access_control",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_source_code_access"
+        ],
+        "applies_when": {
+            "incident_type": [
+                "insider_threat",
+                "supply_chain"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "ISO 27001 8.4: Unauthorised access to source code must not be granted during remediation.",
+        "recommendation": "Remove source code access grants from the plan."
+    },
+    {
+        "rule_id": "ISO27001-8.9",
+        "framework": "iso_27001_2022",
+        "control_id": "8.9",
+        "control_name": "Configuration management",
+        "category": "change_management",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "modify_config",
+            "update_firewall_rules"
+        ],
+        "applies_when": {
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "ISO 27001 8.9: Configuration changes in production require documented approval.",
+        "recommendation": "Set requires_approval=True for configuration modifications."
+    },
+    {
+        "rule_id": "ISO27001-8.10",
+        "framework": "iso_27001_2022",
+        "control_id": "8.10",
+        "control_name": "Information deletion",
+        "category": "data_management",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "delete_data",
+            "wipe_disk",
+            "shred_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "confidential",
+                "secret"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 27001 8.10: Deletion of classified information requires documented authorisation.",
+        "recommendation": "Get data owner approval before deleting confidential or secret data."
+    },
+    {
+        "rule_id": "ISO27001-8.11",
+        "framework": "iso_27001_2022",
+        "control_id": "8.11",
+        "control_name": "Data masking",
+        "category": "data_protection",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "export_user_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "confidential"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "ISO 27001 8.11: Data exported during incidents should be masked/anonymised. Requires approval.",
+        "recommendation": "Apply data masking before exporting sensitive data for external investigation."
+    },
+    {
+        "rule_id": "ISO27001-8.14",
+        "framework": "iso_27001_2022",
+        "control_id": "8.14",
+        "control_name": "Redundancy of information processing facilities",
+        "category": "availability",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "shutdown_service",
+            "isolate_host",
+            "shutdown_system"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "mission_critical"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 27001 8.14: Taking redundant/critical systems offline requires business continuity approval.",
+        "recommendation": "Verify failover is active before isolating mission-critical assets."
+    },
+    {
+        "rule_id": "ISO27001-8.17",
+        "framework": "iso_27001_2022",
+        "control_id": "8.17",
+        "control_name": "Clock synchronisation",
+        "category": "logging",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "universal": true,
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "low",
+        "violation_message": "ISO 27001 8.17: Logs collected must have synchronised timestamps for forensic validity.",
+        "recommendation": "Verify NTP sync before collecting logs to ensure forensic integrity."
+    },
+    {
+        "rule_id": "ISO27001-8.19",
+        "framework": "iso_27001_2022",
+        "control_id": "8.19",
+        "control_name": "Installation of software on operational systems",
+        "category": "change_management",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "install_software",
+            "update_software",
+            "deploy_agent"
+        ],
+        "applies_when": {
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "ISO 27001 8.19: Software installation on operational systems requires change management approval.",
+        "recommendation": "Obtain change management approval before installing any software during remediation."
+    },
+    {
+        "rule_id": "ISO27001-8.20",
+        "framework": "iso_27001_2022",
+        "control_id": "8.20",
+        "control_name": "Networks security — network segregation",
+        "category": "network_security",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "isolate_network_segment",
+        "applies_when": {
+            "incident_type": [
+                "lateral_movement",
+                "network_intrusion"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 8.20: Lateral movement incidents require network segment isolation.",
+        "recommendation": "Add isolate_network_segment to contain lateral movement."
+    },
+    {
+        "rule_id": "ISO27001-8.22",
+        "framework": "iso_27001_2022",
+        "control_id": "8.22",
+        "control_name": "Filtering of web services",
+        "category": "network_security",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "block_domain",
+        "applies_when": {
+            "incident_type": [
+                "c2_communication",
+                "malware",
+                "ransomware"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 8.22: C2 and malicious domains must be blocked via web service filtering.",
+        "recommendation": "Add block_domain for all identified C2 domains."
+    },
+    {
+        "rule_id": "ISO27001-8.25",
+        "framework": "iso_27001_2022",
+        "control_id": "8.25",
+        "control_name": "Secure development life cycle",
+        "category": "supply_chain",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "quarantine_malicious_package",
+        "applies_when": {
+            "incident_type": [
+                "supply_chain",
+                "malicious_package",
+                "compromised_dependency"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "ISO 27001 8.25: Compromised software components from the development supply chain must be quarantined.",
+        "recommendation": "Add quarantine_malicious_package and notify_security_team."
+    },
+    {
+        "rule_id": "ISO27001-8.28",
+        "framework": "iso_27001_2022",
+        "control_id": "8.28",
+        "control_name": "Secure coding — input validation",
+        "category": "application_security",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "enable_waf_rule",
+        "applies_when": {
+            "incident_type": [
+                "sql_injection",
+                "xss",
+                "code_injection",
+                "web_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 8.28: Code injection attacks require WAF rules to enforce input validation.",
+        "recommendation": "Add enable_waf_rule to defend against injection techniques identified in the incident."
+    },
+    {
+        "rule_id": "ISO27001-8.32",
+        "framework": "iso_27001_2022",
+        "control_id": "8.32",
+        "control_name": "Change management — security impact assessment",
+        "category": "change_management",
+        "tier": "universal",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "create_backup",
+            "modify_config",
+            "document_incident"
+        ],
+        "applies_when": {
+            "environment": [
+                "production"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 27001 8.32: Production changes during critical incidents require: backup → change → document sequence.",
+        "recommendation": "Follow the required sequence for change management in production."
+    }
+]

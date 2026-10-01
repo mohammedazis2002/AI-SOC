@@ -1,0 +1,409 @@
+[
+    {
+        "rule_id": "GDPR-5.1a",
+        "framework": "gdpr",
+        "control_id": "Article 5(1)(a)",
+        "control_name": "Lawfulness, fairness and transparency of processing",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "enable_covert_surveillance",
+            "install_hidden_monitoring"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 5(1)(a): Processing personal data through covert means violates lawfulness principle.",
+        "recommendation": "Remove covert surveillance actions. Processing must be transparent and lawful."
+    },
+    {
+        "rule_id": "GDPR-5.1b",
+        "framework": "gdpr",
+        "control_id": "Article 5(1)(b)",
+        "control_name": "Purpose limitation — not further processed incompatibly",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "blocked_actions": [
+            "share_data_with_third_party",
+            "export_user_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "GDPR Art. 5(1)(b): Sharing personal data beyond original processing purpose requires legal basis.",
+        "recommendation": "Obtain DPO approval before sharing personal data with third parties during remediation."
+    },
+    {
+        "rule_id": "GDPR-5.1c",
+        "framework": "gdpr",
+        "control_id": "Article 5(1)(c)",
+        "control_name": "Data minimisation — adequate, relevant and limited to purpose",
+        "category": "data_minimization",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "bulk_export_user_data",
+            "copy_all_user_records"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 5(1)(c): Bulk export of personal data must be limited to what is necessary.",
+        "recommendation": "Export only the specific user records required for the investigation."
+    },
+    {
+        "rule_id": "GDPR-5.1e",
+        "framework": "gdpr",
+        "control_id": "Article 5(1)(e)",
+        "control_name": "Storage limitation — retain no longer than necessary",
+        "category": "data_retention",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 5(1)(e): Data retention decisions during breach must be documented for storage limitation compliance.",
+        "recommendation": "Add document_incident recording retention decisions made during the incident."
+    },
+    {
+        "rule_id": "GDPR-28.3",
+        "framework": "gdpr",
+        "control_id": "Article 28(3)",
+        "control_name": "Processor must process only on instructions of controller",
+        "category": "third_party",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "grant_processor_access",
+            "enable_third_party_data_access"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "processor"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "GDPR Art. 28(3): Data processor access must be explicitly authorised by data controller.",
+        "recommendation": "Obtain controller written instruction before granting processor access."
+    },
+    {
+        "rule_id": "GDPR-33.5",
+        "framework": "gdpr",
+        "control_id": "Article 33(5)",
+        "control_name": "Document all breaches regardless of reporting obligation",
+        "category": "documentation",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_breach_notification",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 33(5): All personal data breaches must be documented even if DPA notification threshold not met.",
+        "recommendation": "Add create_breach_notification to document the breach internally."
+    },
+    {
+        "rule_id": "GDPR-36.1",
+        "framework": "gdpr",
+        "control_id": "Article 36(1)",
+        "control_name": "Prior consultation with DPA for high-risk processing",
+        "category": "risk_assessment",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "enable_biometric_processing",
+            "enable_location_tracking"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "high_risk_processing"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "GDPR Art. 36(1): High-risk new processing must be consulted with the DPA before implementation.",
+        "recommendation": "Conduct DPIA and DPA consultation before enabling high-risk processing."
+    },
+    {
+        "rule_id": "GDPR-44.1",
+        "framework": "gdpr",
+        "control_id": "Article 44",
+        "control_name": "Transfers to third countries only with adequate safeguards",
+        "category": "data_transfer",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "transfer_data_outside_eu",
+            "replicate_data_to_non_eu_region"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "eu_personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 44: Personal data transfer outside EEA requires adequacy decision or Standard Contractual Clauses.",
+        "recommendation": "Obtain DPO approval and verify legal basis before cross-border personal data transfer."
+    },
+    {
+        "rule_id": "GDPR-89.1",
+        "framework": "gdpr",
+        "control_id": "Article 89(1)",
+        "control_name": "Safeguards for research/statistical purposes",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "context": [
+                "research_use"
+            ]
+        },
+        "blocked_actions": [
+            "identify_pseudonymised_data",
+            "re_identify_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "research_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "GDPR Art. 89(1): Re-identification of research data violates data protection safeguards.",
+        "recommendation": "Do not attempt to re-identify pseudonymised research data."
+    },
+    {
+        "rule_id": "GDPR-DPIA-MONITOR",
+        "framework": "gdpr",
+        "control_id": "Article 35(7)(d)",
+        "control_name": "DPIA must include review mechanism",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "high_risk_processing",
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 35(7)(d): High-risk processing incidents require DPIA review update.",
+        "recommendation": "Add create_compliance_report to trigger DPIA review update."
+    },
+    {
+        "rule_id": "GDPR-DPO-NOTIFY",
+        "framework": "gdpr",
+        "control_id": "Article 38(1)",
+        "control_name": "DPO must be involved in personal data breach handling",
+        "category": "incident_response",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_ciso",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 38(1): DPO must be consulted during personal data breach handling.",
+        "recommendation": "Notify DPO (via notify_ciso or dedicated action) for all high/critical personal data incidents."
+    },
+    {
+        "rule_id": "GDPR-PSEUDONYM",
+        "framework": "gdpr",
+        "control_id": "Article 25(1) - Pseudonymisation",
+        "control_name": "Apply pseudonymisation as technical measure",
+        "category": "data_protection",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "export_user_data",
+            "share_data_with_third_party"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "GDPR Art. 25(1): Data shared during incident response should be pseudonymised. DPO approval required.",
+        "recommendation": "Pseudonymise personal data before sharing with third parties during investigations."
+    },
+    {
+        "rule_id": "GDPR-CHILDREN",
+        "framework": "gdpr",
+        "control_id": "Article 8(1)",
+        "control_name": "Children's data — parental consent required",
+        "category": "special_categories",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "notify_affected_users",
+            "export_user_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "children_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "approval_message": "GDPR Art. 8(1): Actions involving children's personal data require DPO approval and parental consent consideration.",
+        "recommendation": "Escalate to DPO before any action involving children's personal data."
+    },
+    {
+        "rule_id": "GDPR-SPECIAL-BIOMETRIC",
+        "framework": "gdpr",
+        "control_id": "Article 9(1)",
+        "control_name": "Special category data (biometric, health) processing prohibited without basis",
+        "category": "special_categories",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "export_biometric_data",
+            "share_health_data",
+            "export_genetic_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "biometric_data",
+                "health_data",
+                "special_category"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 9(1): Special category data (biometric/health/genetic) cannot be shared without explicit legal basis.",
+        "recommendation": "Obtain explicit consent or identify Art. 9(2) exemption before exporting special category data."
+    },
+    {
+        "rule_id": "GDPR-PROFILING",
+        "framework": "gdpr",
+        "control_id": "Article 22(1)",
+        "control_name": "No solely automated decisions with significant effects",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "automated_account_suspension",
+            "automated_access_revocation"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "GDPR Art. 22(1): Automated decisions with significant effect on data subjects require human oversight.",
+        "recommendation": "Require human review before automated account or access actions affecting individuals."
+    },
+    {
+        "rule_id": "GDPR-PROCESSOR-BREACH",
+        "framework": "gdpr",
+        "control_id": "Article 33(2)",
+        "control_name": "Processor must notify controller of breach without undue delay",
+        "category": "breach_notification",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "processor"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 33(2): As a processor, must notify data controller of breach immediately.",
+        "recommendation": "Add notify to controller via notify_security_team with breach details."
+    },
+    {
+        "rule_id": "GDPR-PORTABILITY",
+        "framework": "gdpr",
+        "control_id": "Article 20(1)",
+        "control_name": "Data portability — structured, machine-readable format",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "blocked_actions": [
+            "convert_data_format",
+            "migrate_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "low",
+        "violation_message": "GDPR Art. 20(1): Data format changes during breach must not compromise portability rights.",
+        "recommendation": "Obtain DPO approval before converting or migrating personal data formats during breach response."
+    }
+]

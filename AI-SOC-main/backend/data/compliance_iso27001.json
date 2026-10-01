@@ -1,0 +1,322 @@
+[
+    {
+        "rule_id": "ISO27001-5.24",
+        "framework": "iso_27001_2022",
+        "control_id": "5.24",
+        "control_name": "Information security incident management planning and preparation",
+        "category": "incident_response",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 5.24: Security team must be notified for all security incidents.",
+        "recommendation": "Add notify_security_team to the plan."
+    },
+    {
+        "rule_id": "ISO27001-5.26",
+        "framework": "iso_27001_2022",
+        "control_id": "5.26",
+        "control_name": "Response to information security incidents",
+        "category": "incident_response",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 5.26: All security incidents must be documented.",
+        "recommendation": "Add document_incident to the plan."
+    },
+    {
+        "rule_id": "ISO27001-5.28",
+        "framework": "iso_27001_2022",
+        "control_id": "5.28",
+        "control_name": "Collection of evidence",
+        "category": "forensics",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "must_execute_before": [
+            "isolate_host",
+            "wipe_disk",
+            "factory_reset",
+            "delete_file",
+            "kill_process"
+        ],
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "ISO 27001 5.28: Forensic evidence must be collected before destructive actions.",
+        "recommendation": "Add collect_logs before any eradication actions."
+    },
+    {
+        "rule_id": "ISO27001-5.26-NODEL",
+        "framework": "iso_27001_2022",
+        "control_id": "5.26",
+        "control_name": "Preserve evidence for incident investigation",
+        "category": "forensics",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "delete_logs",
+            "clear_logs",
+            "wipe_disk",
+            "factory_reset"
+        ],
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 27001 5.26: Cannot destroy evidence during active high/critical incident investigation.",
+        "recommendation": "Use quarantine_file or preserve_evidence instead of deletion."
+    },
+    {
+        "rule_id": "ISO27001-8.13",
+        "framework": "iso_27001_2022",
+        "control_id": "8.13",
+        "control_name": "Information backup",
+        "category": "data_protection",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "create_backup",
+        "must_execute_before": [
+            "patch_system",
+            "restore_from_backup",
+            "modify_config",
+            "delete_file"
+        ],
+        "applies_when": {
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "medium",
+        "violation_message": "ISO 27001 8.13: Backup recommended before destructive or recovery actions.",
+        "recommendation": "Add create_backup before system modification actions."
+    },
+    {
+        "rule_id": "ISO27001-8.8",
+        "framework": "iso_27001_2022",
+        "control_id": "8.8",
+        "control_name": "Management of technical vulnerabilities",
+        "category": "vulnerability_management",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "patch_system",
+            "update_software"
+        ],
+        "applies_when": {
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "ISO 27001 8.8: Technical vulnerability patches in production require change management approval.",
+        "recommendation": "Set requires_approval=True for patch operations in production."
+    },
+    {
+        "rule_id": "ISO27001-5.37",
+        "framework": "iso_27001_2022",
+        "control_id": "5.37",
+        "control_name": "Documented operating procedures",
+        "category": "incident_response",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "preserve_evidence",
+        "applies_when": {
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 5.37: Critical incidents require formal evidence preservation for post-incident review.",
+        "recommendation": "Add preserve_evidence action for critical severity incidents."
+    },
+    {
+        "rule_id": "ISO27001-8.15",
+        "framework": "iso_27001_2022",
+        "control_id": "8.15",
+        "control_name": "Logging",
+        "category": "logging",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_logging",
+            "stop_audit",
+            "turn_off_monitoring"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "violation_message": "ISO 27001 8.15: Disabling logging requires explicit change management approval.",
+        "recommendation": "Set requires_approval=True or remove disable_logging from plan."
+    },
+    {
+        "rule_id": "ISO27001-8.3",
+        "framework": "iso_27001_2022",
+        "control_id": "8.3",
+        "control_name": "Information access restriction",
+        "category": "access_control",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "grant_unauthorized_access",
+            "create_shared_account",
+            "share_credentials"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 27001 8.3: Unauthorized access grants violate information access restriction controls.",
+        "recommendation": "Remove unauthorized access grants from the remediation plan entirely."
+    },
+    {
+        "rule_id": "ISO27001-5.29",
+        "framework": "iso_27001_2022",
+        "control_id": "5.29",
+        "control_name": "Information security during disruption",
+        "category": "business_continuity",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 5.29: Critical incidents must escalate to incident commander for business continuity management.",
+        "recommendation": "Add notify_incident_commander to the plan for critical severity."
+    },
+    {
+        "rule_id": "ISO27001-5.25",
+        "framework": "iso_27001_2022",
+        "control_id": "5.25",
+        "control_name": "Assessment and decision on information security events",
+        "category": "incident_response",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 27001 5.25: Security events must be assessed and classified by the security team.",
+        "recommendation": "Ensure notify_security_team is included."
+    },
+    {
+        "rule_id": "ISO27001-8.16",
+        "framework": "iso_27001_2022",
+        "control_id": "8.16",
+        "control_name": "Monitoring activities",
+        "category": "monitoring",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_edr",
+            "uninstall_agent",
+            "disable_av"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 27001 8.16: Disabling monitoring tools violates continuous monitoring requirements.",
+        "recommendation": "Never disable EDR or AV as part of an incident response plan."
+    },
+    {
+        "rule_id": "ISO27001-5.30",
+        "framework": "iso_27001_2022",
+        "control_id": "5.30",
+        "control_name": "ICT readiness for business continuity",
+        "category": "business_continuity",
+        "tier": "universal",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "isolate_host",
+            "shutdown_system",
+            "disconnect_network"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "mission_critical"
+            ],
+            "environment": [
+                "production"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 27001 5.30: Isolating or shutting down mission-critical production assets requires business continuity approval.",
+        "recommendation": "Set requires_approval=True for containment actions on mission-critical assets."
+    },
+    {
+        "rule_id": "ISO27001-8.12",
+        "framework": "iso_27001_2022",
+        "control_id": "8.12",
+        "control_name": "Data leakage prevention",
+        "category": "data_protection",
+        "tier": "universal",
+        "rule_type": "required_action",
+        "required_action": "block_data_exfiltration",
+        "applies_when": {
+            "incident_type": [
+                "data_breach",
+                "data_exfiltration",
+                "unauthorized_access"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 27001 8.12: Data exfiltration incidents must include data leakage prevention actions.",
+        "recommendation": "Add block_data_exfiltration or block_ip targeting exfiltration destination."
+    },
+    {
+        "rule_id": "ISO27001-8.24",
+        "framework": "iso_27001_2022",
+        "control_id": "8.24",
+        "control_name": "Use of cryptography",
+        "category": "cryptography",
+        "tier": "universal",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_encryption",
+            "remove_encryption",
+            "downgrade_encryption"
+        ],
+        "applies_when": {
+            "universal": true
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 27001 8.24: Disabling or downgrading encryption is prohibited under cryptography policy.",
+        "recommendation": "Remove encryption-disabling actions from the plan."
+    }
+]

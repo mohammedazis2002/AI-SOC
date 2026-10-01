@@ -1,0 +1,306 @@
+[
+    {
+        "rule_id": "GDPR-LEGITIMATE-INT",
+        "framework": "gdpr",
+        "control_id": "Article 6(1)(f)",
+        "control_name": "Legitimate interests as lawful basis",
+        "category": "data_governance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "monitor_employee_activity",
+            "capture_network_traffic"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "employee_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "GDPR Art. 6(1)(f): Monitoring employee activity requires legitimate interest balancing test approval.",
+        "recommendation": "Conduct and document legitimate interest assessment before employee monitoring."
+    },
+    {
+        "rule_id": "GDPR-ACCURACY",
+        "framework": "gdpr",
+        "control_id": "Article 5(1)(d)",
+        "control_name": "Accuracy — personal data must be kept accurate",
+        "category": "data_integrity",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "corrupt_personal_records",
+            "alter_user_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 5(1)(d): Cannot deliberately corrupt or alter personal data records.",
+        "recommendation": "Do not modify personal data records unless correcting inaccuracies with proper authorisation."
+    },
+    {
+        "rule_id": "GDPR-COOKIE-CONSENT",
+        "framework": "gdpr",
+        "control_id": "Article 7(1)",
+        "control_name": "Demonstrable consent for data processing",
+        "category": "consent",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "enable_new_tracking",
+            "enable_analytics"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "web_application"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "GDPR Art. 7(1): Enabling new tracking/analytics without consent records violates GDPR consent requirements.",
+        "recommendation": "Verify consent mechanisms before enabling new tracking after an incident."
+    },
+    {
+        "rule_id": "GDPR-ACCOUNTABILITY",
+        "framework": "gdpr",
+        "control_id": "Article 5(2)",
+        "control_name": "Accountability principle — Controller responsible",
+        "category": "accountability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 5(2): Controller must demonstrate compliance. High-severity incidents require compliance documentation.",
+        "recommendation": "Add create_compliance_report to establish accountability for incident response actions."
+    },
+    {
+        "rule_id": "GDPR-ACCESS-RIGHTS",
+        "framework": "gdpr",
+        "control_id": "Article 15(1)",
+        "control_name": "Right of access by data subject",
+        "category": "data_rights",
+        "tier": "scoped",
+        "rule_type": "conditional_block",
+        "condition": {
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "blocked_actions": [
+            "disable_user_data_access",
+            "revoke_user_portal_access"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "warn",
+        "severity": "low",
+        "violation_message": "GDPR Art. 15(1): Restricting data subject's access to their own data requires legal justification.",
+        "recommendation": "Document justification if data subject access must be restricted during breach investigation."
+    },
+    {
+        "rule_id": "GDPR-SECURITY-INCIDENT-SEV",
+        "framework": "gdpr",
+        "control_id": "Article 32(1)(c)",
+        "control_name": "Restore availability and access to data after incident",
+        "category": "availability",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "restore_from_backup",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "ransomware",
+                "data_destruction"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 32(1)(c): Systems processing personal data must be restored in timely manner after incidents.",
+        "recommendation": "Add restore_from_backup for systems processing personal data affected by destructive attacks."
+    },
+    {
+        "rule_id": "GDPR-EMPLOYEE-PRIVACY",
+        "framework": "gdpr",
+        "control_id": "Article 88(1)",
+        "control_name": "Processing personal data in employment context",
+        "category": "employee_privacy",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "capture_screenshot",
+            "capture_keystrokes",
+            "install_monitoring_agent"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "employee_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "GDPR Art. 88(1): Employee monitoring actions must comply with employment data processing provisions and local laws.",
+        "recommendation": "Obtain legal and HR approval before installing monitoring on employee devices."
+    },
+    {
+        "rule_id": "GDPR-DPO-MANDATORY",
+        "framework": "gdpr",
+        "control_id": "Article 37(1)",
+        "control_name": "DPO designation mandatory for public bodies or large-scale processing",
+        "category": "governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_incident_commander",
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "large_scale_processing"
+            ],
+            "incident_severity": [
+                "critical"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "GDPR Art. 37(1): Large-scale personal data processing incidents must involve DPO via incident commander escalation.",
+        "recommendation": "Add notify_incident_commander to ensure DPO is engaged in critical incidents."
+    },
+    {
+        "rule_id": "GDPR-JOINT-CONTROLLER",
+        "framework": "gdpr",
+        "control_id": "Article 26(1)",
+        "control_name": "Joint controllers must determine responsibilities",
+        "category": "third_party",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "share_data_with_third_party"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "joint_controller"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "medium",
+        "approval_message": "GDPR Art. 26(1): Data sharing with joint controllers during incidents requires confirmed responsibility allocation.",
+        "recommendation": "Confirm joint controller agreement covers incident response before sharing data."
+    },
+    {
+        "rule_id": "GDPR-SECURITY-INCIDENT-DOCS",
+        "framework": "gdpr",
+        "control_id": "Article 33(3)(a)",
+        "control_name": "Breach notification must describe nature of breach",
+        "category": "documentation",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "collect_logs",
+            "document_incident",
+            "create_breach_notification",
+            "notify_data_protection_authority"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ],
+            "incident_type": [
+                "data_breach"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "GDPR Art. 33(3)(a): Breach notification sequence must be followed: collect evidence → document → notify DPA.",
+        "recommendation": "Ensure plan follows: collect_logs → document_incident → create_breach_notification → notify_data_protection_authority."
+    },
+    {
+        "rule_id": "GDPR-DELETION-RETENTION",
+        "framework": "gdpr",
+        "control_id": "Article 17(1)",
+        "control_name": "Right of erasure — must erase personal data when no longer needed",
+        "category": "data_retention",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "validate_retention_period",
+            "document_incident",
+            "delete_data"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "GDPR Art. 17(1): Data erasure must follow validated retention check and documentation sequence.",
+        "recommendation": "Validate retention period and document before executing deletion."
+    },
+    {
+        "rule_id": "GDPR-CROSS-BORDER-TRANSFER",
+        "framework": "gdpr",
+        "control_id": "Article 46(2)(c)",
+        "control_name": "Standard Contractual Clauses for international transfers",
+        "category": "data_transfer",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "replicate_data_to_non_eu_region",
+            "backup_to_cloud_non_eu"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data",
+                "eu_personal_data"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "approval_message": "GDPR Art. 46(2)(c): International data transfers must be covered by SCCs or adequacy decision.",
+        "recommendation": "Verify SCC coverage for destination cloud region before replicating EU personal data."
+    },
+    {
+        "rule_id": "GDPR-CONTROLLER-PROCESSOR-CONTRACT",
+        "framework": "gdpr",
+        "control_id": "Article 28(1)",
+        "control_name": "Only processors providing sufficient guarantees shall be used",
+        "category": "third_party",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "send_data_to_unvetted_service",
+            "use_unapproved_cloud_service"
+        ],
+        "applies_when": {
+            "asset_tags": [
+                "personal_data"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "high",
+        "violation_message": "GDPR Art. 28(1): Personal data cannot be sent to unapproved processors without Data Processing Agreement.",
+        "recommendation": "Only use approved, DPA-contracted processors for personal data handling during incidents."
+    }
+]

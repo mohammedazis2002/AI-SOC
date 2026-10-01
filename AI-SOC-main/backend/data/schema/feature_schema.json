@@ -1,0 +1,55 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Feature Store Schema",
+    "description": "Expected tabular behavioral aggregation features used by Anomaly and Forecaster models.",
+    "type": "object",
+    "required": [
+        "agent.ip",
+        "date",
+        "total_alerts",
+        "peak_severity",
+        "avg_severity",
+        "unique_users_targeted",
+        "unique_destinations",
+        "failed_logins_count",
+        "ssh_commands_count",
+        "scan_activity_count",
+        "malware_detections"
+    ],
+    "properties": {
+        "agent.ip": {
+            "type": "string"
+        },
+        "date": {
+            "type": "string",
+            "format": "date"
+        },
+        "total_alerts": {
+            "type": "integer"
+        },
+        "peak_severity": {
+            "type": "number"
+        },
+        "avg_severity": {
+            "type": "number"
+        },
+        "unique_users_targeted": {
+            "type": "integer"
+        },
+        "unique_destinations": {
+            "type": "integer"
+        },
+        "failed_logins_count": {
+            "type": "integer"
+        },
+        "ssh_commands_count": {
+            "type": "integer"
+        },
+        "scan_activity_count": {
+            "type": "integer"
+        },
+        "malware_detections": {
+            "type": "integer"
+        }
+    }
+}

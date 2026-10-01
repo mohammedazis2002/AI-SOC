@@ -1,0 +1,330 @@
+[
+    {
+        "rule_id": "ISO42001-5.2",
+        "framework": "iso_42001_aims",
+        "control_id": "5.2",
+        "control_name": "AI Policy — leadership commitment to responsible AI",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "document_incident",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "ai_ml_poisoning",
+                "model_manipulation"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 5.2: AI security incidents must be documented as part of responsible AI policy commitment.",
+        "recommendation": "Add document_incident to maintain AI incident registry."
+    },
+    {
+        "rule_id": "ISO42001-6.2",
+        "framework": "iso_42001_aims",
+        "control_id": "6.2",
+        "control_name": "AI system objectives and control objectives",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_severity": [
+                "high",
+                "critical"
+            ],
+            "asset_type": [
+                "ml_system"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "medium",
+        "violation_message": "ISO 42001 6.2: AI system security incidents require objective-level impact report.",
+        "recommendation": "Add create_compliance_report with AI objective impact assessment."
+    },
+    {
+        "rule_id": "ISO42001-7.3",
+        "framework": "iso_42001_aims",
+        "control_id": "7.3",
+        "control_name": "Awareness of AI risks",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "notify_security_team",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "ai_ml_poisoning",
+                "adversarial_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 7.3: AI risk incidents require security team awareness and response.",
+        "recommendation": "Add notify_security_team for all AI-targeting attacks."
+    },
+    {
+        "rule_id": "ISO42001-8.2",
+        "framework": "iso_42001_aims",
+        "control_id": "8.2",
+        "control_name": "AI system impact assessment",
+        "category": "risk_management",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "ai_ml_poisoning",
+                "model_drift"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 8.2: AI system compromise requires formal impact assessment.",
+        "recommendation": "Add create_compliance_report capturing AI system impact on business objectives."
+    },
+    {
+        "rule_id": "ISO42001-8.3",
+        "framework": "iso_42001_aims",
+        "control_id": "8.3",
+        "control_name": "AI system lifecycle — secure design integration",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "rollback_model_version",
+            "deploy_ml_model"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 42001 8.3: AI model deployment or rollback requires lifecycle security review approval.",
+        "recommendation": "Obtain AI security review approval before deploying or rolling back AI models."
+    },
+    {
+        "rule_id": "ISO42001-8.6",
+        "framework": "iso_42001_aims",
+        "control_id": "8.6",
+        "control_name": "Data governance for AI systems",
+        "category": "data_quality",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "modify_training_data",
+            "delete_training_data"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "violation_message": "ISO 42001 8.6: Training data for AI systems cannot be modified or deleted without data governance approval.",
+        "recommendation": "Obtain data governance approval before altering AI training datasets."
+    },
+    {
+        "rule_id": "ISO42001-8.7",
+        "framework": "iso_42001_aims",
+        "control_id": "8.7",
+        "control_name": "AI system auditing and reporting",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "collect_logs",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "ai_ml_poisoning",
+                "model_manipulation",
+                "adversarial_attack"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 8.7: AI security incidents require collection of model inference logs for audit.",
+        "recommendation": "Add collect_logs targeting AI model inference and decision logs."
+    },
+    {
+        "rule_id": "ISO42001-BIAS-AUDIT",
+        "framework": "iso_42001_aims",
+        "control_id": "8.8",
+        "control_name": "AI bias and fairness assessment",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_action",
+        "required_action": "create_compliance_report",
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "model_bias",
+                "discriminatory_output"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "high",
+        "violation_message": "ISO 42001 8.8: AI bias incidents require formal fairness assessment report.",
+        "recommendation": "Add create_compliance_report with AI bias impact and remediation."
+    },
+    {
+        "rule_id": "ISO42001-EXPLAIN",
+        "framework": "iso_42001_aims",
+        "control_id": "8.9",
+        "control_name": "Explainability of AI decisions",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "automated_account_suspension",
+            "automated_access_revocation"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "ai_generated": true
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 42001 8.9: Automated AI decisions must be explainable. Human review required before executing high-impact automated actions.",
+        "recommendation": "Add human review step for all automated AI-generated remediation actions."
+    },
+    {
+        "rule_id": "ISO42001-INCIDENT-LOG",
+        "framework": "iso_42001_aims",
+        "control_id": "9.1",
+        "control_name": "Monitoring, measurement, analysis of AI systems",
+        "category": "monitoring",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "disable_model_monitoring",
+            "disable_drift_detection"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 42001 9.1: AI model monitoring and drift detection cannot be disabled.",
+        "recommendation": "Keep AI performance monitoring active at all times."
+    },
+    {
+        "rule_id": "ISO42001-THIRD-PARTY-AI",
+        "framework": "iso_42001_aims",
+        "control_id": "8.5.1",
+        "control_name": "Third-party AI systems governed by agreement",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "enable_external_ai_service",
+            "integrate_third_party_model"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "high",
+        "approval_message": "ISO 42001 8.5.1: External AI services must be approved under AI management system agreement.",
+        "recommendation": "Obtain formal AI governance approval before integrating third-party AI models."
+    },
+    {
+        "rule_id": "ISO42001-REDEPLOY",
+        "framework": "iso_42001_aims",
+        "control_id": "8.4.2",
+        "control_name": "AI system output re-validation after changes",
+        "category": "ai_ml_governance",
+        "tier": "scoped",
+        "rule_type": "action_sequence",
+        "sequence": [
+            "quarantine_ml_model",
+            "rollback_model_version",
+            "notify_security_team",
+            "document_incident"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "incident_type": [
+                "model_manipulation",
+                "ai_ml_poisoning"
+            ]
+        },
+        "enforcement": "require_modification",
+        "severity": "critical",
+        "violation_message": "ISO 42001 8.4.2: Compromised AI models require quarantine → rollback → notify → document sequence before redeployment.",
+        "recommendation": "Follow full AI model incident response sequence."
+    },
+    {
+        "rule_id": "ISO42001-FAIRNESS",
+        "framework": "iso_42001_aims",
+        "control_id": "8.3.1",
+        "control_name": "Responsible use of AI — prevent harm to individuals",
+        "category": "ai_ethics",
+        "tier": "scoped",
+        "rule_type": "required_approval",
+        "actions_requiring_approval": [
+            "automated_remediation",
+            "bulk_auto_terminate_accounts"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ],
+            "asset_type": [
+                "ml_system"
+            ]
+        },
+        "enforcement": "require_approval",
+        "severity": "critical",
+        "approval_message": "ISO 42001 8.3.1: Bulk automated actions by AI systems must be reviewed for potential harm to individuals.",
+        "recommendation": "Require human review for any bulk automated action generated by AI."
+    },
+    {
+        "rule_id": "ISO42001-SUPPLY-INTEGRITY",
+        "framework": "iso_42001_aims",
+        "control_id": "8.5.3",
+        "control_name": "Integrity of AI model supply chain",
+        "category": "supply_chain",
+        "tier": "scoped",
+        "rule_type": "action_blocklist",
+        "blocked_actions": [
+            "deploy_unverified_model",
+            "use_model_from_untrusted_source"
+        ],
+        "applies_when": {
+            "asset_compliance_scope": [
+                "iso_42001"
+            ]
+        },
+        "enforcement": "reject",
+        "severity": "critical",
+        "violation_message": "ISO 42001 8.5.3: AI models from unverified or untrusted sources cannot be deployed.",
+        "recommendation": "Only deploy AI models from verified, signed, and audited sources."
+    }
+]
